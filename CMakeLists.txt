@@ -13,13 +13,20 @@ CMAKE_MINIMUM_REQUIRED( VERSION 2.8.11 )
 SET( QT_MIN_VERSION 5.3.2 )
 FIND_PACKAGE( Qt5Widgets ${QT_MIN_VERSION} REQUIRED )
 FIND_PACKAGE( Qt5Svg ${QT_MIN_VERSION} REQUIRED )
+FIND_PACKAGE( Qt5OpenGL ${QT_MIN_VERSION} REQUIRED )
 FIND_PACKAGE( Qt5PrintSupport ${QT_MIN_VERSION} REQUIRED )
 FIND_PACKAGE( Qt5LinguistTools ${QT_MIN_VERSION} REQUIRED )
 
 # For Qwt
-SET( CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/" )
-SET( QWT_MIN_VERSION 6.1.2 )
-FIND_PACKAGE( Qwt ${QWT_MIN_VERSION} REQUIRED )
+#SET( CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/" )
+#SET( QWT_MIN_VERSION 6.1.2 )
+#FIND_PACKAGE( Qwt ${QWT_MIN_VERSION} REQUIRED )
+
+set(QWT_INCLUDE_DIR contrib/qwt-6.1.6/src)
+set(QWT_LIBRARIES qwt )
+include_directories(${QWT_INCLUDE_DIR})
+add_subdirectory(contrib/qwt-6.1.6)
+
 
 # ==================================================================================
 # Configure runtime directories
