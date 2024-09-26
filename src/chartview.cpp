@@ -328,6 +328,9 @@ namespace Caneda
         else {
             m_grid->detach();
         }
+
+        // Tracker
+        m_zoomer->setTrackerPen(QPen(foregroundColor));
     }
 
     void ChartView::print(QPrinter *printer, bool fitInView)
