@@ -34,6 +34,7 @@
 #include <QVBoxLayout>
 
 #include <qwt_plot_curve.h>
+#include <qwt_text.h>
 
 namespace Caneda
 {
@@ -378,6 +379,7 @@ namespace Caneda
             list.at(i)->setVisible(m_model->m_chartSeriesMap[list.at(i)->title().text()]);
         }
 
+        view->resetAxis();
         view->replot();
     }
 
