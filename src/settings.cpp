@@ -59,7 +59,7 @@ namespace Caneda
         defaultSettings["gui/gridVisible"] = QVariant(bool(true));
         defaultSettings["gui/foregroundColor"] = QVariant(QColor(Qt::darkGray));
         defaultSettings["gui/backgroundColor"] = QVariant(QColor(Qt::white));
-        defaultSettings["gui/simulationBackgroundColor"] = QVariant(QColor(Qt::white));
+        defaultSettings["gui/simulationBackgroundColor"] = QVariant(QColor(Qt::black));
         defaultSettings["gui/lineColor"] = QVariant(QColor(Qt::blue));
         defaultSettings["gui/selectionColor"] = QVariant(QColor(255, 128, 0)); // Dark orange
         defaultSettings["gui/lineWidth"] = QVariant(int(1));
