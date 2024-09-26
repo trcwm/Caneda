@@ -1531,13 +1531,21 @@ namespace Caneda
                 }
             }
 
-            // collect nodes from measurement devices ammeter, voltmerer, etc.
-            //! \todo mark the measuring device in library in a some way
+            // Collect nodes from measurement devices ammeter, voltmerer, etc.
+            //! \todo Mark the measuring device in library in a some way
             //! to avoid recognition by name
             QStringList probes;
-            probes<<"Ammeter"<<"Voltmeter"<<"Voltmeter Differential";
+            probes<<"Voltmeter"<<"Voltmeter Differential";
             if (probes.contains(c->name())) {
-                nodesList.append(c->properties()->propertyValue("label"));
+                QString voltageProbe = c->properties()->propertyValue("label");
+                nodesList.append(voltageProbe);
+            }
+
+            probes.clear();
+            probes<<"Ammeter";
+            if (probes.contains(c->name())) {
+                QString currentProbe = "i(V" + c->properties()->propertyValue("label") + ")";
+                nodesList.append(currentProbe);
             }
 
             // ************************************************************
@@ -1584,8 +1592,7 @@ namespace Caneda
             }
         }
 
-
-        // save only named nodes
+        // Save only named nodes
         for(const auto &nn: netlist) {
             QRegExp rx("\\d+");
             if (!nodesList.contains(nn.second) &&
@@ -1594,7 +1601,7 @@ namespace Caneda
             }
         }
 
-        // form .save directive
+        // Form .save directive
         if (!nodesList.isEmpty()) {
             QString save_str = "\n.save ";
             save_str += nodesList.join(" ");
