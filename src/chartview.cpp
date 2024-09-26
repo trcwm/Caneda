@@ -147,12 +147,15 @@ namespace Caneda
             return;
         }
 
-        QColor color = QColor(0, 0, 0);
-        int colorIndex= 0;
+        int colorIndex = 0;
         int valueIndex = 255;
+        int penWidth = 2;
 
         // Attach the items to the plot
         foreach(ChartSeries *item, m_items) {
+            QColor color = QColor(0, 0, 0);
+            QPen pen = QPen(color);
+
             // Recreate the curve to be able to attach
             // the same curve to different views
             ChartSeries *newCurve = new ChartSeries();
@@ -168,7 +171,10 @@ namespace Caneda
             // Select the style and color of the new curve
             newCurve->setRenderHint(ChartSeries::RenderAntialiased);
             color.setHsv(colorIndex , 200, valueIndex);
-            newCurve->setPen(QPen(color));
+            pen.setColor(color);
+            pen.setWidth(penWidth);
+
+            newCurve->setPen(pen);
 
             // If the curve is of type magnitude, avoid updating the color
             // for the next curve (that should be the phase).
@@ -177,9 +183,8 @@ namespace Caneda
                 continue;
             }
             else if(item->type() == "phase") {
-                QPen m_pen = QPen(color);
-                m_pen.setStyle(Qt::DashLine);
-                newCurve->setPen(m_pen);
+                pen.setStyle(Qt::DashLine);
+                newCurve->setPen(pen);
             }
 
             // Set the next color to be used (to change colors
