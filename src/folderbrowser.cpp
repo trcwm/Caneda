@@ -104,12 +104,11 @@ namespace Caneda
         // Create a new filesystem model
         m_model = new QFileSystemModel(this);
         m_model->setIconProvider(new IconProvider());
-        m_model->setRootPath(QDir::homePath());
+        m_model->setRootPath(QDir::rootPath());
 
         // Create a list view and set its properties
         m_listView = new QListView(this);
         m_listView->setModel(m_model);
-        m_listView->setRootIndex(m_model->index(QDir::homePath()));
         layout->addWidget(m_listView);
 
         // Signals and slots connections
