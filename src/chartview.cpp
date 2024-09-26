@@ -84,7 +84,7 @@ namespace Caneda
 
         // Panning with the middle mouse button
         QwtPlotPanner *panner = new QwtPlotPanner(m_canvas);
-        panner->setMouseButton(Qt::MidButton);
+        panner->setMouseButton(Qt::MiddleButton);
 
         // Zoom in/out with the wheel
         m_magnifier = new PlotMagnifier(m_canvas);
@@ -314,6 +314,7 @@ namespace Caneda
         Settings *settings = Settings::instance();
         QColor foregroundColor = settings->currentValue("gui/foregroundColor").value<QColor>();
         QColor backgroundColor = settings->currentValue("gui/simulationBackgroundColor").value<QColor>();
+        QColor selectionColor = settings->currentValue("gui/selectionColor").value<QColor>();
 
         // Canvas
         QPalette canvasPalette(backgroundColor);
@@ -330,7 +331,11 @@ namespace Caneda
         }
 
         // Tracker
-        m_zoomer->setTrackerPen(QPen(foregroundColor));
+        QPen m_pen = QPen(QPen(selectionColor));
+        m_pen.setStyle(Qt::DashLine);
+
+        m_zoomer->setRubberBandPen(m_pen);
+        m_zoomer->setTrackerPen(m_pen);
     }
 
     void ChartView::print(QPrinter *printer, bool fitInView)
