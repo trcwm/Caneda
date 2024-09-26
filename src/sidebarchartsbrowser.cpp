@@ -34,6 +34,7 @@
 #include <QVBoxLayout>
 
 #include <qwt_plot_curve.h>
+#include <qwt_text.h>
 
 namespace Caneda
 {

@@ -39,6 +39,7 @@
 #include <QMessageBox>
 #include <QRegularExpression>
 #include <QString>
+#include <QtMath>
 
 namespace Caneda
 {

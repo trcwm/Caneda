@@ -34,6 +34,7 @@
 #include <QFileInfo>
 #include <QMessageBox>
 #include <QPointer>
+#include <QtMath>
 
 namespace Caneda
 {

@@ -27,6 +27,7 @@
 #include <QMenu>
 #include <QMouseEvent>
 
+#include <qwt_text.h>
 #include <qwt_legend.h>
 #include <qwt_plot_canvas.h>
 #include <qwt_plot_curve.h>
