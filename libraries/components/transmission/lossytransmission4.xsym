@@ -32,35 +32,35 @@
     </description>
 
     <symbol>
-        <painting name="line" line="0,0,8,0" pos="-50,-5" transform="1,0,0,1,0,0"/>
-        <painting name="line" line="0,0,10,0" pos="40,-5" transform="1,0,0,1,0,0"/>
-        <painting name="line" line="0,0,8,0" pos="-50,5" transform="1,0,0,1,0,0"/>
-        <painting name="line" line="0,0,10,0" pos="40,5" transform="1,0,0,1,0,0"/>
+        <painting name="line" line="0,0,8,0" pos="-50,0" transform="1,0,0,1,0,0"/>
+        <painting name="line" line="0,0,10,0" pos="40,0" transform="1,0,0,1,0,0"/>
+        <painting name="line" line="0,0,8,0" pos="-50,10" transform="1,0,0,1,0,0"/>
+        <painting name="line" line="0,0,10,0" pos="40,10" transform="1,0,0,1,0,0"/>
 
-        <painting name="line" line="0,0,78,0" pos="-38,12" transform="1,0,0,1,0,0"/>
-        <painting name="line" line="0,0,78,0" pos="-38,-12" transform="1,0,0,1,0,0"/>
+        <painting name="line" line="0,0,78,0" pos="-38,17" transform="1,0,0,1,0,0"/>
+        <painting name="line" line="0,0,78,0" pos="-38,-7" transform="1,0,0,1,0,0"/>
 
-        <painting name="ellipse" ellipse="0,0,7,24" pos="36.5,-12" transform="1,0,0,1,0,0"/>
-        <painting name="ellipseArc" ellipse="0,0,7,24" pos="-42,-12" transform="1,0,0,1,0,0">
+        <painting name="ellipse" ellipse="0,0,7,24" pos="36.5,-7" transform="1,0,0,1,0,0"/>
+        <painting name="ellipseArc" ellipse="0,0,7,24" pos="-42,-7" transform="1,0,0,1,0,0">
             <properties startAngle="90" spanAngle="180"/>
         </painting>
 
-        <painting name="line" line="0,0,8,0" pos="-20,0" transform="1,0,0,1,0,0"/>
-        <painting name="line" line="0,0,2,-5" pos="-12,0" transform="1,0,0,1,0,0"/>
-        <painting name="line" line="0,0,4,10" pos="-10,-5" transform="1,0,0,1,0,0"/>
-        <painting name="line" line="0,0,4,-10" pos="-6,5" transform="1,0,0,1,0,0"/>
-        <painting name="line" line="0,0,4,10" pos="-2,-5" transform="1,0,0,1,0,0"/>
-        <painting name="line" line="0,0,4,-10" pos="2,5" transform="1,0,0,1,0,0"/>
-        <painting name="line" line="0,0,4,10" pos="6,-5" transform="1,0,0,1,0,0"/>
-        <painting name="line" line="0,0,2,-5" pos="10,5" transform="1,0,0,1,0,0"/>
-        <painting name="line" line="0,0,8,0" pos="12,0" transform="1,0,0,1,0,0"/>
+        <painting name="line" line="0,0,8,0" pos="-20,5" transform="1,0,0,1,0,0"/>
+        <painting name="line" line="0,0,2,-5" pos="-12,5" transform="1,0,0,1,0,0"/>
+        <painting name="line" line="0,0,4,10" pos="-10,0" transform="1,0,0,1,0,0"/>
+        <painting name="line" line="0,0,4,-10" pos="-6,10" transform="1,0,0,1,0,0"/>
+        <painting name="line" line="0,0,4,10" pos="-2,0" transform="1,0,0,1,0,0"/>
+        <painting name="line" line="0,0,4,-10" pos="2,10" transform="1,0,0,1,0,0"/>
+        <painting name="line" line="0,0,4,10" pos="6,0" transform="1,0,0,1,0,0"/>
+        <painting name="line" line="0,0,2,-5" pos="10,10" transform="1,0,0,1,0,0"/>
+        <painting name="line" line="0,0,8,0" pos="12,5" transform="1,0,0,1,0,0"/>
     </symbol>
 
     <ports>
-        <port name="in+" pos="-50,-5"/>
-        <port name="in-" pos="50,5"/>
-        <port name="out+" pos="50,-5"/>
-        <port name="out-" pos="-50,5"/>
+        <port name="in+" pos="-50,0"/>
+        <port name="in-" pos="50,10"/>
+        <port name="out+" pos="50,0"/>
+        <port name="out-" pos="-50,10"/>
     </ports>
 
     <properties>
