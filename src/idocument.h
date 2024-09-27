@@ -169,7 +169,7 @@ namespace Caneda
         virtual bool canCopy() const override;
         virtual bool canPaste() const override { return true; }
 
-        virtual void cut( override;
+        virtual void cut() override;
         virtual void copy() override;
         virtual void paste() override;
 
