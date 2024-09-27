@@ -76,7 +76,7 @@ namespace Caneda
 
         QFile file(fileName());
         if(!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
-            QMessageBox::critical(0, QObject::tr("Error"),
+            QMessageBox::critical(nullptr, QObject::tr("Error"),
                     QObject::tr("Cannot save document!"));
             return false;
         }
@@ -106,7 +106,7 @@ namespace Caneda
 
         QFile file(fileName());
         if(!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-            QMessageBox::critical(0, QObject::tr("Error"),
+            QMessageBox::critical(nullptr, QObject::tr("Error"),
                     QObject::tr("Cannot load document ")+fileName());
             return false;
         }
@@ -308,7 +308,7 @@ namespace Caneda
         }
 
         if(reader->hasError()) {
-            QMessageBox::critical(0, QObject::tr("Xml parse error"), reader->errorString());
+            QMessageBox::critical(nullptr, QObject::tr("Xml parse error"), reader->errorString());
             delete reader;
             return false;
         }
@@ -463,7 +463,7 @@ namespace Caneda
 
     GraphicsScene* FormatXmlSchematic::graphicsScene() const
     {
-        return m_schematicDocument ? m_schematicDocument->graphicsScene() : 0;
+        return m_schematicDocument ? m_schematicDocument->graphicsScene() : nullptr;
     }
 
     QString FormatXmlSchematic::fileName() const
@@ -487,7 +487,7 @@ namespace Caneda
             m_fileName = QString();
         }
 
-        m_component = 0;
+        m_component = nullptr;
     }
 
     //! \brief Constructor.
@@ -502,7 +502,7 @@ namespace Caneda
             m_fileName = QString();
         }
 
-        m_symbolDocument = 0;
+        m_symbolDocument = nullptr;
     }
 
     /*!
@@ -528,7 +528,7 @@ namespace Caneda
 
         QFile file(fileName());
         if(!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
-            QMessageBox::critical(0, QObject::tr("Error"),
+            QMessageBox::critical(nullptr, QObject::tr("Error"),
                     QObject::tr("Cannot save document!"));
             return false;
         }
@@ -553,7 +553,7 @@ namespace Caneda
     {
         QFile file(fileName());
         if(!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-            QMessageBox::critical(0, QObject::tr("Error"),
+            QMessageBox::critical(nullptr, QObject::tr("Error"),
                     QObject::tr("Cannot open file %1").arg(fileName()));
             return false;
         }
@@ -567,7 +567,7 @@ namespace Caneda
 
     GraphicsScene* FormatXmlSymbol::graphicsScene() const
     {
-        return m_symbolDocument ? m_symbolDocument->graphicsScene() : 0;
+        return m_symbolDocument ? m_symbolDocument->graphicsScene() : nullptr;
     }
 
     ComponentData* FormatXmlSymbol::component() const
@@ -883,7 +883,7 @@ namespace Caneda
 
         if(reader->hasError()) {
             qWarning() << "\nWarning: Failed to read data from\n" << fileName();
-            QMessageBox::critical(0, QObject::tr("Xml parse error"), reader->errorString());
+            QMessageBox::critical(nullptr, QObject::tr("Xml parse error"), reader->errorString());
             delete reader;
             return false;
         }
@@ -1096,7 +1096,7 @@ namespace Caneda
 
         QFile file(fileName());
         if(!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
-            QMessageBox::critical(0, QObject::tr("Error"),
+            QMessageBox::critical(nullptr, QObject::tr("Error"),
                     QObject::tr("Cannot save document!"));
             return false;
         }
@@ -1126,7 +1126,7 @@ namespace Caneda
 
         QFile file(fileName());
         if(!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-            QMessageBox::critical(0, QObject::tr("Error"),
+            QMessageBox::critical(nullptr, QObject::tr("Error"),
                     QObject::tr("Cannot load document ")+fileName());
             return false;
         }
@@ -1241,7 +1241,7 @@ namespace Caneda
         }
 
         if(reader->hasError()) {
-            QMessageBox::critical(0, QObject::tr("Xml parse error"), reader->errorString());
+            QMessageBox::critical(nullptr, QObject::tr("Xml parse error"), reader->errorString());
             delete reader;
             return false;
         }
@@ -1289,7 +1289,7 @@ namespace Caneda
 
     GraphicsScene* FormatXmlLayout::graphicsScene() const
     {
-        return m_layoutDocument ? m_layoutDocument->graphicsScene() : 0;
+        return m_layoutDocument ? m_layoutDocument->graphicsScene() : nullptr;
     }
 
     QString FormatXmlLayout::fileName() const
@@ -1317,7 +1317,7 @@ namespace Caneda
 
         QFile file(fileName());
         if(!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
-            QMessageBox::critical(0, QObject::tr("Error"),
+            QMessageBox::critical(nullptr, QObject::tr("Error"),
                     QObject::tr("Cannot save document!"));
             return false;
         }
@@ -1336,7 +1336,7 @@ namespace Caneda
 
     GraphicsScene *FormatSpice::graphicsScene() const
     {
-        return m_schematicDocument ? m_schematicDocument->graphicsScene() : 0;
+        return m_schematicDocument ? m_schematicDocument->graphicsScene() : nullptr;
     }
 
     QString FormatSpice::fileName() const
@@ -1762,7 +1762,7 @@ namespace Caneda
         QString filename = m_simulationDocument->fileName();
         QFile file(filename);
         if(!file.open(QIODevice::ReadOnly)) {
-            QMessageBox::critical(0, QObject::tr("Error"),
+            QMessageBox::critical(nullptr, QObject::tr("Error"),
                     QObject::tr("Cannot load document ") + filename);
             return false;
         }
@@ -1824,7 +1824,7 @@ namespace Caneda
                 for(int i = 0; i < nvars; i++) {
                     line = file->readLine();
 
-                    tok = line.split("\t", QString::SkipEmptyParts);
+                    tok = line.split("\t", Qt::SkipEmptyParts);
                     if(tok.size() >= 3){
                         // Number property not used: number = tok.at(0)
 
@@ -2084,7 +2084,7 @@ namespace Caneda
 
     ChartScene* FormatRawSimulation::chartScene() const
     {
-        return m_simulationDocument ? m_simulationDocument->chartScene() : 0;
+        return m_simulationDocument ? m_simulationDocument->chartScene() : nullptr;
     }
 
 } // namespace Caneda

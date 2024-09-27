@@ -60,7 +60,7 @@ namespace Caneda
     class GraphicsItem : public QGraphicsItem
     {
     public:
-        explicit GraphicsItem(QGraphicsItem *parent = 0);
+        explicit GraphicsItem(QGraphicsItem *parent = nullptr);
 
         /*!
          * \brief GraphicsItem identification types.

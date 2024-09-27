@@ -48,7 +48,7 @@ namespace Caneda
         m_libraryName(),
         m_libraryFileName()
     {
-        projectLibrary = 0;
+        projectLibrary = nullptr;
 
         QVBoxLayout *layout = new QVBoxLayout(this);
 
@@ -78,7 +78,7 @@ namespace Caneda
 
     bool Project::isValid()
     {
-        return (projectLibrary == 0 ? false : true);
+        return (projectLibrary == nullptr ? false : true);
     }
 
     void Project::slotNewProject()
@@ -208,7 +208,7 @@ namespace Caneda
             LibraryManager *library = LibraryManager::instance();
             library->unload(m_libraryName);
 
-            projectLibrary = 0;
+            projectLibrary = nullptr;
             m_libraryFileName = QString();
             m_libraryName = QString();
         }
@@ -225,6 +225,8 @@ namespace Caneda
 
     void Project::slotOnDoubleClicked(const QString& item, const QString& category)
     {
+        Q_UNUSED(category)
+
         emit itemDoubleClicked(QFileInfo(m_libraryFileName).absolutePath() + "/" + item + ".xsch");
     }
 

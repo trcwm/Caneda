@@ -30,7 +30,7 @@ namespace Caneda
     //! \copydoc MainWindow::instance()
     ActionManager* ActionManager::instance()
     {
-        static ActionManager *instance = 0;
+        static ActionManager *instance = nullptr;
         if (!instance) {
             instance = new ActionManager();
         }
@@ -112,7 +112,7 @@ namespace Caneda
     //! \brief Return the action \a name from the hash.
     QAction* ActionManager::actionForName(const QString& name) const
     {
-        return m_actionHash.value(name, static_cast<QAction*>(0));
+        return m_actionHash.value(name, static_cast<QAction*>(nullptr));
     }
 
     //! \brief Return the mouse action \a ma from the hash

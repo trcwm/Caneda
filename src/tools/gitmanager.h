@@ -45,7 +45,7 @@ namespace Caneda
         Q_OBJECT
 
     public:
-        explicit GitManager(const QString& dir, QWidget *parent = 0);
+        explicit GitManager(const QString& dir, QWidget *parent = nullptr);
 
     public:
         const QString& path() const { return m_path; }

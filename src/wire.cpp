@@ -21,7 +21,6 @@
 #include "wire.h"
 
 #include "actionmanager.h"
-#include "global.h"
 #include "settings.h"
 #include "xmlutilities.h"
 
@@ -137,6 +136,8 @@ namespace Caneda
     void Wire::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
             QWidget *widget)
     {
+        Q_UNUSED(widget)
+
         // Save pen
         QPen savedPen = painter->pen();
 

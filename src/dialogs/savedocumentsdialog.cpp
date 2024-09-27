@@ -166,7 +166,7 @@ namespace Caneda
 
             // If there was an error, discard the dialog
             if (failedInBetween) {
-                QMessageBox::critical(0, tr("File save error"),
+                QMessageBox::critical(nullptr, tr("File save error"),
                         tr("Could not save some files"));
                 reject();
                 return;

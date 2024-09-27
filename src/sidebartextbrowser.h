@@ -49,7 +49,7 @@ namespace Caneda
         Q_OBJECT
 
     public:
-        explicit SidebarTextBrowser(QWidget *parent = 0);
+        explicit SidebarTextBrowser(QWidget *parent = nullptr);
         ~SidebarTextBrowser();
 
     private Q_SLOTS:

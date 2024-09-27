@@ -89,8 +89,8 @@ namespace Caneda
 
     bool checkVersion(const QString& Line)
     {
-        QStringList sl = Caneda::version().split('.', QString::SkipEmptyParts);
-        QStringList ll = Line.split('.',QString::SkipEmptyParts);
+        QStringList sl = Caneda::version().split('.', Qt::SkipEmptyParts);
+        QStringList ll = Line.split('.',Qt::SkipEmptyParts);
         if (ll.count() != 3 || sl.count() != 3)
             return false;
         int sv = (sl.at(0)).toInt() * 10000 + (sl.at(1)).toInt() * 100 +

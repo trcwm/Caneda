@@ -44,7 +44,7 @@ namespace Caneda
                        HeadStyle style = FilledArrow,
                        qreal headWidth = 12,
                        qreal headHeight = 20,
-                       QGraphicsItem *parent = 0);
+                       QGraphicsItem *parent = nullptr);
 
         //! \copydoc GraphicsItem::Type
         enum { Type = Painting::ArrowType };

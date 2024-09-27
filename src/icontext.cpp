@@ -228,7 +228,7 @@ namespace Caneda
     //! \copydoc MainWindow::instance()
     LayoutContext* LayoutContext::instance()
     {
-        static LayoutContext *context = 0;
+        static LayoutContext *context = nullptr;
         if (!context) {
             context = new LayoutContext();
         }
@@ -266,7 +266,7 @@ namespace Caneda
 
         if (!document->load(errorMessage)) {
             delete document;
-            document = 0;
+            document = nullptr;
         }
 
         return document;
@@ -351,7 +351,7 @@ namespace Caneda
     //! \copydoc MainWindow::instance()
     SchematicContext* SchematicContext::instance()
     {
-        static SchematicContext *context = 0;
+        static SchematicContext *context = nullptr;
         if (!context) {
             context = new SchematicContext();
         }
@@ -389,7 +389,7 @@ namespace Caneda
 
         if (!document->load(errorMessage)) {
             delete document;
-            document = 0;
+            document = nullptr;
         }
 
         return document;
@@ -425,7 +425,7 @@ namespace Caneda
     //! \copydoc MainWindow::instance()
     SimulationContext* SimulationContext::instance()
     {
-        static SimulationContext *context = 0;
+        static SimulationContext *context = nullptr;
         if (!context) {
             context = new SimulationContext();
         }
@@ -463,7 +463,7 @@ namespace Caneda
 
         if (!document->load(errorMessage)) {
             delete document;
-            document = 0;
+            document = nullptr;
         }
 
         return document;
@@ -518,7 +518,7 @@ namespace Caneda
     //! \copydoc MainWindow::instance()
     SymbolContext* SymbolContext::instance()
     {
-        static SymbolContext *context = 0;
+        static SymbolContext *context = nullptr;
         if (!context) {
             context = new SymbolContext();
         }
@@ -556,7 +556,7 @@ namespace Caneda
 
         if (!document->load(errorMessage)) {
             delete document;
-            document = 0;
+            document = nullptr;
         }
 
         return document;
@@ -592,7 +592,7 @@ namespace Caneda
     //! \copydoc MainWindow::instance()
     TextContext* TextContext::instance()
     {
-        static TextContext *instance = 0;
+        static TextContext *instance = nullptr;
         if (!instance) {
             instance = new TextContext();
         }
@@ -640,7 +640,7 @@ namespace Caneda
 
         if (!document->load(errorMessage)) {
             delete document;
-            document = 0;
+            document = nullptr;
         }
 
         return document;

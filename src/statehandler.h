@@ -68,7 +68,7 @@ namespace Caneda
         void paste();
 
     private:
-        explicit StateHandler(QObject *parent = 0);
+        explicit StateHandler(QObject *parent = nullptr);
 
         void applyCursor(GraphicsView *view);
         void applyState(GraphicsView *view);

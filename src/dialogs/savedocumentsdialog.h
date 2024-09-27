@@ -40,7 +40,7 @@ namespace Caneda
     public:
         explicit FileBrowserLineEdit(QTreeWidgetItem *item,
                                      IDocument *document,
-                                     QWidget *parent = 0);
+                                     QWidget *parent = nullptr);
 
         QString fileName() const;
 
@@ -62,7 +62,7 @@ namespace Caneda
 
     public:
         explicit SaveDocumentsDialog(const QList<IDocument*> &modifiedDocuments,
-                                     QWidget *parent = 0);
+                                     QWidget *parent = nullptr);
 
     public Q_SLOTS:
         void buttonClicked(QAbstractButton *button);

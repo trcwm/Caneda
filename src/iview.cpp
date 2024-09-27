@@ -28,7 +28,6 @@
 #include "icontext.h"
 #include "idocument.h"
 #include "global.h"
-#include "statehandler.h"
 #include "textedit.h"
 
 #include <QAction>
@@ -75,7 +74,7 @@ namespace Caneda
         QObject(document),
         m_document(document)
     {
-        Q_ASSERT(document != 0);
+        Q_ASSERT(document != nullptr);
         m_toolBar = new QToolBar();
 
         DocumentViewManager *manager = DocumentViewManager::instance();
@@ -331,7 +330,7 @@ namespace Caneda
     SimulationView::SimulationView(SimulationDocument *document) :
         IView(document)
     {
-        m_chartView = new ChartView(document->chartScene(), 0);
+        m_chartView = new ChartView(document->chartScene(), nullptr);
         m_chartView->populate();
 
         //! \todo Reimplement this

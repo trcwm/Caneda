@@ -48,7 +48,7 @@ namespace Caneda
         Q_OBJECT
 
     public:
-        explicit TextEdit(QTextDocument *document, QWidget *parent = 0);
+        explicit TextEdit(QTextDocument *document, QWidget *parent = nullptr);
 
     Q_SIGNALS:
         void focussed();

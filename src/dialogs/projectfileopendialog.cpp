@@ -55,6 +55,8 @@ namespace Caneda
 
     void ProjectFileOpenDialog::itemDoubleClicked(const QString& item, const QString& category)
     {
+        Q_UNUSED(category)
+
         QString baseName = item;
         if(!baseName.isEmpty()) {
             QString path = QFileInfo(m_libraryFileName).path();

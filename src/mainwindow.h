@@ -141,7 +141,7 @@ namespace Caneda
         void statusBarMessage(const QString& newPos);
 
     private:
-        explicit MainWindow(QWidget *parent = 0);
+        explicit MainWindow(QWidget *parent = nullptr);
 
         void initActions();
         void initMouseActions();

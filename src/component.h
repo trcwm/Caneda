@@ -79,7 +79,7 @@ namespace Caneda
     class Component : public GraphicsItem
     {
     public:
-        explicit Component(QGraphicsItem *parent = 0);
+        explicit Component(QGraphicsItem *parent = nullptr);
         ~Component();
 
         //! \copydoc GraphicsItem::Type

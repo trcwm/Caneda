@@ -41,7 +41,7 @@ namespace Caneda
         Painting(parent)
     {
         m_textItem = new QGraphicsTextItem(this);
-        m_textItem->setAcceptedMouseButtons(0);
+        m_textItem->setAcceptedMouseButtons(nullptr);
         setText(text);
     }
 

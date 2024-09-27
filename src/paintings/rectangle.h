@@ -34,7 +34,7 @@ namespace Caneda
     class Rectangle : public Painting
     {
     public:
-        explicit Rectangle(const QRectF &rect, QGraphicsItem *parent = 0);
+        explicit Rectangle(const QRectF &rect, QGraphicsItem *parent = nullptr);
 
         //! \copydoc GraphicsItem::Type
         enum { Type = Painting::RectangleType };

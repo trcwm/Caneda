@@ -87,7 +87,7 @@ namespace Caneda
     //! \brief Destructor.
     SidebarTextBrowser::~SidebarTextBrowser()
     {
-        m_treeView->setModel(0);
+        m_treeView->setModel(nullptr);
     }
 
     void SidebarTextBrowser::filterTextChanged()

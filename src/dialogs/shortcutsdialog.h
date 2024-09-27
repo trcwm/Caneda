@@ -65,7 +65,7 @@ namespace Caneda
         Q_OBJECT
 
     public:
-        explicit ShortcutDelegate(QObject *parent = 0);
+        explicit ShortcutDelegate(QObject *parent = nullptr);
 
         virtual QWidget *createEditor(QWidget *parent,
                                       const QStyleOptionViewItem &option,
@@ -111,7 +111,7 @@ namespace Caneda
         Q_OBJECT
 
     public:
-        explicit ShortcutsDialogModel(QList<QAction*> actions, QObject *parent = 0);
+        explicit ShortcutsDialogModel(QList<QAction*> actions, QObject *parent = nullptr);
 
         int rowCount(const QModelIndex& = QModelIndex() ) const { return m_actions.size(); }
         int columnCount(const QModelIndex& = QModelIndex() ) const { return 2; }
@@ -145,7 +145,7 @@ namespace Caneda
         Q_OBJECT
 
     public:
-        explicit ShortcutsDialog(QWidget *parent = 0);
+        explicit ShortcutsDialog(QWidget *parent = nullptr);
 
     private Q_SLOTS:
         void filterTextChanged();

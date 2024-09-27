@@ -110,7 +110,7 @@ namespace Caneda
             }
 
             if(reader.hasError()) {
-                QMessageBox::warning(0, QObject::tr("Error"),
+                QMessageBox::warning(nullptr, QObject::tr("Error"),
                                       QObject::tr("Invalid library file!"));
                 readOk = false;
             }
@@ -129,7 +129,7 @@ namespace Caneda
             readOk = readOk & format.load();
 
             if(!readOk) {
-                QMessageBox::warning(0, QObject::tr("Error"),
+                QMessageBox::warning(nullptr, QObject::tr("Error"),
                                      QObject::tr("Parsing component data file %1 failed")
                                      .arg(QFileInfo(componentPath).absoluteFilePath()));
             }
@@ -169,7 +169,7 @@ namespace Caneda
     //! \copydoc MainWindow::instance()
     LibraryManager* LibraryManager::instance()
     {
-        static LibraryManager *instance = 0;
+        static LibraryManager *instance = nullptr;
         if (!instance) {
             instance = new LibraryManager();
         }
@@ -204,7 +204,7 @@ namespace Caneda
         }
 
         if(library(info->libraryName())) {
-            QMessageBox::critical(0, QObject::tr("Error"),
+            QMessageBox::critical(nullptr, QObject::tr("Error"),
                                   QObject::tr("Only one library %1 can be opened at the same time. Please remove one of the "
                                               "libraries named %1 from the library tree first.").arg(info->libraryName()));
             delete info;
@@ -250,7 +250,7 @@ namespace Caneda
     Library* LibraryManager::library(const QString& str) const
     {
         if(!m_libraryHash.contains(str)) {
-            return 0;
+            return nullptr;
         }
 
         return m_libraryHash[str];

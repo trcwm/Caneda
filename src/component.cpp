@@ -20,7 +20,6 @@
 
 #include "component.h"
 
-#include "global.h"
 #include "library.h"
 #include "port.h"
 #include "settings.h"

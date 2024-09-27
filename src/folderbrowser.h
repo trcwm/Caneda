@@ -43,7 +43,7 @@ namespace Caneda
         Q_OBJECT
 
     public:
-        explicit FolderBrowser(QWidget *parent = 0);
+        explicit FolderBrowser(QWidget *parent = nullptr);
 
         void setCurrentFolder(const QString& path);
 

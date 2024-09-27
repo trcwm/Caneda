@@ -21,7 +21,6 @@
 #include "painting.h"
 
 #include "settings.h"
-#include "xmlutilities.h"
 
 #include "arrow.h"
 #include "ellipse.h"
@@ -30,7 +29,6 @@
 #include "graphicsscene.h"
 #include "graphictext.h"
 #include "layer.h"
-#include "portsymbol.h"
 #include "rectangle.h"
 
 #include <QBrush>
@@ -143,7 +141,7 @@ namespace Caneda
             }
 
         }
-        return 0;
+        return nullptr;
     }
 
     /*!

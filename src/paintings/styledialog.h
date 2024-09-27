@@ -39,7 +39,7 @@ namespace Caneda
         Q_OBJECT
 
     public:
-        explicit PreviewWidget(int paintingType, QWidget *widget = 0);
+        explicit PreviewWidget(int paintingType, QWidget *widget = nullptr);
 
         QPen pen() const { return m_pen; }
         void setPen(QPen pen);
@@ -110,7 +110,7 @@ namespace Caneda
         Q_OBJECT
 
     public:
-        explicit StyleDialog(Painting *painting, QWidget *parent = 0);
+        explicit StyleDialog(Painting *painting, QWidget *parent = nullptr);
 
     public Q_SLOTS:
         void setupStyleWidgets();

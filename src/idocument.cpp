@@ -28,7 +28,6 @@
 #include "graphicsscene.h"
 #include "icontext.h"
 #include "iview.h"
-#include "mainwindow.h"
 #include "messagewidget.h"
 #include "portsymbol.h"
 #include "settings.h"
@@ -481,7 +480,7 @@ namespace Caneda
     void LayoutDocument::distributeHorizontal()
     {
         if (!m_graphicsScene->distributeElements(Qt::Horizontal)) {
-            QMessageBox::information(0, tr("Info"),
+            QMessageBox::information(nullptr, tr("Info"),
                     tr("At least two elements must be selected!"));
         }
     }
@@ -489,7 +488,7 @@ namespace Caneda
     void LayoutDocument::distributeVertical()
     {
         if (!m_graphicsScene->distributeElements(Qt::Vertical)) {
-            QMessageBox::information(0, tr("Info"),
+            QMessageBox::information(nullptr, tr("Info"),
                     tr("At least two elements must be selected!"));
         }
     }
@@ -611,7 +610,7 @@ namespace Caneda
     void LayoutDocument::alignElements(Qt::Alignment alignment)
     {
         if (!m_graphicsScene->alignElements(alignment)) {
-            QMessageBox::information(0, tr("Info"),
+            QMessageBox::information(nullptr, tr("Info"),
                     tr("At least two elements must be selected!"));
         }
     }
@@ -748,7 +747,7 @@ namespace Caneda
     void SchematicDocument::distributeHorizontal()
     {
         if (!m_graphicsScene->distributeElements(Qt::Horizontal)) {
-            QMessageBox::information(0, tr("Info"),
+            QMessageBox::information(nullptr, tr("Info"),
                     tr("At least two elements must be selected!"));
         }
     }
@@ -756,7 +755,7 @@ namespace Caneda
     void SchematicDocument::distributeVertical()
     {
         if (!m_graphicsScene->distributeElements(Qt::Vertical)) {
-            QMessageBox::information(0, tr("Info"),
+            QMessageBox::information(nullptr, tr("Info"),
                     tr("At least two elements must be selected!"));
         }
     }
@@ -1067,7 +1066,7 @@ namespace Caneda
     void SchematicDocument::alignElements(Qt::Alignment alignment)
     {
         if (!m_graphicsScene->alignElements(alignment)) {
-            QMessageBox::information(0, tr("Info"),
+            QMessageBox::information(nullptr, tr("Info"),
                     tr("At least two elements must be selected!"));
         }
     }
@@ -1428,7 +1427,7 @@ namespace Caneda
     void SymbolDocument::distributeHorizontal()
     {
         if (!m_graphicsScene->distributeElements(Qt::Horizontal)) {
-            QMessageBox::information(0, tr("Info"),
+            QMessageBox::information(nullptr, tr("Info"),
                     tr("At least two elements must be selected!"));
         }
     }
@@ -1436,7 +1435,7 @@ namespace Caneda
     void SymbolDocument::distributeVertical()
     {
         if (!m_graphicsScene->distributeElements(Qt::Vertical)) {
-            QMessageBox::information(0, tr("Info"),
+            QMessageBox::information(nullptr, tr("Info"),
                     tr("At least two elements must be selected!"));
         }
     }
@@ -1558,7 +1557,7 @@ namespace Caneda
     void SymbolDocument::alignElements(Qt::Alignment alignment)
     {
         if (!m_graphicsScene->alignElements(alignment)) {
-            QMessageBox::information(0, tr("Info"),
+            QMessageBox::information(nullptr, tr("Info"),
                     tr("At least two elements must be selected!"));
         }
     }
@@ -1739,7 +1738,7 @@ namespace Caneda
 
     void TextDocument::print(QPrinter *printer, bool fitInView)
     {
-        Q_UNUSED(fitInView);
+        Q_UNUSED(fitInView)
 
         m_textDocument->print(printer);
     }
@@ -1843,7 +1842,7 @@ namespace Caneda
             return te;
         }
 
-        return 0;
+        return nullptr;
     }
 
     void TextDocument::onContentsChanged()

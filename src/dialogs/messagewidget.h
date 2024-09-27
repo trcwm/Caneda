@@ -117,13 +117,13 @@ namespace Caneda
         /**
          * Constructs a MessageWidget with the specified @p parent.
          */
-        explicit MessageWidget(QWidget *parent = 0);
+        explicit MessageWidget(QWidget *parent = nullptr);
 
         /**
          * Constructs a MessageWidget with the specified @p parent and
          * contents @p text.
          */
-        explicit MessageWidget(const QString &text, QWidget *parent = 0);
+        explicit MessageWidget(const QString &text, QWidget *parent = nullptr);
 
         /**
          * Destructor.

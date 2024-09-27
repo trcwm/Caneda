@@ -32,7 +32,7 @@ namespace Caneda
         explicit EllipseArc(QRectF rect = QRectF(),
                             int startAngle = 20,
                             int spanAngle = 180,
-                            QGraphicsItem *parent = 0);
+                            QGraphicsItem *parent = nullptr);
 
         //! \copydoc GraphicsItem::Type
         enum { Type = Painting::EllipseArcType };

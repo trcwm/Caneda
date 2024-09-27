@@ -40,13 +40,13 @@ namespace Caneda
     StateHandler::StateHandler(QObject *parent) : QObject(parent)
     {
         mouseAction = Caneda::Normal;
-        paintingDrawItem = 0;
+        paintingDrawItem = nullptr;
     }
 
     //! \copydoc MainWindow::instance()
     StateHandler* StateHandler::instance()
     {
-        static StateHandler *instance = 0;
+        static StateHandler *instance = nullptr;
         if (!instance) {
             instance = new StateHandler();
         }
@@ -112,7 +112,7 @@ namespace Caneda
 
         // Get the function associated to the selected action.
         typedef void (GraphicsScene::*pActionFunc) (QList<GraphicsItem*>&);
-        pActionFunc func = 0;
+        pActionFunc func = nullptr;
 
         if (actionName == "editDelete") {
             func = &GraphicsScene::deleteItems;
@@ -128,8 +128,8 @@ namespace Caneda
         }
 
         // Get selected items.
-        GraphicsView *view = 0;
-        GraphicsScene *scene = 0;
+        GraphicsView *view = nullptr;
+        GraphicsScene *scene = nullptr;
         QList<QGraphicsItem*> selectedItems;
 
         DocumentViewManager *manager = DocumentViewManager::instance();
@@ -147,7 +147,7 @@ namespace Caneda
 
         // If there is any selected item, apply the action to the selected
         // items, and deselect the action.
-        if(!selectedItems.isEmpty() && func != 0) {
+        if(!selectedItems.isEmpty() && func != nullptr) {
             QList<GraphicsItem*> funcable = filterItems<GraphicsItem>(selectedItems);
 
             if(!funcable.isEmpty()) {
@@ -200,7 +200,7 @@ namespace Caneda
         clearInsertibles();
 
         // Get a component or painting based on the name and category.
-        GraphicsItem *qItem = 0;
+        GraphicsItem *qItem = nullptr;
         if(category == "Paint Tools" || category == "Layout Tools") {
             qItem = Painting::fromName(item);
         }
@@ -281,7 +281,7 @@ namespace Caneda
             }
 
             if(reader.isStartElement()) {
-                GraphicsItem *readItem = 0;
+                GraphicsItem *readItem = nullptr;
                 if(reader.name() == "component") {
                     readItem = new Component();
                     readItem->loadData(&reader);

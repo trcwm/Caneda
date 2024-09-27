@@ -147,7 +147,7 @@ namespace Caneda
     //! \copydoc MainWindow::instance()
     Settings* Settings::instance()
     {
-        static Settings *instance = 0;
+        static Settings *instance = nullptr;
         if (!instance) {
             instance = new Settings();
         }

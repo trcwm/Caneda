@@ -126,7 +126,7 @@ namespace Caneda
         Q_ASSERT(isStartElement());
         QString errorString = QObject::tr("Invalid line attribute");
         QStringList lineCoordsStr = attributes().value(tag).toString().
-            split(",",QString::SkipEmptyParts);
+            split(",",Qt::SkipEmptyParts);
 
         if(lineCoordsStr.size() != 4) {
             raiseError(errorString);
@@ -151,7 +151,7 @@ namespace Caneda
         Q_ASSERT(isStartElement());
         QString errorString = QObject::tr("Invalid rect attribute");
         QStringList rectCoordsStr = attributes().value(tag).toString().
-            split(",",QString::SkipEmptyParts);
+            split(",",Qt::SkipEmptyParts);
 
         if(rectCoordsStr.size() != 4) {
             raiseError(errorString);

@@ -48,7 +48,7 @@ namespace Caneda
             QString category)
     {
         // Search the category inside the tree. If not present, create it.
-        QStandardItem *catItem = 0;
+        QStandardItem *catItem = nullptr;
 
         if(findItems(category).isEmpty()) {
             catItem = new QStandardItem(category);
@@ -87,7 +87,7 @@ namespace Caneda
         }
 
         // Search the category inside the tree. If not present, create it.
-        QStandardItem *catItem = 0;
+        QStandardItem *catItem = nullptr;
 
         if(findItems(category).isEmpty()) {
             catItem = new QStandardItem(category);
@@ -182,7 +182,7 @@ namespace Caneda
     //! \brief Destructor.
     SidebarItemsBrowser::~SidebarItemsBrowser()
     {
-        m_treeView->setModel(0);
+        m_treeView->setModel(nullptr);
     }
 
     //! \brief Filter event to select the view on down arrow key event

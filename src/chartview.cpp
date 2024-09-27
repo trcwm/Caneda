@@ -149,7 +149,7 @@ namespace Caneda
 
         int colorIndex = 0;
         int valueIndex = 255;
-        int penWidth = 2;
+        int penWidth = 3;
 
         // Attach the items to the plot
         foreach(ChartSeries *item, m_items) {
@@ -340,6 +340,8 @@ namespace Caneda
 
     void ChartView::print(QPrinter *printer, bool fitInView)
     {
+        Q_UNUSED(fitInView)
+
         QwtPlotRenderer renderer;
         renderer.setDiscardFlag(QwtPlotRenderer::DiscardNone, true);
         renderer.setDiscardFlag(QwtPlotRenderer::DiscardCanvasBackground, true);
@@ -367,6 +369,8 @@ namespace Caneda
     //! \brief Context menu.
     void ChartView::contextMenuEvent(const QPoint &pos)
     {
+        Q_UNUSED(pos)
+
         ActionManager* am = ActionManager::instance();
         QMenu *_menu = new QMenu();
 
@@ -400,6 +404,8 @@ namespace Caneda
     //! \brief Show plot properties dialog upon mouse double click.
     void ChartView::mouseDoubleClickEvent(QMouseEvent *event)
     {
+        Q_UNUSED(event)
+
         launchPropertiesDialog();
     }
 

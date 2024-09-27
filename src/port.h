@@ -63,7 +63,7 @@ namespace Caneda
     class Port : public QGraphicsItem
     {
     public:
-        explicit Port(GraphicsItem *parent = 0);
+        explicit Port(GraphicsItem *parent = nullptr);
         ~Port();
 
         //! Returns the port's name.

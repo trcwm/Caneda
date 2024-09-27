@@ -67,7 +67,7 @@ namespace Caneda
         Q_OBJECT
 
     public:
-        explicit GraphicsScene(QObject *parent = 0);
+        explicit GraphicsScene(QObject *parent = nullptr);
 
         // Edit actions
         void cutItems(QList<GraphicsItem*> &items);

@@ -217,8 +217,9 @@ namespace Caneda
      */
     bool PropertyModel::insertRows(int position, int rows, const QModelIndex &index)
     {
+        Q_UNUSED(index)
+
         // Insert new property
-        Q_UNUSED(index);
         beginInsertRows(QModelIndex(), position, position+rows-1);
 
         for (int row=0; row < rows; row++) {
@@ -251,7 +252,8 @@ namespace Caneda
      */
     bool PropertyModel::removeRows(int position, int rows, const QModelIndex &index)
     {
-        Q_UNUSED(index);
+        Q_UNUSED(index)
+
         beginRemoveRows(QModelIndex(), position, position+rows-1);
 
         for (int row=0; row < rows; ++row) {

@@ -60,7 +60,7 @@ namespace Caneda
         Q_OBJECT
 
     public:
-        explicit IDocument(QObject *parent = 0);
+        explicit IDocument(QObject *parent = nullptr);
 
         QString fileName() const;
         void setFileName(const QString &fileName);
@@ -105,8 +105,8 @@ namespace Caneda
         virtual void exportImage(QPaintDevice &device) = 0;
         virtual QSizeF documentSize() = 0;
 
-        virtual bool load(QString *errorMessage = 0) = 0;
-        virtual bool save(QString *errorMessage = 0) = 0;
+        virtual bool load(QString *errorMessage = nullptr) = 0;
+        virtual bool save(QString *errorMessage = nullptr) = 0;
 
         virtual IView* createView() = 0;
         QList<IView*> views() const;
@@ -151,7 +151,7 @@ namespace Caneda
         Q_OBJECT
 
     public:
-        explicit LayoutDocument(QObject *parent = 0);
+        explicit LayoutDocument(QObject *parent = nullptr);
         ~LayoutDocument();
 
         // IDocument interface methods
@@ -194,8 +194,8 @@ namespace Caneda
         virtual void exportImage(QPaintDevice &device);
         virtual QSizeF documentSize();
 
-        virtual bool load(QString *errorMessage = 0);
-        virtual bool save(QString *errorMessage = 0);
+        virtual bool load(QString *errorMessage = nullptr);
+        virtual bool save(QString *errorMessage = nullptr);
 
         virtual IView* createView();
 
@@ -231,7 +231,7 @@ namespace Caneda
         Q_OBJECT
 
     public:
-        explicit SchematicDocument(QObject *parent = 0);
+        explicit SchematicDocument(QObject *parent = nullptr);
         ~SchematicDocument();
 
         // IDocument interface methods
@@ -274,8 +274,8 @@ namespace Caneda
         virtual void exportImage(QPaintDevice &device);
         virtual QSizeF documentSize();
 
-        virtual bool load(QString *errorMessage = 0);
-        virtual bool save(QString *errorMessage = 0);
+        virtual bool load(QString *errorMessage = nullptr);
+        virtual bool save(QString *errorMessage = nullptr);
 
         virtual IView* createView();
 
@@ -317,7 +317,7 @@ namespace Caneda
         Q_OBJECT
 
     public:
-        explicit SimulationDocument(QObject *parent = 0);
+        explicit SimulationDocument(QObject *parent = nullptr);
         ~SimulationDocument();
 
         // IDocument interface methods
@@ -360,8 +360,8 @@ namespace Caneda
         virtual void exportImage(QPaintDevice &device);
         virtual QSizeF documentSize();
 
-        virtual bool load(QString *errorMessage = 0);
-        virtual bool save(QString *errorMessage = 0) { return false; }
+        virtual bool load(QString *errorMessage = nullptr);
+        virtual bool save(QString *errorMessage = nullptr) { return false; }
 
         virtual IView* createView();
 
@@ -395,7 +395,7 @@ namespace Caneda
         Q_OBJECT
 
     public:
-        explicit SymbolDocument(QObject *parent = 0);
+        explicit SymbolDocument(QObject *parent = nullptr);
         ~SymbolDocument();
 
         // IDocument interface methods
@@ -438,8 +438,8 @@ namespace Caneda
         virtual void exportImage(QPaintDevice &device);
         virtual QSizeF documentSize();
 
-        virtual bool load(QString *errorMessage = 0);
-        virtual bool save(QString *errorMessage = 0);
+        virtual bool load(QString *errorMessage = nullptr);
+        virtual bool save(QString *errorMessage = nullptr);
 
         virtual IView* createView();
 
@@ -475,7 +475,7 @@ namespace Caneda
         Q_OBJECT
 
     public:
-        explicit TextDocument(QObject *parent = 0);
+        explicit TextDocument(QObject *parent = nullptr);
         ~TextDocument();
 
         // IDocument interface methods
@@ -518,8 +518,8 @@ namespace Caneda
         virtual void exportImage(QPaintDevice &device) {}
         virtual QSizeF documentSize();
 
-        virtual bool load(QString *errorMessage = 0);
-        virtual bool save(QString *errorMessage = 0);
+        virtual bool load(QString *errorMessage = nullptr);
+        virtual bool save(QString *errorMessage = nullptr);
 
         virtual IView* createView();
 

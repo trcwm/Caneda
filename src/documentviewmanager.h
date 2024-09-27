@@ -32,7 +32,7 @@ namespace Caneda
     class TabWidget;
 
     //! \brief Maximum number of files that can be held in the recentFilesMenu
-    static const uint maxRecentFiles = 10;
+    static const int maxRecentFiles = 10;
 
     /*!
      * \todo Document this class.
@@ -85,7 +85,7 @@ namespace Caneda
         void onViewFocussedIn(IView *view);
 
     private:
-        explicit DocumentViewManager(QObject *parent = 0);
+        explicit DocumentViewManager(QObject *parent = nullptr);
 
         DocumentData* documentDataForFileName(const QString &fileName) const;
         DocumentData* documentDataForDocument(IDocument *document) const;

@@ -68,7 +68,7 @@ namespace Caneda
         virtual QString defaultSuffix() const;
 
         virtual IDocument* newDocument() = 0;
-        virtual IDocument* open(const QString& filename, QString *errorMessage = 0) = 0;
+        virtual IDocument* open(const QString& filename, QString *errorMessage = nullptr) = 0;
 
         virtual QToolBar* toolBar() = 0;
         virtual QWidget* sideBarWidget() = 0;
@@ -76,7 +76,7 @@ namespace Caneda
         virtual void quickInsert() = 0;
 
     protected:
-        explicit IContext(QObject *parent = 0);
+        explicit IContext(QObject *parent = nullptr);
     };
 
 
@@ -113,16 +113,16 @@ namespace Caneda
         virtual QStringList supportedSuffixes() const;
 
         virtual IDocument* newDocument();
-        virtual IDocument* open(const QString &fileName, QString *errorMessage = 0);
+        virtual IDocument* open(const QString &fileName, QString *errorMessage = nullptr);
 
-        virtual QToolBar* toolBar() { return 0; }
+        virtual QToolBar* toolBar() { return nullptr; }
         virtual QWidget* sideBarWidget();
         virtual void updateSideBar() {}
         virtual void quickInsert();
         // End of IContext interface methods
 
     private:
-        explicit LayoutContext(QObject *parent = 0);
+        explicit LayoutContext(QObject *parent = nullptr);
 
         SidebarItemsModel *m_sidebarItems;
         SidebarItemsBrowser *m_sidebarBrowser;
@@ -158,16 +158,16 @@ namespace Caneda
         virtual QStringList supportedSuffixes() const;
 
         virtual IDocument* newDocument();
-        virtual IDocument* open(const QString &fileName, QString *errorMessage = 0);
+        virtual IDocument* open(const QString &fileName, QString *errorMessage = nullptr);
 
-        virtual QToolBar* toolBar() { return 0; }
+        virtual QToolBar* toolBar() { return nullptr; }
         virtual QWidget* sideBarWidget();
         virtual void updateSideBar() {}
         virtual void quickInsert();
         // End of IContext interface methods
 
     private:
-        explicit SchematicContext(QObject *parent = 0);
+        explicit SchematicContext(QObject *parent = nullptr);
 
         SidebarItemsModel *m_sidebarItems;
         SidebarItemsBrowser *m_sidebarBrowser;
@@ -203,16 +203,16 @@ namespace Caneda
         virtual QStringList supportedSuffixes() const;
 
         virtual IDocument* newDocument();
-        virtual IDocument* open(const QString &fileName, QString *errorMessage = 0);
+        virtual IDocument* open(const QString &fileName, QString *errorMessage = nullptr);
 
-        virtual QToolBar* toolBar() { return 0; }
+        virtual QToolBar* toolBar() { return nullptr; }
         virtual QWidget* sideBarWidget();
         virtual void updateSideBar();
         virtual void quickInsert() {}
         // End of IContext interface methods
 
     private:
-        explicit SimulationContext(QObject *parent = 0);
+        explicit SimulationContext(QObject *parent = nullptr);
 
         SidebarChartsBrowser *m_sidebarBrowser;
     };
@@ -247,16 +247,16 @@ namespace Caneda
         virtual QStringList supportedSuffixes() const;
 
         virtual IDocument* newDocument();
-        virtual IDocument* open(const QString &fileName, QString *errorMessage = 0);
+        virtual IDocument* open(const QString &fileName, QString *errorMessage = nullptr);
 
-        virtual QToolBar* toolBar() { return 0; }
+        virtual QToolBar* toolBar() { return nullptr; }
         virtual QWidget* sideBarWidget();
         virtual void updateSideBar() {}
         virtual void quickInsert();
         // End of IContext interface methods
 
     private:
-        explicit SymbolContext(QObject *parent = 0);
+        explicit SymbolContext(QObject *parent = nullptr);
 
         SidebarItemsModel *m_sidebarItems;
         SidebarItemsBrowser *m_sidebarBrowser;
@@ -291,16 +291,16 @@ namespace Caneda
         virtual QStringList supportedSuffixes() const;
 
         virtual IDocument* newDocument();
-        virtual IDocument* open(const QString& filename, QString *errorMessage = 0);
+        virtual IDocument* open(const QString& filename, QString *errorMessage = nullptr);
 
-        virtual QToolBar* toolBar() { return 0; }
+        virtual QToolBar* toolBar() { return nullptr; }
         virtual QWidget* sideBarWidget();
         virtual void updateSideBar() {}
         virtual void quickInsert() {}
         // End of IContext interface methods
 
     private:
-        explicit TextContext(QObject *parent = 0);
+        explicit TextContext(QObject *parent = nullptr);
 
         SidebarTextBrowser *m_sidebarTextBrowser;
     };

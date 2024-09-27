@@ -41,7 +41,7 @@ namespace Caneda
     {
     public:
         explicit Wire(const QPointF &startPos, const QPointF &endPos,
-                      QGraphicsItem *parent = 0);
+                      QGraphicsItem *parent = nullptr);
         ~Wire();
 
         //! \copydoc GraphicsItem::Type
@@ -68,7 +68,7 @@ namespace Caneda
         QRectF boundingRect() const;
 
         void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
-                QWidget *widget = 0);
+                   QWidget *widget = nullptr);
 
         Wire* copy() const;
 

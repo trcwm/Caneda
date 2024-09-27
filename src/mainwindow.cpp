@@ -31,11 +31,9 @@
 #include "idocument.h"
 #include "iview.h"
 #include "project.h"
-#include "projectfileopendialog.h"
 #include "printdialog.h"
 #include "quicklauncher.h"
 #include "quickopen.h"
-#include "savedocumentsdialog.h"
 #include "settings.h"
 #include "settingsdialog.h"
 #include "shortcutsdialog.h"
@@ -88,7 +86,7 @@ namespace Caneda
      */
     MainWindow* MainWindow::instance()
     {
-        static MainWindow* instance = 0;
+        static MainWindow* instance = nullptr;
         if (!instance) {
             instance = new MainWindow();
         }
@@ -236,7 +234,7 @@ namespace Caneda
         if (!doc) return;
 
         if (doc->fileName().isEmpty()) {
-            QMessageBox::critical(0, tr("Critical"),
+            QMessageBox::critical(nullptr, tr("Critical"),
                                   tr("Please, save current file first!"));
             return;
         }
@@ -920,7 +918,7 @@ namespace Caneda
     //! \brief Creates and initializes all the actions used.
     void MainWindow::initActions()
     {
-        QAction *action = 0;
+        QAction *action = nullptr;
         ActionManager *am = ActionManager::instance();
 
         action = am->createAction("fileNew", Caneda::icon("document-new"), tr("&New..."));
@@ -1302,7 +1300,7 @@ namespace Caneda
     //! \brief Creates and initializes the mouse actions.
     void MainWindow::initMouseActions()
     {
-        QAction *action = 0;
+        QAction *action = nullptr;
         ActionManager *am = ActionManager::instance();
 
         StateHandler *handler = StateHandler::instance();
@@ -1371,8 +1369,8 @@ namespace Caneda
     void MainWindow::initMenus()
     {
         ActionManager* am = ActionManager::instance();
-        QMenu *menu = 0;
-        QMenu *subMenu = 0;
+        QMenu *menu = nullptr;
+        QMenu *subMenu = nullptr;
 
         // File menu
         menu = menuBar()->addMenu(tr("&File"));
@@ -1386,7 +1384,7 @@ namespace Caneda
         menu->addAction(am->actionForName("fileOpen"));
 
         subMenu = menu->addMenu(Caneda::icon("document-open-recent"), tr("Open &Recent"));
-        for(uint i=0; i<maxRecentFiles; i++) {
+        for(int i=0; i<maxRecentFiles; i++) {
             subMenu->addAction(am->recentFilesActions().at(i));
         }
         DocumentViewManager::instance()->updateRecentFilesActionList();  // Update the list from the previosly saved configuration file

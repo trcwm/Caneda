@@ -168,6 +168,7 @@ namespace Caneda
                         item->setData(Qt::AccessibleDescriptionRole, reader->readElementText());
                     }
                 }
+                delete item;
             }
         }
 

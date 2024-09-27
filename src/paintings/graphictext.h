@@ -30,7 +30,7 @@ namespace Caneda
     {
     public:
         explicit GraphicText(const QString &text = QString(),
-                             QGraphicsItem *parent = 0);
+                             QGraphicsItem *parent = nullptr);
 
         //! \copydoc GraphicsItem::Type
         enum { Type = Painting::GraphicTextType };

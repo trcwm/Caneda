@@ -29,7 +29,7 @@ namespace Caneda
     class Ellipse : public Painting
     {
     public:
-        explicit Ellipse(QRectF rect, QGraphicsItem *parent = 0);
+        explicit Ellipse(QRectF rect, QGraphicsItem *parent = nullptr);
 
         //! \copydoc GraphicsItem::Type
         enum { Type = Painting::EllipseType };

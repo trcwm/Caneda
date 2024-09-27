@@ -21,8 +21,6 @@
 #ifndef CANEDA_IVIEW_H
 #define CANEDA_IVIEW_H
 
-#include "global.h"
-
 #include <QObject>
 
 // Forward declaration

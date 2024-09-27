@@ -57,7 +57,7 @@ namespace Caneda
         Q_OBJECT
 
     public:
-        explicit FormatXmlSchematic(SchematicDocument *document = 0);
+        explicit FormatXmlSchematic(SchematicDocument *document = nullptr);
 
         bool save() const;
         bool load() const;
@@ -97,8 +97,8 @@ namespace Caneda
         Q_OBJECT
 
     public:
-        explicit FormatXmlSymbol(SymbolDocument *document = 0);
-        explicit FormatXmlSymbol(ComponentData *component, QObject *parent = 0);
+        explicit FormatXmlSymbol(SymbolDocument *document = nullptr);
+        explicit FormatXmlSymbol(ComponentData *component, QObject *parent = nullptr);
 
         bool save() const;
         bool load() const;
@@ -141,7 +141,7 @@ namespace Caneda
         Q_OBJECT
 
     public:
-        explicit FormatXmlLayout(LayoutDocument *document = 0);
+        explicit FormatXmlLayout(LayoutDocument *document = nullptr);
 
         bool save() const;
         bool load() const;
@@ -179,7 +179,7 @@ namespace Caneda
         Q_OBJECT
 
     public:
-        explicit FormatSpice(SchematicDocument *document = 0);
+        explicit FormatSpice(SchematicDocument *document = nullptr);
 
         bool save();
 
@@ -214,7 +214,7 @@ namespace Caneda
         Q_OBJECT
 
     public:
-        explicit FormatRawSimulation(SimulationDocument *document = 0);
+        explicit FormatRawSimulation(SimulationDocument *document = nullptr);
 
         bool load();
 

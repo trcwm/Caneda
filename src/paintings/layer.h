@@ -48,7 +48,7 @@ namespace Caneda
         explicit Layer(const QRectF &rect,
                        LayerName layerName = Metal1,
                        const QString &netLabel = QString(),
-                       QGraphicsItem *parent = 0);
+                       QGraphicsItem *parent = nullptr);
 
         //! \copydoc GraphicsItem::Type
         enum { Type = Painting::LayerType };

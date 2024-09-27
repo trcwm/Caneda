@@ -38,7 +38,7 @@ namespace Caneda
     class FilterProxyModel : public QSortFilterProxyModel
     {
     public:
-        explicit FilterProxyModel(QObject *parent = 0);
+        explicit FilterProxyModel(QObject *parent = nullptr);
 
         bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const;
 
@@ -65,7 +65,7 @@ namespace Caneda
         Q_OBJECT
 
     public:
-        explicit FileFilterProxyModel(QObject *parent = 0);
+        explicit FileFilterProxyModel(QObject *parent = nullptr);
 
         bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const;
     };

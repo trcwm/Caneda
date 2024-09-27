@@ -50,7 +50,7 @@ namespace Caneda
         Q_OBJECT
 
     public:
-        explicit QuickInsert(SidebarItemsModel *model, QWidget *parent = 0);
+        explicit QuickInsert(SidebarItemsModel *model, QWidget *parent = nullptr);
 
     signals:
         void itemClicked(const QString& item, const QString& category);

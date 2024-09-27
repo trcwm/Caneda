@@ -46,6 +46,9 @@ namespace Caneda
                                             const QStyleOptionViewItem &option,
                                             const QModelIndex &index) const
     {
+        Q_UNUSED(option)
+        Q_UNUSED(index)
+
         QKeySequenceEdit *editor = new QKeySequenceEdit(parent);
         return editor;
     }

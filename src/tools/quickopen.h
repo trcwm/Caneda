@@ -55,7 +55,7 @@ namespace Caneda
         Q_OBJECT
 
     public:
-        explicit QuickOpen(QWidget *parent = 0);
+        explicit QuickOpen(QWidget *parent = nullptr);
 
         void setCurrentFolder(const QString& path);
 

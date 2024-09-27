@@ -54,7 +54,7 @@ namespace Caneda
         Q_OBJECT
 
     public:
-        explicit SidebarItemsModel(QObject *parent = 0);
+        explicit SidebarItemsModel(QObject *parent = nullptr);
 
         void plugItems(const QList<QPair<QString, QPixmap> > &items, QString category);
         void plugLibrary(QString libraryName, QString category);
@@ -84,7 +84,7 @@ namespace Caneda
         Q_OBJECT
 
     public:
-        explicit SidebarItemsBrowser(QStandardItemModel *model, QWidget *parent = 0);
+        explicit SidebarItemsBrowser(QStandardItemModel *model, QWidget *parent = nullptr);
         ~SidebarItemsBrowser();
 
     signals:
