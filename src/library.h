@@ -52,7 +52,7 @@ namespace Caneda
 
         ComponentDataPtr component(const QString& name) const;
         //! Returns the components list.
-        const QList<QString> componentsList() const { return m_componentHash.uniqueKeys(); }
+        const QList<QString> componentsList() const { return m_componentHash.keys(); }
 
         bool loadLibrary();
         bool removeComponent(QString componentName);
@@ -101,7 +101,7 @@ namespace Caneda
 
         Library* library(const QString& libName) const;
         //! Returns the libraries list.
-        const QList<QString> librariesList() const { return m_libraryHash.uniqueKeys(); }
+        const QList<QString> librariesList() const { return m_libraryHash.keys(); }
 
         // Symbol caching related methods
         void registerComponent(const QString &compName, const QString &libName, const QPainterPath& content);

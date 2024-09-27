@@ -390,8 +390,6 @@ namespace Caneda
         QPainter p(printer);
         p.setRenderHints(Caneda::DefaulRenderHints);
 
-        const bool fullPage = printer->fullPage();
-
         const bool viewGridStatus = Settings::instance()->currentValue("gui/gridVisible").value<bool>();
         Settings::instance()->setCurrentValue("gui/gridVisible", false);
 
@@ -402,7 +400,7 @@ namespace Caneda
         }
         else {
             //Printing on one or more pages
-            QRectF printedArea = fullPage ? printer->paperRect() : printer->pageRect();
+            QRectF printedArea = printer->pageLayout().fullRect();
 
             const int horizontalPages =
                 qCeil(diagramRect.width() / printedArea.width());
@@ -868,11 +866,11 @@ namespace Caneda
             }
 
             // Extrema grid points
-            qreal left = int(rect.left()) - (int(rect.left()) % drawingGridWidth);
-            qreal top = int(rect.top()) - (int(rect.top()) % drawingGridHeight);
-            qreal right = int(rect.right()) - (int(rect.right()) % drawingGridWidth);
-            qreal bottom = int(rect.bottom()) - (int(rect.bottom()) % drawingGridHeight);
-            qreal x, y;
+            int left = int(rect.left()) - (int(rect.left()) % drawingGridWidth);
+            int top = int(rect.top()) - (int(rect.top()) % drawingGridHeight);
+            int right = int(rect.right()) - (int(rect.right()) % drawingGridWidth);
+            int bottom = int(rect.bottom()) - (int(rect.bottom()) % drawingGridHeight);
+            int x, y;
 
             // Draw grid
             painter->setBrush(Qt::NoBrush);

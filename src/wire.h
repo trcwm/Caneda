@@ -59,9 +59,9 @@ namespace Caneda
         void movePort2(const QPointF& newScenePos);
 
         //! Return true if wire is horizontal
-        bool isHorizontal() const { return port1()->pos().y() == port2()->pos().y(); }
+        bool isHorizontal() const { return int(port1()->pos().y()) == int(port2()->pos().y()); }
         //! Return true if wire is vertical
-        bool isVertical() const { return port1()->pos().x() == port2()->pos().x(); }
+        bool isVertical() const { return int(port1()->pos().x()) == int(port2()->pos().x()); }
         //! Check if port 1 and 2 overlap
         bool isNull() const { return port1()->scenePos() == port2()->scenePos(); }
 

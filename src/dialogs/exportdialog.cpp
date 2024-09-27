@@ -122,7 +122,7 @@ namespace Caneda
         qreal ratio = diagramRatio();
 
         ui.spinWidth->blockSignals(true);
-        ui.spinWidth->setValue(ui.spinHeight->value() * ratio);
+        ui.spinWidth->setValue(int(ui.spinHeight->value() * ratio));
         ui.spinWidth->blockSignals(false);
     }
 
@@ -139,7 +139,7 @@ namespace Caneda
         qreal ratio = diagramRatio();
 
         ui.spinHeight->blockSignals(true);
-        ui.spinHeight->setValue(ui.spinWidth->value() / ratio);
+        ui.spinHeight->setValue(int(ui.spinWidth->value() / ratio));
         ui.spinHeight->blockSignals(false);
     }
 
@@ -166,8 +166,8 @@ namespace Caneda
         ui.spinWidth->blockSignals(true);
         ui.spinHeight->blockSignals(true);
 
-        ui.spinWidth->setValue(size.width());
-        ui.spinHeight->setValue(size.height());
+        ui.spinWidth->setValue(int(size.width()));
+        ui.spinHeight->setValue(int(size.height()));
 
         ui.spinWidth->blockSignals(false);
         ui.spinHeight->blockSignals(false);

@@ -311,7 +311,7 @@ namespace Caneda
         QFont font;
         font.setFamily(attribs.value("family").toString());
 
-        bool ok1, ok2, ok3;
+        bool ok1 = false, ok2 = false, ok3 = false;
 
         int pointSize(attribs.value("pointSize").toString().toInt(&ok1));
         if(pointSize == -1) {

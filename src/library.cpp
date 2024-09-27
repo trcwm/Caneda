@@ -323,7 +323,7 @@ namespace Caneda
         QString symbol_id = compName + ":" + libName;
         QPixmap pix;
 
-        if(!QPixmapCache::find(symbol_id, pix)) {
+        if(!QPixmapCache::find(symbol_id, &pix)) {
 
             QPainterPath data = m_dataHash[symbol_id];
             QRect rect =  data.boundingRect().toRect();

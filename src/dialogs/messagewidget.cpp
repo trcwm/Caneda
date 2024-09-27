@@ -179,7 +179,7 @@ namespace Caneda
 
     void MessageWidgetPrivate::slotTimeLineChanged(qreal value)
     {
-        q->setFixedHeight(qMin(value * 2, qreal(1.0)) * content->height());
+        q->setFixedHeight(int(qMin(value * 2, qreal(1.0)) * content->height()));
         q->update();
     }
 

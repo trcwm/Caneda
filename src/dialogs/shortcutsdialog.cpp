@@ -89,6 +89,8 @@ namespace Caneda
                                                 const QStyleOptionViewItem &option,
                                                 const QModelIndex &index) const
     {
+        Q_UNUSED(index)
+
         editor->setGeometry(option.rect);
     }
 
@@ -211,6 +213,8 @@ namespace Caneda
                                        const QVariant& value,
                                        int role)
     {
+        Q_UNUSED(role)
+
         if(index.isValid() && index.column() == 1){
 
             // Check if the shortcut is already used

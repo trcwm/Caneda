@@ -112,19 +112,19 @@ namespace Caneda
 
         // Get the function associated to the selected action.
         typedef void (GraphicsScene::*pActionFunc) (QList<GraphicsItem*>&);
-        pActionFunc func = nullptr;
+        pActionFunc actionFunction = nullptr;
 
         if (actionName == "editDelete") {
-            func = &GraphicsScene::deleteItems;
+            actionFunction = &GraphicsScene::deleteItems;
         }
         else if (actionName == "editRotate") {
-            func = &GraphicsScene::rotateItems;
+            actionFunction = &GraphicsScene::rotateItems;
         }
         else if (actionName == "editMirrorX") {
-            func = &GraphicsScene::mirrorXItems;
+            actionFunction = &GraphicsScene::mirrorXItems;
         }
         else if (actionName == "editMirrorY") {
-            func = &GraphicsScene::mirrorYItems;
+            actionFunction = &GraphicsScene::mirrorYItems;
         }
 
         // Get selected items.
@@ -147,11 +147,12 @@ namespace Caneda
 
         // If there is any selected item, apply the action to the selected
         // items, and deselect the action.
-        if(!selectedItems.isEmpty() && func != nullptr) {
-            QList<GraphicsItem*> funcable = filterItems<GraphicsItem>(selectedItems);
+        if(scene && !selectedItems.isEmpty() && actionFunction != nullptr) {
+            QList<GraphicsItem*> items = filterItems<GraphicsItem>(selectedItems);
 
-            if(!funcable.isEmpty()) {
-                (scene->*func)(funcable);
+            if(!items.isEmpty()) {
+                (scene->*actionFunction)(items);
+
                 // Turn off this action
                 performToggleAction(action->objectName(), false);
                 return;

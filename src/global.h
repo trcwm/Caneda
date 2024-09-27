@@ -75,7 +75,7 @@ namespace Caneda
     }
 
     //! \brief Default grid spacing
-    static const uint DefaultGridSpace = 10;
+    static const int DefaultGridSpace = 10;
     QPointF smartNearingGridPoint(const QPointF &pos);
 
     QString latexToUnicode(const QString& input);

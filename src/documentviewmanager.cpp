@@ -418,7 +418,7 @@ namespace Caneda
             }
         }
 
-        qDebug() << Q_FUNC_INFO << "Document " << (void*)document
+        qDebug() << Q_FUNC_INFO << "Document " << document->fileName()
             << " is not in manager's document data list";
 
         return QList<IView*>();

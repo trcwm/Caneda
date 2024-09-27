@@ -111,7 +111,7 @@ namespace Caneda
         unsigned short Unicode;
     };
 
-    struct tSpecialChar SpecialChars[] = {
+    static struct tSpecialChar SpecialChars[] = {
         {"alpha", 0x03B1}, {"beta", 0x03B2}, {"gamma", 0x03B3},
         {"delta", 0x03B4}, {"epsilon", 0x03B5}, {"zeta", 0x03B6},
         {"eta", 0x03B7}, {"theta", 0x03B8}, {"iota", 0x03B9},

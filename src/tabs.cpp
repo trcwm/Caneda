@@ -222,8 +222,7 @@ namespace Caneda
     void Tab::closeView(IView *view)
     {
         if (!m_views.contains(view)) {
-            qDebug() << Q_FUNC_INFO << "View " << (void*)view << "doesn't exist"
-                << "in this tab";
+            qDebug() << Q_FUNC_INFO << "View doesn't exist in this tab";
             return;
         }
 
@@ -269,8 +268,7 @@ namespace Caneda
     void Tab::replaceView(IView *oldView, IView *newView)
     {
         if (!m_views.contains(oldView)) {
-            qDebug() << Q_FUNC_INFO << "View " << (void*)oldView << "doesn't exist"
-                << "in this tab";
+            qDebug() << Q_FUNC_INFO << "View doesn't exist in this tab";
             return;
         }
 
@@ -348,8 +346,7 @@ namespace Caneda
     void Tab::addView(IView *view)
     {
         if (m_views.contains(view)) {
-            qDebug() << Q_FUNC_INFO << "View " << (void*)view
-                << " is already added.";
+            qDebug() << Q_FUNC_INFO << "View is already added.";
             return;
         }
 

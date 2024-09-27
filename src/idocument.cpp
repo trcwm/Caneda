@@ -812,6 +812,10 @@ namespace Caneda
         QString simulationCommand = settings->currentValue("sim/simulationCommand").toString();
         simulationCommand.replace("%filename", baseName);  // Replace all ocurrencies of %filename by the actual filename
 
+        QString command = simulationCommand.split(" ").at(0); // Get simulation command
+        QStringList args = simulationCommand.split(" "); // Get arguments list
+        args.removeAt(0); // Remove simulation command from arguments list
+
         QProcess *simulationProcess = new QProcess(this);
         simulationProcess->setWorkingDirectory(path);
         simulationProcess->setProcessChannelMode(QProcess::MergedChannels);  // Output std:error and std:output together into the same file
@@ -828,7 +832,7 @@ namespace Caneda
         simulationProcess->setProcessEnvironment(env);
 
         // Start the simulation
-        simulationProcess->start(simulationCommand);
+        simulationProcess->start(command, args);
 
         // The simulation results are opened in the simulationReady slot, to avoid blocking the interface while simulating
         connect(simulationProcess, SIGNAL(finished(int, QProcess::ExitStatus)), this, SLOT(simulationReady(int)));
@@ -1028,9 +1032,11 @@ namespace Caneda
         // If using ngspice (the default spice backend) check if its installed.
         if(simulationCommand.startsWith("ngspice")) {
 
-            simulationCommand = QString("ngspice -v");
+            QString command = QString("ngspice");
+            QStringList args = QStringList() << "-v";
             QProcess *simulationProcess = new QProcess(this);
-            simulationProcess->start(simulationCommand);
+
+            simulationProcess->start(command, args);
             simulationProcess->waitForFinished();
 
             if(simulationProcess->error() == QProcess::FailedToStart) {
@@ -1696,6 +1702,10 @@ namespace Caneda
             QString simulationCommand = settings->currentValue("sim/simulationCommand").toString();
             simulationCommand.replace("%filename", baseName);  // Replace all ocurrencies of %filename by the actual filename
 
+            QString command = simulationCommand.split(" ").at(0); // Get simulation command
+            QStringList args = simulationCommand.split(" "); // Get arguments list
+            args.removeAt(0); // Remove simulation command from arguments list
+
             // Set the environment variable to get a binary or an ascii raw file.
             QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
             if(settings->currentValue("sim/outputFormat").toString() == "binary") {
@@ -1707,7 +1717,7 @@ namespace Caneda
             simulationProcess->setProcessEnvironment(env);
 
             // Start the simulation
-            simulationProcess->start(simulationCommand);
+            simulationProcess->start(command, args);
         }
         else if (suffix == "vhd" || suffix == "vhdl") {
             // It is a vhdl file, we should invoke ghdl simulator
@@ -1719,17 +1729,17 @@ namespace Caneda
              *  compile.
              */
 
-            simulationProcess->start(QString("ghdl -a ") + fileName());  // Analize the files
+            simulationProcess->start(QString("ghdl"), QStringList() << "-a" << fileName());  // Analize the files
             simulationProcess->waitForFinished();
-            simulationProcess->start(QString("ghdl -e ") + baseName);  // Create the simulation
+            simulationProcess->start(QString("ghdl"), QStringList() << "-e" << baseName);  // Create the simulation
             simulationProcess->waitForFinished();
-            simulationProcess->start(QString("./") + baseName + " --wave=waveforms.ghw");  // Run the simulation
+            simulationProcess->start(QString("./") + baseName, QStringList() << "--wave=waveforms.ghw");  // Run the simulation
         }
         else if (suffix == "v") {
             // Is is a verilog file, we should invoke iverilog
-            simulationProcess->start(QString("iverilog ") + fileName());  // Analize the files
+            simulationProcess->start(QString("iverilog"), QStringList() << fileName());  // Analize the files
             simulationProcess->waitForFinished();
-            simulationProcess->start(QString("./a.out"));  // Run the simulation
+            simulationProcess->start(QString("./a.out"), QStringList());  // Run the simulation
         }
 
         // The simulation results are opened in the simulationReady slot, to achieve non-modal simulations
@@ -1889,10 +1899,10 @@ namespace Caneda
             manager->openFile(QDir::toNativeSeparators(path + "/" + baseName + ".raw"));
         }
         else if (suffix == "vhd" || suffix == "vhdl") {
-            simulationProcess->start(QString("gtkwave waveforms.ghw"));  // Open the waveforms
+            simulationProcess->start(QString("gtkwave"), QStringList() << "waveforms.ghw");  // Open the waveforms
         }
         else if (suffix == "v") {
-            simulationProcess->start(QString("gtkwave ") + baseName + ".vcd");  // Open the waveforms
+            simulationProcess->start(QString("gtkwave"), QStringList() << baseName + ".vcd");  // Open the waveforms
         }
     }
 
