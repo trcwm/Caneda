@@ -294,7 +294,7 @@ namespace Caneda
         disconnectItems(items);
 
         // Sort items
-        qSort(items.begin(), items.end(), pointCmpFunction_X);
+        std::sort(items.begin(), items.end(), pointCmpFunction_X);
         qreal x1 = items.first()->pos().x();
         qreal x2 = items.last()->pos().x();
 
@@ -334,7 +334,7 @@ namespace Caneda
         disconnectItems(items);
 
         // Sort items
-        qSort(items.begin(), items.end(), pointCmpFunction_Y);
+        std::sort(items.begin(), items.end(), pointCmpFunction_Y);
         qreal y1 = items.first()->pos().y();
         qreal y2 = items.last()->pos().y();
 
