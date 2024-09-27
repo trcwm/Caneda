@@ -25,7 +25,8 @@
 
 namespace Caneda
 {
-    class DocumentData;
+    struct DocumentData;
+
     class IContext;
     class IDocument;
     class IView;
