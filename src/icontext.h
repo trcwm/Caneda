@@ -109,16 +109,16 @@ namespace Caneda
         static LayoutContext* instance();
 
         // IContext interface methods
-        virtual QStringList fileNameFilters() const;
-        virtual QStringList supportedSuffixes() const;
+        virtual QStringList fileNameFilters() const override;
+        virtual QStringList supportedSuffixes() const override;
 
-        virtual IDocument* newDocument();
-        virtual IDocument* open(const QString &fileName, QString *errorMessage = nullptr);
+        virtual IDocument* newDocument() override;
+        virtual IDocument* open(const QString &fileName, QString *errorMessage = nullptr) override;
 
-        virtual QToolBar* toolBar() { return nullptr; }
-        virtual QWidget* sideBarWidget();
-        virtual void updateSideBar() {}
-        virtual void quickInsert();
+        virtual QToolBar* toolBar() override { return nullptr; }
+        virtual QWidget* sideBarWidget() override;
+        virtual void updateSideBar() override {}
+        virtual void quickInsert() override;
         // End of IContext interface methods
 
     private:
@@ -154,16 +154,16 @@ namespace Caneda
         static SchematicContext* instance();
 
         // IContext interface methods
-        virtual QStringList fileNameFilters() const;
-        virtual QStringList supportedSuffixes() const;
+        virtual QStringList fileNameFilters() const override;
+        virtual QStringList supportedSuffixes() const override;
 
-        virtual IDocument* newDocument();
-        virtual IDocument* open(const QString &fileName, QString *errorMessage = nullptr);
+        virtual IDocument* newDocument() override;
+        virtual IDocument* open(const QString &fileName, QString *errorMessage = nullptr) override;
 
-        virtual QToolBar* toolBar() { return nullptr; }
-        virtual QWidget* sideBarWidget();
-        virtual void updateSideBar() {}
-        virtual void quickInsert();
+        virtual QToolBar* toolBar() override { return nullptr; }
+        virtual QWidget* sideBarWidget() override;
+        virtual void updateSideBar() override {}
+        virtual void quickInsert() override;
         // End of IContext interface methods
 
     private:
@@ -199,16 +199,16 @@ namespace Caneda
         static SimulationContext* instance();
 
         // IContext interface methods
-        virtual QStringList fileNameFilters() const;
-        virtual QStringList supportedSuffixes() const;
+        virtual QStringList fileNameFilters() const override;
+        virtual QStringList supportedSuffixes() const override;
 
-        virtual IDocument* newDocument();
-        virtual IDocument* open(const QString &fileName, QString *errorMessage = nullptr);
+        virtual IDocument* newDocument() override;
+        virtual IDocument* open(const QString &fileName, QString *errorMessage = nullptr) override;
 
-        virtual QToolBar* toolBar() { return nullptr; }
-        virtual QWidget* sideBarWidget();
-        virtual void updateSideBar();
-        virtual void quickInsert() {}
+        virtual QToolBar* toolBar() override { return nullptr; }
+        virtual QWidget* sideBarWidget() override;
+        virtual void updateSideBar() override;
+        virtual void quickInsert() override {}
         // End of IContext interface methods
 
     private:
@@ -243,16 +243,16 @@ namespace Caneda
         static SymbolContext* instance();
 
         // IContext interface methods
-        virtual QStringList fileNameFilters() const;
-        virtual QStringList supportedSuffixes() const;
+        virtual QStringList fileNameFilters() const override;
+        virtual QStringList supportedSuffixes() const override;
 
-        virtual IDocument* newDocument();
-        virtual IDocument* open(const QString &fileName, QString *errorMessage = nullptr);
+        virtual IDocument* newDocument() override;
+        virtual IDocument* open(const QString &fileName, QString *errorMessage = nullptr) override;
 
-        virtual QToolBar* toolBar() { return nullptr; }
-        virtual QWidget* sideBarWidget();
-        virtual void updateSideBar() {}
-        virtual void quickInsert();
+        virtual QToolBar* toolBar() override { return nullptr; }
+        virtual QWidget* sideBarWidget() override;
+        virtual void updateSideBar() override {}
+        virtual void quickInsert() override;
         // End of IContext interface methods
 
     private:
@@ -287,16 +287,16 @@ namespace Caneda
         static TextContext* instance();
 
         // IContext interface methods
-        virtual QStringList fileNameFilters() const;
-        virtual QStringList supportedSuffixes() const;
+        virtual QStringList fileNameFilters() const override;
+        virtual QStringList supportedSuffixes() const override;
 
-        virtual IDocument* newDocument();
-        virtual IDocument* open(const QString& filename, QString *errorMessage = nullptr);
+        virtual IDocument* newDocument() override;
+        virtual IDocument* open(const QString& filename, QString *errorMessage = nullptr) override;
 
-        virtual QToolBar* toolBar() { return nullptr; }
-        virtual QWidget* sideBarWidget();
-        virtual void updateSideBar() {}
-        virtual void quickInsert() {}
+        virtual QToolBar* toolBar() override { return nullptr; }
+        virtual QWidget* sideBarWidget() override;
+        virtual void updateSideBar() override {}
+        virtual void quickInsert() override {}
         // End of IContext interface methods
 
     private:

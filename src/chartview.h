@@ -103,8 +103,8 @@ namespace Caneda
         void cursorPositionChanged(const QString& newPos);
 
     protected:
-        void mouseMoveEvent(QMouseEvent *event);
-        void mouseDoubleClickEvent(QMouseEvent * event);
+        void mouseMoveEvent(QMouseEvent *event) override;
+        void mouseDoubleClickEvent(QMouseEvent * event) override;
 
     private:
         ChartScene *m_chartScene;

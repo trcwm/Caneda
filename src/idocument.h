@@ -155,52 +155,52 @@ namespace Caneda
         ~LayoutDocument() override;
 
         // IDocument interface methods
-        virtual IContext* context();
+        virtual IContext* context() override;
 
-        virtual bool isModified() const;
+        virtual bool isModified() const override;
 
-        virtual bool canUndo() const;
-        virtual bool canRedo() const;
+        virtual bool canUndo() const override;
+        virtual bool canRedo() const override;
 
-        virtual void undo();
-        virtual void redo();
+        virtual void undo() override;
+        virtual void redo() override;
 
-        virtual bool canCut() const;
-        virtual bool canCopy() const;
-        virtual bool canPaste() const { return true; }
+        virtual bool canCut() const override;
+        virtual bool canCopy() const override;
+        virtual bool canPaste() const override { return true; }
 
-        virtual void cut();
-        virtual void copy();
-        virtual void paste();
+        virtual void cut( override;
+        virtual void copy() override;
+        virtual void paste() override;
 
-        virtual void selectAll();
+        virtual void selectAll() override;
 
-        virtual void enterHierarchy();
-        virtual void exitHierarchy();
+        virtual void enterHierarchy() override;
+        virtual void exitHierarchy() override;
 
-        virtual void alignTop();
-        virtual void alignBottom();
-        virtual void alignLeft();
-        virtual void alignRight();
-        virtual void distributeHorizontal();
-        virtual void distributeVertical();
-        virtual void centerHorizontal();
-        virtual void centerVertical();
+        virtual void alignTop() override;
+        virtual void alignBottom() override;
+        virtual void alignLeft() override;
+        virtual void alignRight() override;
+        virtual void distributeHorizontal() override;
+        virtual void distributeVertical() override;
+        virtual void centerHorizontal() override;
+        virtual void centerVertical() override;
 
-        virtual void simulate();
+        virtual void simulate() override;
 
-        virtual bool printSupportsFitInPage() const  { return true; }
-        virtual void print(QPrinter *printer, bool fitInView);
-        virtual void exportImage(QPaintDevice &device);
-        virtual QSizeF documentSize();
+        virtual bool printSupportsFitInPage() const override { return true; }
+        virtual void print(QPrinter *printer, bool fitInView) override;
+        virtual void exportImage(QPaintDevice &device) override;
+        virtual QSizeF documentSize() override;
 
-        virtual bool load(QString *errorMessage = nullptr);
-        virtual bool save(QString *errorMessage = nullptr);
+        virtual bool load(QString *errorMessage = nullptr) override;
+        virtual bool save(QString *errorMessage = nullptr) override;
 
-        virtual IView* createView();
+        virtual IView* createView() override;
 
-        virtual void contextMenuEvent(QGraphicsSceneContextMenuEvent *event);
-        virtual void launchPropertiesDialog();
+        virtual void contextMenuEvent(QGraphicsSceneContextMenuEvent *event) override;
+        virtual void launchPropertiesDialog() override;
         // End of IDocument interface methods
 
         GraphicsScene* graphicsScene() const { return m_graphicsScene; }
@@ -235,52 +235,52 @@ namespace Caneda
         ~SchematicDocument() override;
 
         // IDocument interface methods
-        virtual IContext* context();
+        virtual IContext* context() override;
 
-        virtual bool isModified() const;
+        virtual bool isModified() const override;
 
-        virtual bool canUndo() const;
-        virtual bool canRedo() const;
+        virtual bool canUndo() const override;
+        virtual bool canRedo() const override;
 
-        virtual void undo();
-        virtual void redo();
+        virtual void undo() override;
+        virtual void redo() override;
 
-        virtual bool canCut() const;
-        virtual bool canCopy() const;
-        virtual bool canPaste() const { return true; }
+        virtual bool canCut() const override;
+        virtual bool canCopy() const override;
+        virtual bool canPaste() const override { return true; }
 
-        virtual void cut();
-        virtual void copy();
-        virtual void paste();
+        virtual void cut() override;
+        virtual void copy() override;
+        virtual void paste() override;
 
-        virtual void selectAll();
+        virtual void selectAll() override;
 
-        virtual void enterHierarchy();
-        virtual void exitHierarchy();
+        virtual void enterHierarchy() override;
+        virtual void exitHierarchy() override;
 
-        virtual void alignTop();
-        virtual void alignBottom();
-        virtual void alignLeft();
-        virtual void alignRight();
-        virtual void distributeHorizontal();
-        virtual void distributeVertical();
-        virtual void centerHorizontal();
-        virtual void centerVertical();
+        virtual void alignTop() override;
+        virtual void alignBottom() override;
+        virtual void alignLeft() override;
+        virtual void alignRight() override;
+        virtual void distributeHorizontal() override;
+        virtual void distributeVertical() override;
+        virtual void centerHorizontal() override;
+        virtual void centerVertical() override;
 
-        virtual void simulate();
+        virtual void simulate() override;
 
-        virtual bool printSupportsFitInPage() const { return true; }
-        virtual void print(QPrinter *printer, bool fitInView);
-        virtual void exportImage(QPaintDevice &device);
-        virtual QSizeF documentSize();
+        virtual bool printSupportsFitInPage() const override { return true; }
+        virtual void print(QPrinter *printer, bool fitInView) override;
+        virtual void exportImage(QPaintDevice &device) override;
+        virtual QSizeF documentSize() override;
 
-        virtual bool load(QString *errorMessage = nullptr);
-        virtual bool save(QString *errorMessage = nullptr);
+        virtual bool load(QString *errorMessage = nullptr) override;
+        virtual bool save(QString *errorMessage = nullptr) override;
 
-        virtual IView* createView();
+        virtual IView* createView() override;
 
-        virtual void contextMenuEvent(QGraphicsSceneContextMenuEvent *event);
-        virtual void launchPropertiesDialog();
+        virtual void contextMenuEvent(QGraphicsSceneContextMenuEvent *event) override;
+        virtual void launchPropertiesDialog() override;
         // End of IDocument interface methods
 
         GraphicsScene* graphicsScene() const { return m_graphicsScene; }
@@ -321,52 +321,52 @@ namespace Caneda
         ~SimulationDocument() override;
 
         // IDocument interface methods
-        virtual IContext* context();
+        virtual IContext* context() override;
 
-        virtual bool isModified() const { return false; }
+        virtual bool isModified() const override { return false; }
 
-        virtual bool canUndo() const { return false; }
-        virtual bool canRedo() const { return false; }
+        virtual bool canUndo() const override { return false; }
+        virtual bool canRedo() const override { return false; }
 
-        virtual void undo() {}
-        virtual void redo() {}
+        virtual void undo() override {}
+        virtual void redo() override {}
 
-        virtual bool canCut() const { return false; }
-        virtual bool canCopy() const { return false; }
-        virtual bool canPaste() const { return false; }
+        virtual bool canCut() const override { return false; }
+        virtual bool canCopy() const override { return false; }
+        virtual bool canPaste() const override { return false; }
 
-        virtual void cut() {}
-        virtual void copy() {}
-        virtual void paste() {}
+        virtual void cut() override {}
+        virtual void copy() override {}
+        virtual void paste() override {}
 
-        virtual void selectAll() {}
+        virtual void selectAll() override {}
 
-        virtual void enterHierarchy() {}
-        virtual void exitHierarchy() {}
+        virtual void enterHierarchy() override {}
+        virtual void exitHierarchy() override {}
 
-        virtual void alignTop() {}
-        virtual void alignBottom() {}
-        virtual void alignLeft() {}
-        virtual void alignRight() {}
-        virtual void distributeHorizontal();
-        virtual void distributeVertical();
-        virtual void centerHorizontal();
-        virtual void centerVertical();
+        virtual void alignTop() override {}
+        virtual void alignBottom() override {}
+        virtual void alignLeft() override {}
+        virtual void alignRight() override {}
+        virtual void distributeHorizontal() override;
+        virtual void distributeVertical() override;
+        virtual void centerHorizontal() override;
+        virtual void centerVertical() override;
 
-        virtual void simulate() {}
+        virtual void simulate() override {}
 
-        virtual bool printSupportsFitInPage() const { return false; }
-        virtual void print(QPrinter *printer, bool fitInView);
-        virtual void exportImage(QPaintDevice &device);
-        virtual QSizeF documentSize();
+        virtual bool printSupportsFitInPage() const override { return false; }
+        virtual void print(QPrinter *printer, bool fitInView) override;
+        virtual void exportImage(QPaintDevice &device) override;
+        virtual QSizeF documentSize() override;
 
-        virtual bool load(QString *errorMessage = nullptr);
-        virtual bool save(QString *errorMessage = nullptr) { return false; }
+        virtual bool load(QString *errorMessage = nullptr) override;
+        virtual bool save(QString *errorMessage = nullptr) override { return false; }
 
-        virtual IView* createView();
+        virtual IView* createView() override;
 
-        virtual void contextMenuEvent(QGraphicsSceneContextMenuEvent *) {}
-        virtual void launchPropertiesDialog();
+        virtual void contextMenuEvent(QGraphicsSceneContextMenuEvent *) override {}
+        virtual void launchPropertiesDialog() override;
         // End of IDocument interface methods
 
         ChartScene* chartScene() const { return m_chartScene; }
@@ -399,52 +399,52 @@ namespace Caneda
         ~SymbolDocument() override;
 
         // IDocument interface methods
-        virtual IContext* context();
+        virtual IContext* context() override;
 
-        virtual bool isModified() const;
+        virtual bool isModified() const override;
 
-        virtual bool canUndo() const;
-        virtual bool canRedo() const;
+        virtual bool canUndo() const override;
+        virtual bool canRedo() const override;
 
-        virtual void undo();
-        virtual void redo();
+        virtual void undo() override;
+        virtual void redo() override;
 
-        virtual bool canCut() const;
-        virtual bool canCopy() const;
-        virtual bool canPaste() const { return true; }
+        virtual bool canCut() const override;
+        virtual bool canCopy() const override;
+        virtual bool canPaste() const override { return true; }
 
-        virtual void cut();
-        virtual void copy();
-        virtual void paste();
+        virtual void cut() override;
+        virtual void copy() override;
+        virtual void paste() override;
 
-        virtual void selectAll();
+        virtual void selectAll() override;
 
-        virtual void enterHierarchy();
-        virtual void exitHierarchy();
+        virtual void enterHierarchy() override;
+        virtual void exitHierarchy() override;
 
-        virtual void alignTop();
-        virtual void alignBottom();
-        virtual void alignLeft();
-        virtual void alignRight();
-        virtual void distributeHorizontal();
-        virtual void distributeVertical();
-        virtual void centerHorizontal();
-        virtual void centerVertical();
+        virtual void alignTop() override;
+        virtual void alignBottom() override;
+        virtual void alignLeft() override;
+        virtual void alignRight() override;
+        virtual void distributeHorizontal() override;
+        virtual void distributeVertical() override;
+        virtual void centerHorizontal() override;
+        virtual void centerVertical() override;
 
-        virtual void simulate() {}
+        virtual void simulate() override {}
 
-        virtual bool printSupportsFitInPage() const { return true; }
-        virtual void print(QPrinter *printer, bool fitInView);
-        virtual void exportImage(QPaintDevice &device);
-        virtual QSizeF documentSize();
+        virtual bool printSupportsFitInPage() const override { return true; }
+        virtual void print(QPrinter *printer, bool fitInView) override;
+        virtual void exportImage(QPaintDevice &device) override;
+        virtual QSizeF documentSize() override;
 
-        virtual bool load(QString *errorMessage = nullptr);
-        virtual bool save(QString *errorMessage = nullptr);
+        virtual bool load(QString *errorMessage = nullptr) override;
+        virtual bool save(QString *errorMessage = nullptr) override;
 
-        virtual IView* createView();
+        virtual IView* createView() override;
 
-        virtual void contextMenuEvent(QGraphicsSceneContextMenuEvent *event);
-        virtual void launchPropertiesDialog();
+        virtual void contextMenuEvent(QGraphicsSceneContextMenuEvent *event) override;
+        virtual void launchPropertiesDialog() override;
         // End of IDocument interface methods
 
         GraphicsScene* graphicsScene() const { return m_graphicsScene; }
@@ -479,52 +479,52 @@ namespace Caneda
         ~TextDocument() override;
 
         // IDocument interface methods
-        virtual IContext* context();
+        virtual IContext* context() override;
 
-        virtual bool isModified() const;
+        virtual bool isModified() const override;
 
-        virtual bool canUndo() const;
-        virtual bool canRedo() const;
+        virtual bool canUndo() const override;
+        virtual bool canRedo() const override;
 
-        virtual void undo();
-        virtual void redo();
+        virtual void undo() override;
+        virtual void redo() override;
 
-        virtual bool canCut() const { return true; }
-        virtual bool canCopy() const { return true; }
-        virtual bool canPaste() const { return true; }
+        virtual bool canCut() const override { return true; }
+        virtual bool canCopy() const override { return true; }
+        virtual bool canPaste() const override { return true; }
 
-        virtual void cut();
-        virtual void copy();
-        virtual void paste();
+        virtual void cut() override;
+        virtual void copy() override;
+        virtual void paste() override;
 
-        virtual void selectAll();
+        virtual void selectAll() override;
 
-        virtual void enterHierarchy();
-        virtual void exitHierarchy();
+        virtual void enterHierarchy() override;
+        virtual void exitHierarchy() override;
 
-        virtual void alignTop() {}
-        virtual void alignBottom() {}
-        virtual void alignLeft() {}
-        virtual void alignRight() {}
-        virtual void distributeHorizontal() {}
-        virtual void distributeVertical() {}
-        virtual void centerHorizontal() {}
-        virtual void centerVertical() {}
+        virtual void alignTop() override {}
+        virtual void alignBottom() override {}
+        virtual void alignLeft() override {}
+        virtual void alignRight() override {}
+        virtual void distributeHorizontal() override {}
+        virtual void distributeVertical() override {}
+        virtual void centerHorizontal() override {}
+        virtual void centerVertical() override {}
 
-        virtual void simulate();
+        virtual void simulate() override;
 
-        virtual bool printSupportsFitInPage() const { return false; }
-        virtual void print(QPrinter *printer, bool fitInView);
-        virtual void exportImage(QPaintDevice &device) {}
-        virtual QSizeF documentSize();
+        virtual bool printSupportsFitInPage() const override { return false; }
+        virtual void print(QPrinter *printer, bool fitInView) override;
+        virtual void exportImage(QPaintDevice &) override {}
+        virtual QSizeF documentSize() override;
 
-        virtual bool load(QString *errorMessage = nullptr);
-        virtual bool save(QString *errorMessage = nullptr);
+        virtual bool load(QString *errorMessage = nullptr) override;
+        virtual bool save(QString *errorMessage = nullptr) override;
 
-        virtual IView* createView();
+        virtual IView* createView() override;
 
-        virtual void contextMenuEvent(QGraphicsSceneContextMenuEvent *) {}
-        virtual void launchPropertiesDialog() {}
+        virtual void contextMenuEvent(QGraphicsSceneContextMenuEvent *) override {}
+        virtual void launchPropertiesDialog() override {}
         // End of IDocument interface methods
 
         QTextDocument* textDocument() const { return m_textDocument; }

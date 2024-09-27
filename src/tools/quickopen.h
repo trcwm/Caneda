@@ -68,7 +68,7 @@ namespace Caneda
         void slotForwardFolder();
         void slotHomeFolder();
 
-        bool eventFilter(QObject *object, QEvent *event);
+        bool eventFilter(QObject *object, QEvent *event) override;
         void filterTextChanged();
         void filterFileTypes();
 

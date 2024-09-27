@@ -48,7 +48,7 @@ namespace Caneda
         //! \copydoc GraphicsItem::Type
         enum { Type = GraphicsItem::WireType };
         //! \copydoc GraphicsItem::type()
-        int type() const { return Type; }
+        int type() const override { return Type; }
 
         //! Return's the list's first member.
         Port* port1() const { return m_ports[0]; }
@@ -66,21 +66,21 @@ namespace Caneda
         bool isNull() const { return port1()->scenePos() == port2()->scenePos(); }
 
         void updateGeometry();
-        QRectF boundingRect() const;
+        QRectF boundingRect() const override;
 
         void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
-                   QWidget *widget = nullptr);
+                   QWidget *widget = nullptr) override;
 
-        Wire* copy() const;
+        Wire* copy() const override;
 
-        void saveData(Caneda::XmlWriter *writer) const;
-        void loadData(Caneda::XmlReader *reader);
+        void saveData(Caneda::XmlWriter *writer) const override;
+        void loadData(Caneda::XmlReader *reader) override;
 
         //! \copydoc GraphicsItem::launchPropertiesDialog()
-        void launchPropertiesDialog() {}
+        void launchPropertiesDialog() override {}
 
     protected:
-        void contextMenuEvent(QGraphicsSceneContextMenuEvent *event);
+        void contextMenuEvent(QGraphicsSceneContextMenuEvent *event) override;
     };
 
 } // namespace Caneda

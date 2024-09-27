@@ -34,22 +34,22 @@ namespace Caneda
         //! \copydoc GraphicsItem::Type
         enum { Type = Painting::GraphicLineType };
         //! \copydoc GraphicsItem::type()
-        int type() const { return Type; }
+        int type() const override { return Type; }
 
-        QPainterPath shapeForRect(const QRectF &rect) const;
+        QPainterPath shapeForRect(const QRectF &rect) const override;
 
-        void paint(QPainter *, const QStyleOptionGraphicsItem*, QWidget *);
+        void paint(QPainter *, const QStyleOptionGraphicsItem*, QWidget *) override;
 
         //! \brief Returns line represented by this item.
         QLineF line() const { return lineFromRect(paintingRect()); }
         void setLine(const QLineF &line);
 
-        GraphicLine* copy() const;
+        GraphicLine* copy() const override;
 
-        void saveData(Caneda::XmlWriter *writer) const;
-        void loadData(Caneda::XmlReader *reader);
+        void saveData(Caneda::XmlWriter *writer) const override;
+        void loadData(Caneda::XmlReader *reader) override;
 
-        void launchPropertiesDialog();
+        void launchPropertiesDialog() override;
 
     private:
         //! \brief Returns line from rect.

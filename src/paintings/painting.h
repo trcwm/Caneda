@@ -66,7 +66,7 @@ namespace Caneda
         //! \copydoc GraphicsItem::Type
         enum { Type = GraphicsItem::PaintingType };
         //! \copydoc GraphicsItem::type()
-        int type() const { return Type; }
+        int type() const override { return Type; }
 
         enum PaintingType {
             ArrowType = GraphicsItem::PaintingType + 1,
@@ -93,14 +93,14 @@ namespace Caneda
         QBrush brush() const { return m_brush; }
         virtual void setBrush(const QBrush& _brush);
 
-        void paint(QPainter*, const QStyleOptionGraphicsItem*, QWidget*);
+        void paint(QPainter*, const QStyleOptionGraphicsItem*, QWidget*) override;
 
         //! \copydoc GraphicsItem::copy()
-        virtual Painting* copy() const = 0;
+        virtual Painting* copy() const override = 0;
         virtual void copyDataTo(Painting *painting) const;
 
         //! \copydoc GraphicsItem::launchPropertiesDialog()
-        virtual void launchPropertiesDialog() = 0;
+        virtual void launchPropertiesDialog() override = 0;
 
     protected:
         /*!
@@ -113,9 +113,9 @@ namespace Caneda
 
         void setResizeHandles(Caneda::ResizeHandles handles);
 
-        void mousePressEvent(QGraphicsSceneMouseEvent *event);
-        void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
-        void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
+        void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
+        void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
+        void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
 
     private:
         // Resize handle related methods

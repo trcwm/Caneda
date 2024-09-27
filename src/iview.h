@@ -131,17 +131,17 @@ namespace Caneda
         ~LayoutView() override;
 
         // IView interface methods
-        virtual QWidget* toWidget() const;
-        virtual IContext* context() const;
+        virtual QWidget* toWidget() const override;
+        virtual IContext* context() const override;
 
-        virtual void zoomIn();
-        virtual void zoomOut();
-        virtual void zoomFitInBest();
-        virtual void zoomOriginal();
+        virtual void zoomIn() override;
+        virtual void zoomOut() override;
+        virtual void zoomFitInBest() override;
+        virtual void zoomOriginal() override;
 
-        virtual IView* duplicate();
+        virtual IView* duplicate() override;
 
-        virtual void updateSettingsChanges();
+        virtual void updateSettingsChanges() override;
         // End of IView interface methods
 
     private Q_SLOTS:
@@ -176,17 +176,17 @@ namespace Caneda
         ~SchematicView() override;
 
         // IView interface methods
-        virtual QWidget* toWidget() const;
-        virtual IContext* context() const;
+        virtual QWidget* toWidget() const override;
+        virtual IContext* context() const override;
 
-        virtual void zoomIn();
-        virtual void zoomOut();
-        virtual void zoomFitInBest();
-        virtual void zoomOriginal();
+        virtual void zoomIn() override;
+        virtual void zoomOut() override;
+        virtual void zoomFitInBest() override;
+        virtual void zoomOriginal() override;
 
-        virtual IView* duplicate();
+        virtual IView* duplicate() override;
 
-        virtual void updateSettingsChanges();
+        virtual void updateSettingsChanges() override;
         // End of IView interface methods
 
     private Q_SLOTS:
@@ -221,17 +221,17 @@ namespace Caneda
         ~SimulationView() override;
 
         // IView interface methods
-        virtual QWidget* toWidget() const;
-        virtual IContext* context() const;
+        virtual QWidget* toWidget() const override;
+        virtual IContext* context() const override;
 
-        virtual void zoomIn();
-        virtual void zoomOut();
-        virtual void zoomFitInBest();
-        virtual void zoomOriginal();
+        virtual void zoomIn() override;
+        virtual void zoomOut() override;
+        virtual void zoomFitInBest() override;
+        virtual void zoomOriginal() override;
 
-        virtual IView* duplicate();
+        virtual IView* duplicate() override;
 
-        virtual void updateSettingsChanges();
+        virtual void updateSettingsChanges() override;
         // End of IView interface methods
 
     private Q_SLOTS:
@@ -266,17 +266,17 @@ namespace Caneda
         ~SymbolView() override;
 
         // IView interface methods
-        virtual QWidget* toWidget() const;
-        virtual IContext* context() const;
+        virtual QWidget* toWidget() const override;
+        virtual IContext* context() const override;
 
-        virtual void zoomIn();
-        virtual void zoomOut();
-        virtual void zoomFitInBest();
-        virtual void zoomOriginal();
+        virtual void zoomIn() override;
+        virtual void zoomOut() override;
+        virtual void zoomFitInBest() override;
+        virtual void zoomOriginal() override;
 
-        virtual IView* duplicate();
+        virtual IView* duplicate() override;
 
-        virtual void updateSettingsChanges();
+        virtual void updateSettingsChanges() override;
         // End of IView interface methods
 
     private Q_SLOTS:
@@ -310,17 +310,17 @@ namespace Caneda
         ~TextView() override;
 
         // IView interface methods
-        virtual QWidget* toWidget() const;
-        virtual IContext* context() const;
+        virtual QWidget* toWidget() const override;
+        virtual IContext* context() const override;
 
-        virtual void zoomIn();
-        virtual void zoomOut();
-        virtual void zoomFitInBest() {}
-        virtual void zoomOriginal() {}
+        virtual void zoomIn() override;
+        virtual void zoomOut() override;
+        virtual void zoomFitInBest() override {}
+        virtual void zoomOriginal() override {}
 
-        virtual IView* duplicate();
+        virtual IView* duplicate() override;
 
-        virtual void updateSettingsChanges();
+        virtual void updateSettingsChanges() override;
         // End of IView interface methods
 
     private Q_SLOTS:

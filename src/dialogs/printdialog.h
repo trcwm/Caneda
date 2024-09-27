@@ -38,7 +38,7 @@ namespace Caneda
         explicit PrintDialog(IDocument *document, QWidget *parent = nullptr);
 
     public Q_SLOTS:
-        virtual void done(int r);
+        virtual void done(int r) override;
 
     private Q_SLOTS:
         void onChoiceToggled();

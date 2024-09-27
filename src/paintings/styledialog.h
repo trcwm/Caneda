@@ -65,17 +65,17 @@ namespace Caneda
         int spanAngle() const { return m_spanAngle; }
         void setSpanAngle(int angle);
 
-        void paintEvent(QPaintEvent *event);
+        void paintEvent(QPaintEvent *event) override;
 
         void calcHeadPoints();
 
-        int heightForWidth(int w) const { return w; }
+        int heightForWidth(int w) const override { return w; }
 
         public slots:
             void toggleBackground(bool state);
 
     protected:
-        void resizeEvent(QResizeEvent *event);
+        void resizeEvent(QResizeEvent *event) override;
 
     private:
         QRect adjustedRect() const;

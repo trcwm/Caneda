@@ -69,18 +69,18 @@ namespace Caneda
 
         virtual QWidget *createEditor(QWidget *parent,
                                       const QStyleOptionViewItem &option,
-                                      const QModelIndex &index) const;
+                                      const QModelIndex &index) const override;
 
         virtual void setEditorData(QWidget *editor,
-                                   const QModelIndex &index) const;
+                                   const QModelIndex &index) const override;
 
         virtual void setModelData(QWidget *editor,
                                   QAbstractItemModel *model,
-                                  const QModelIndex &index) const;
+                                  const QModelIndex &index) const override;
 
         virtual void updateEditorGeometry(QWidget *editor,
                                           const QStyleOptionViewItem &option,
-                                          const QModelIndex &index) const;
+                                          const QModelIndex &index) const override;
     };
 
     /*!
@@ -113,14 +113,14 @@ namespace Caneda
     public:
         explicit ShortcutsDialogModel(QList<QAction*> actions, QObject *parent = nullptr);
 
-        int rowCount(const QModelIndex& = QModelIndex() ) const { return m_actions.size(); }
-        int columnCount(const QModelIndex& = QModelIndex() ) const { return 2; }
+        int rowCount(const QModelIndex& = QModelIndex() ) const override { return m_actions.size(); }
+        int columnCount(const QModelIndex& = QModelIndex() ) const override { return 2; }
 
-        QVariant data(const QModelIndex&, int role) const;
-        QVariant headerData(int section, Qt::Orientation o, int role) const;
+        QVariant data(const QModelIndex&, int role) const override;
+        QVariant headerData(int section, Qt::Orientation o, int role) const override;
 
-        Qt::ItemFlags flags(const QModelIndex &index) const;
-        bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
+        Qt::ItemFlags flags(const QModelIndex &index) const override;
+        bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
 
     private:
         friend class ShortcutsDialog;

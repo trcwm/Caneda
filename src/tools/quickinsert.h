@@ -56,7 +56,7 @@ namespace Caneda
         void itemClicked(const QString& item, const QString& category);
 
     protected:
-        bool eventFilter(QObject *object, QEvent *event);
+        bool eventFilter(QObject *object, QEvent *event) override;
 
     private Q_SLOTS:
         void filterTextChanged();

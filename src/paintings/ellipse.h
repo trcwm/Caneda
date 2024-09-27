@@ -34,22 +34,22 @@ namespace Caneda
         //! \copydoc GraphicsItem::Type
         enum { Type = Painting::EllipseType };
         //! \copydoc GraphicsItem::type()
-        int type() const { return Type; }
+        int type() const override { return Type; }
 
-        QPainterPath shapeForRect(const QRectF &rect) const;
+        QPainterPath shapeForRect(const QRectF &rect) const override;
 
-        void paint(QPainter *, const QStyleOptionGraphicsItem*, QWidget *);
+        void paint(QPainter *, const QStyleOptionGraphicsItem*, QWidget *) override;
 
         //! \brief Returns ellipse rect represented by this item.
         QRectF ellipse() const { return paintingRect(); }
         void setEllipse(const QRectF& rect) { setPaintingRect(rect); }
 
-        Ellipse* copy() const;
+        Ellipse* copy() const override;
 
-        void saveData(Caneda::XmlWriter *writer) const;
-        void loadData(Caneda::XmlReader *reader);
+        void saveData(Caneda::XmlWriter *writer) const override;
+        void loadData(Caneda::XmlReader *reader) override;
 
-        void launchPropertiesDialog();
+        void launchPropertiesDialog() override;
     };
 
 } // namespace Caneda

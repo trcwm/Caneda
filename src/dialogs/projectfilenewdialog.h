@@ -47,7 +47,7 @@ namespace Caneda
         Caneda::ProjectFileNewChoice userChoice() const { return m_userchoice; }
 
     public Q_SLOTS:
-        virtual void done(int r);
+        virtual void done(int r) override;
 
     private:
         QString m_filename;

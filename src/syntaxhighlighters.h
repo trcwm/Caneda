@@ -46,7 +46,7 @@ namespace Caneda
         explicit Highlighter(QTextDocument *parent = nullptr);
 
     protected:
-        void highlightBlock(const QString &text);
+        void highlightBlock(const QString &text) override;
 
         struct HighlightingRule
         {

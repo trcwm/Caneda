@@ -34,7 +34,7 @@ namespace Caneda
         explicit FileNewDialog(QWidget *parent = nullptr);
 
     public Q_SLOTS:
-        virtual void done(int r);
+        virtual void done(int r) override;
 
     private:
         Ui::FileNewDialog ui;

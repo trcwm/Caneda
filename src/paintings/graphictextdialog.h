@@ -50,7 +50,7 @@ namespace Caneda
         QString richText() const;
 
     public Q_SLOTS:
-        void accept();
+        void accept() override;
 
     private Q_SLOTS:
         void textBold();

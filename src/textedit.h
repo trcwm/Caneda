@@ -55,7 +55,7 @@ namespace Caneda
         void cursorPositionChanged(const QString& newPos);
 
     protected:
-        void focusInEvent(QFocusEvent *event);
+        void focusInEvent(QFocusEvent *event) override;
 
     private slots:
         void updateCursorPosition();

@@ -61,12 +61,12 @@ namespace Caneda
     public:
         explicit QuickLauncherModel(QList<QAction*> actions, QObject *parent = nullptr);
 
-        int rowCount(const QModelIndex& = QModelIndex() ) const { return m_actions.size(); }
-        int columnCount(const QModelIndex& = QModelIndex() ) const { return 1; }
+        int rowCount(const QModelIndex& = QModelIndex() ) const override { return m_actions.size(); }
+        int columnCount(const QModelIndex& = QModelIndex() ) const override { return 1; }
 
-        QVariant data(const QModelIndex&, int role) const;
+        QVariant data(const QModelIndex&, int role) const override;
 
-        Qt::ItemFlags flags(const QModelIndex &index) const;
+        Qt::ItemFlags flags(const QModelIndex &index) const override;
 
     private:
         friend class QuickLauncher;
@@ -94,7 +94,7 @@ namespace Caneda
         explicit QuickLauncher(QWidget *parent = nullptr);
 
     protected:
-        bool eventFilter(QObject *object, QEvent *event);
+        bool eventFilter(QObject *object, QEvent *event) override;
 
     private Q_SLOTS:
         void filterTextChanged();

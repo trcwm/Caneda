@@ -93,6 +93,7 @@ namespace Caneda
     class MessageWidget : public QFrame
     {
         Q_OBJECT
+
         Q_ENUMS(MessageType)
 
         Q_PROPERTY(QString text READ text WRITE setText)

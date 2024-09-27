@@ -70,11 +70,11 @@ namespace Caneda
         void focussedOut(GraphicsView *view);
 
     protected:
-        void mousePressEvent(QMouseEvent *event);
-        void mouseMoveEvent(QMouseEvent *event);
-        void mouseReleaseEvent(QMouseEvent *event);
-        void focusInEvent(QFocusEvent *event);
-        void focusOutEvent(QFocusEvent *event);
+        void mousePressEvent(QMouseEvent *event) override;
+        void mouseMoveEvent(QMouseEvent *event) override;
+        void mouseReleaseEvent(QMouseEvent *event) override;
+        void focusInEvent(QFocusEvent *event) override;
+        void focusOutEvent(QFocusEvent *event) override;
 
     private Q_SLOTS:
         void onMouseActionChanged(Caneda::MouseAction mouseAction);

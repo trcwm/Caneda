@@ -53,12 +53,12 @@ namespace Caneda
         //! \copydoc GraphicsItem::Type
         enum { Type = Painting::LayerType };
         //! \copydoc GraphicsItem::type()
-        int type() const { return Type; }
+        int type() const override { return Type; }
 
-        QPainterPath shapeForRect(const QRectF& rect) const;
+        QPainterPath shapeForRect(const QRectF& rect) const override;
 
         void updateBrush();
-        void paint(QPainter *, const QStyleOptionGraphicsItem*, QWidget *);
+        void paint(QPainter *, const QStyleOptionGraphicsItem*, QWidget *) override;
 
         //! \brief Returns rectangle coords as QRectF.
         QRectF rect() const { return paintingRect(); }
@@ -70,12 +70,12 @@ namespace Caneda
         QString netLabel() const { return m_netLabel; }
         void setNetLabel(QString netLabel) { m_netLabel = netLabel; }
 
-        Layer* copy() const;
+        Layer* copy() const override;
 
-        void saveData(Caneda::XmlWriter *writer) const;
-        void loadData(Caneda::XmlReader *reader);
+        void saveData(Caneda::XmlWriter *writer) const override;
+        void loadData(Caneda::XmlReader *reader) override;
 
-        void launchPropertiesDialog();
+        void launchPropertiesDialog() override;
 
     private:
         LayerName m_layerName;

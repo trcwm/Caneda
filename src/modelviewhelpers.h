@@ -40,7 +40,7 @@ namespace Caneda
     public:
         explicit FilterProxyModel(QObject *parent = nullptr);
 
-        bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const;
+        bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const override;
 
         //! \brief Method to prevent from becoming rootless while filtering
         void setSourceRoot(const QModelIndex &sourceRoot) { m_sourceRoot = sourceRoot; }
@@ -67,7 +67,7 @@ namespace Caneda
     public:
         explicit FileFilterProxyModel(QObject *parent = nullptr);
 
-        bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const;
+        bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const override;
     };
 
     /*!
@@ -84,8 +84,8 @@ namespace Caneda
     public:
         explicit IconProvider();
 
-        virtual QIcon icon(IconType type) const;
-        virtual QIcon icon(const QFileInfo & info) const;
+        virtual QIcon icon(IconType type) const override;
+        virtual QIcon icon(const QFileInfo & info) const override;
     };
 
 } // namespace Caneda

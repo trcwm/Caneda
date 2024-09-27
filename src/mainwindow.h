@@ -156,8 +156,8 @@ namespace Caneda
         void loadSettings();
         void saveSettings();
 
-        void contextMenuEvent(QContextMenuEvent * event);
-        void closeEvent(QCloseEvent *closeEvent);
+        void contextMenuEvent(QContextMenuEvent * event) override;
+        void closeEvent(QCloseEvent *closeEvent) override;
 
         TabWidget *m_tabWidget;
         FolderBrowser *m_folderBrowser;

@@ -46,7 +46,7 @@ namespace Caneda
         void onViewFocusChange(IView *view);
 
     protected:
-        void paintEvent(QPaintEvent *event);
+        void paintEvent(QPaintEvent *event) override;
 
     private:
         void setToolBar(QToolBar *toolBar);
@@ -84,7 +84,7 @@ namespace Caneda
         void statusBarMessage(Tab *tab, const QString &message);
 
     protected:
-        void closeEvent(QCloseEvent *event);
+        void closeEvent(QCloseEvent *event) override;
 
     private:
         void addView(IView *view);

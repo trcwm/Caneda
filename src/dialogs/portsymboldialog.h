@@ -43,7 +43,7 @@ namespace Caneda
         explicit PortSymbolDialog(PortSymbol *portSymbol, QWidget *parent = nullptr);
 
     public Q_SLOTS:
-        void accept();
+        void accept() override;
 
     private:
         PortSymbol *m_portSymbol;
