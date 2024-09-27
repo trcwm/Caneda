@@ -22,20 +22,20 @@
 #include "graphicsscene.h"
 
 #include "actionmanager.h"
+#include "component.h"
 #include "documentviewmanager.h"
 #include "ellipsearc.h"
 #include "graphicsview.h"
 #include "graphictextdialog.h"
 #include "idocument.h"
 #include "iview.h"
-#include "library.h"
 #include "portsymbol.h"
 #include "property.h"
-#include "propertydialog.h"
 #include "settings.h"
 #include "wire.h"
 #include "xmlutilities.h"
 
+#include <QApplication>
 #include <QClipboard>
 #include <QGraphicsSceneEvent>
 #include <QKeySequence>
@@ -127,7 +127,7 @@ namespace Caneda
 
         writer->writeEndDocument();
 
-        QClipboard *clipboard =  QApplication::clipboard();
+        QClipboard *clipboard = QApplication::clipboard();
         clipboard->setText(clipText);
     }
 
