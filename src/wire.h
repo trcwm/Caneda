@@ -42,7 +42,8 @@ namespace Caneda
     public:
         explicit Wire(const QPointF &startPos, const QPointF &endPos,
                       QGraphicsItem *parent = nullptr);
-        ~Wire();
+
+        ~Wire() override;
 
         //! \copydoc GraphicsItem::Type
         enum { Type = GraphicsItem::WireType };

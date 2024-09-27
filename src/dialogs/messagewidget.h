@@ -128,7 +128,7 @@ namespace Caneda
         /**
          * Destructor.
          */
-        ~MessageWidget();
+        ~MessageWidget() override;
 
         /**
          * Get the text of this message widget.

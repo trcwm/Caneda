@@ -37,7 +37,7 @@ namespace Caneda
 
     public:
         explicit ViewContainer(IView *view, QWidget *parent = nullptr);
-        ~ViewContainer();
+        ~ViewContainer() override;
 
         IView* view() const;
         void setView(IView *view);

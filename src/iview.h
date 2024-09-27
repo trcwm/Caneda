@@ -64,7 +64,7 @@ namespace Caneda
 
     public:
         explicit IView(IDocument *document);
-        ~IView();
+        ~IView() override;
 
         IDocument* document() const;
 
@@ -128,7 +128,7 @@ namespace Caneda
 
     public:
         explicit LayoutView(LayoutDocument *document);
-        ~LayoutView();
+        ~LayoutView() override;
 
         // IView interface methods
         virtual QWidget* toWidget() const;
@@ -173,7 +173,7 @@ namespace Caneda
 
     public:
         explicit SchematicView(SchematicDocument *document);
-        ~SchematicView();
+        ~SchematicView() override;
 
         // IView interface methods
         virtual QWidget* toWidget() const;
@@ -218,7 +218,7 @@ namespace Caneda
 
     public:
         explicit SimulationView(SimulationDocument *document);
-        ~SimulationView();
+        ~SimulationView() override;
 
         // IView interface methods
         virtual QWidget* toWidget() const;
@@ -263,7 +263,7 @@ namespace Caneda
 
     public:
         explicit SymbolView(SymbolDocument *document);
-        ~SymbolView();
+        ~SymbolView() override;
 
         // IView interface methods
         virtual QWidget* toWidget() const;
@@ -307,7 +307,7 @@ namespace Caneda
 
     public:
         explicit TextView(TextDocument *document);
-        ~TextView();
+        ~TextView() override;
 
         // IView interface methods
         virtual QWidget* toWidget() const;

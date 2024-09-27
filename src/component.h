@@ -80,7 +80,7 @@ namespace Caneda
     {
     public:
         explicit Component(QGraphicsItem *parent = nullptr);
-        ~Component();
+        ~Component() override;
 
         //! \copydoc GraphicsItem::Type
         enum { Type = GraphicsItem::ComponentType };

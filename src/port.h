@@ -64,7 +64,7 @@ namespace Caneda
     {
     public:
         explicit Port(GraphicsItem *parent = nullptr);
-        ~Port();
+        ~Port() override;
 
         //! Returns the port's name.
         QString name() const { return m_name; }

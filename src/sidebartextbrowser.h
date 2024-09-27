@@ -50,7 +50,7 @@ namespace Caneda
 
     public:
         explicit SidebarTextBrowser(QWidget *parent = nullptr);
-        ~SidebarTextBrowser();
+        ~SidebarTextBrowser() override;
 
     private Q_SLOTS:
         void filterTextChanged();

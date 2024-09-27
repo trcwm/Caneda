@@ -57,7 +57,7 @@ namespace Caneda
 
     public:
         static StateHandler* instance();
-        ~StateHandler();
+        ~StateHandler() override;
 
     public Q_SLOTS:
         void setNormalAction();

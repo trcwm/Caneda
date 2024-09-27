@@ -47,7 +47,7 @@ namespace Caneda
 
     public:
         static DocumentViewManager* instance();
-        ~DocumentViewManager();
+        ~DocumentViewManager() override;
 
         IView* createView(IDocument *document);
 

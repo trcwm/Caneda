@@ -45,7 +45,7 @@ namespace Caneda
     {
     public:
         explicit PortSymbol(QGraphicsItem *parent = nullptr);
-        ~PortSymbol();
+        ~PortSymbol() override;
 
         //! \copydoc GraphicsItem::Type
         enum { Type = GraphicsItem::PortSymbolType };

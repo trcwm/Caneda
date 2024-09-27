@@ -152,7 +152,7 @@ namespace Caneda
 
     public:
         explicit LayoutDocument(QObject *parent = nullptr);
-        ~LayoutDocument();
+        ~LayoutDocument() override;
 
         // IDocument interface methods
         virtual IContext* context();
@@ -232,7 +232,7 @@ namespace Caneda
 
     public:
         explicit SchematicDocument(QObject *parent = nullptr);
-        ~SchematicDocument();
+        ~SchematicDocument() override;
 
         // IDocument interface methods
         virtual IContext* context();
@@ -318,7 +318,7 @@ namespace Caneda
 
     public:
         explicit SimulationDocument(QObject *parent = nullptr);
-        ~SimulationDocument();
+        ~SimulationDocument() override;
 
         // IDocument interface methods
         virtual IContext* context();
@@ -396,7 +396,7 @@ namespace Caneda
 
     public:
         explicit SymbolDocument(QObject *parent = nullptr);
-        ~SymbolDocument();
+        ~SymbolDocument() override;
 
         // IDocument interface methods
         virtual IContext* context();
@@ -476,7 +476,7 @@ namespace Caneda
 
     public:
         explicit TextDocument(QObject *parent = nullptr);
-        ~TextDocument();
+        ~TextDocument() override;
 
         // IDocument interface methods
         virtual IContext* context();
