@@ -85,15 +85,14 @@ namespace Caneda
         textLabel = new QLabel(content);
         textLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
         textLabel->setTextInteractionFlags(Qt::TextBrowserInteraction);
-        QObject::connect(textLabel, SIGNAL(linkActivated(QString)), q, SIGNAL(linkActivated(QString)));
-        QObject::connect(textLabel, SIGNAL(linkHovered(QString)), q, SIGNAL(linkHovered(QString)));
+        QObject::connect(textLabel, &QLabel::linkActivated, q, &MessageWidget::linkActivated);
+        QObject::connect(textLabel, &QLabel::linkHovered,   q, &MessageWidget::linkHovered);
 
         QAction *closeAction = new QAction(q);
         closeAction->setText(MessageWidget::tr("&Close"));
         closeAction->setToolTip(MessageWidget::tr("Close message"));
         closeAction->setIcon(q->style()->standardIcon(QStyle::SP_DialogCloseButton));
-
-        QObject::connect(closeAction, SIGNAL(triggered(bool)), q, SLOT(animatedHide()));
+        QObject::connect(closeAction, &QAction::triggered, q, &MessageWidget::animatedHide);
 
         closeButton = new QToolButton(content);
         closeButton->setAutoRaise(true);
