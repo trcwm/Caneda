@@ -89,7 +89,7 @@ namespace Caneda
 
                     // Set the row next to the currently selected one
                     if(m_treeView->currentIndex() == m_proxyModel->index(0,0)) {
-                        m_treeView->setCurrentIndex(m_treeView->currentIndex().child(0,0));
+                        m_treeView->setCurrentIndex(m_treeView->model()->index(0,0, m_treeView->rootIndex()));
                     }
                     else {
                         m_treeView->setCurrentIndex(m_proxyModel->index(0,0));

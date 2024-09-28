@@ -244,11 +244,11 @@ namespace Caneda
                 if(keyEvent->key() == Qt::Key_Down) {
 
                     // Set the row next to the currently selected one
-                    if(m_listView->currentIndex() == m_listView->rootIndex().child(0,0)) {
-                        m_listView->setCurrentIndex(m_listView->rootIndex().child(1,0));
+                    if(m_listView->currentIndex() == m_listView->model()->index(0,0, m_listView->rootIndex())) {
+                        m_listView->setCurrentIndex(m_listView->model()->index(1,0, m_listView->rootIndex()));
                     }
                     else {
-                        m_listView->setCurrentIndex(m_listView->rootIndex().child(0,0));
+                        m_listView->setCurrentIndex(m_listView->model()->index(0,0, m_listView->rootIndex()));
                     }
 
                     // Set the focus in the treeview
@@ -278,7 +278,7 @@ namespace Caneda
         m_proxyModel->setFilterRegExp(regExp);
 
         // Select the first item in the result
-        m_listView->setCurrentIndex(m_listView->rootIndex().child(0,0));
+        m_listView->setCurrentIndex(m_listView->model()->index(0,0, m_listView->rootIndex()));
     }
 
     //! \brief Filters the view to show only selected file type.
