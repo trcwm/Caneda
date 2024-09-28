@@ -89,48 +89,48 @@ namespace Caneda
         updateWidgets(map);
 
         // Signals/slots connections
-        connect(ui.buttons, SIGNAL(accepted()), this, SLOT(applySettings()));
-        connect(ui.buttons, SIGNAL(rejected()), this, SLOT(reject()));
-        connect(ui.buttons, SIGNAL(clicked(QAbstractButton*)), this, SLOT(restoreDefaults(QAbstractButton*)));
-        connect(ui.pagesList, SIGNAL(currentRowChanged(int)), this, SLOT(changePage(int)));
+        connect(ui.buttons,   &QDialogButtonBox::accepted,     this, &SettingsDialog::applySettings);
+        connect(ui.buttons,   &QDialogButtonBox::rejected,     this, &SettingsDialog::reject);
+        connect(ui.buttons,   &QDialogButtonBox::clicked,      this, &SettingsDialog::restoreDefaults);
+        connect(ui.pagesList, &QListWidget::currentRowChanged, this, &SettingsDialog::changePage);
 
         // General group of settings
-        connect(ui.buttonBackground, SIGNAL(clicked()), SLOT(colorButtonDialog()));
-        connect(ui.buttonSimulationBackground, SIGNAL(clicked()), SLOT(colorButtonDialog()));
-        connect(ui.buttonForeground, SIGNAL(clicked()), SLOT(colorButtonDialog()));
-        connect(ui.buttonLine, SIGNAL(clicked()), SLOT(colorButtonDialog()));
-        connect(ui.buttonSelection, SIGNAL(clicked()), SLOT(colorButtonDialog()));
+        connect(ui.buttonBackground,           &QPushButton::clicked, this, &SettingsDialog::colorButtonDialog);
+        connect(ui.buttonSimulationBackground, &QPushButton::clicked, this, &SettingsDialog::colorButtonDialog);
+        connect(ui.buttonForeground,           &QPushButton::clicked, this, &SettingsDialog::colorButtonDialog);
+        connect(ui.buttonLine,                 &QPushButton::clicked, this, &SettingsDialog::colorButtonDialog);
+        connect(ui.buttonSelection,            &QPushButton::clicked, this, &SettingsDialog::colorButtonDialog);
 
         // Libraries group of settings
-        connect(ui.buttonAddLibrary, SIGNAL(clicked()), SLOT(slotAddLibrary()));
-        connect(ui.buttonRemoveLibrary, SIGNAL(clicked()), SLOT(slotRemoveLibrary()));
-        connect(ui.buttonAddHdlLibrary, SIGNAL(clicked()), SLOT(slotAddHdlLibrary()));
-        connect(ui.buttonRemoveHdlLibrary, SIGNAL(clicked()), SLOT(slotRemoveHdlLibrary()));
-        connect(ui.buttonGetNewLibraries, SIGNAL(clicked()), SLOT(slotGetNewLibraries()));
+        connect(ui.buttonAddLibrary,       &QPushButton::clicked,  this, &SettingsDialog::slotAddLibrary);
+        connect(ui.buttonRemoveLibrary,    &QPushButton::clicked,  this, &SettingsDialog::slotRemoveLibrary);
+        connect(ui.buttonAddHdlLibrary,    &QPushButton::clicked,  this, &SettingsDialog::slotAddHdlLibrary);
+        connect(ui.buttonRemoveHdlLibrary, &QPushButton::clicked,  this, &SettingsDialog::slotRemoveHdlLibrary);
+        connect(ui.buttonGetNewLibraries,  &QPushButton::clicked,  this, &SettingsDialog::slotGetNewLibraries);
 
         // Simulation group of settings
-        connect(ui.radioNgspiceMode, SIGNAL(clicked()), SLOT(simulationEngineChanged()));
-        connect(ui.radioCustomMode, SIGNAL(clicked()), SLOT(simulationEngineChanged()));
+        connect(ui.radioNgspiceMode,       &QRadioButton::clicked, this, &SettingsDialog::simulationEngineChanged);
+        connect(ui.radioCustomMode,        &QRadioButton::clicked, this, &SettingsDialog::simulationEngineChanged);
 
         // Layout group of settings
-        connect(ui.buttonMetal1, SIGNAL(clicked()), SLOT(colorButtonDialog()));
-        connect(ui.buttonMetal2, SIGNAL(clicked()), SLOT(colorButtonDialog()));
-        connect(ui.buttonPoly1, SIGNAL(clicked()), SLOT(colorButtonDialog()));
-        connect(ui.buttonPoly2, SIGNAL(clicked()), SLOT(colorButtonDialog()));
-        connect(ui.buttonActive, SIGNAL(clicked()), SLOT(colorButtonDialog()));
-        connect(ui.buttonContact, SIGNAL(clicked()), SLOT(colorButtonDialog()));
-        connect(ui.buttonNwell, SIGNAL(clicked()), SLOT(colorButtonDialog()));
-        connect(ui.buttonPwell, SIGNAL(clicked()), SLOT(colorButtonDialog()));
+        connect(ui.buttonMetal1,           &QPushButton::clicked,  this, &SettingsDialog::colorButtonDialog);
+        connect(ui.buttonMetal2,           &QPushButton::clicked,  this, &SettingsDialog::colorButtonDialog);
+        connect(ui.buttonPoly1,            &QPushButton::clicked,  this, &SettingsDialog::colorButtonDialog);
+        connect(ui.buttonPoly2,            &QPushButton::clicked,  this, &SettingsDialog::colorButtonDialog);
+        connect(ui.buttonActive,           &QPushButton::clicked,  this, &SettingsDialog::colorButtonDialog);
+        connect(ui.buttonContact,          &QPushButton::clicked,  this, &SettingsDialog::colorButtonDialog);
+        connect(ui.buttonNwell,            &QPushButton::clicked,  this, &SettingsDialog::colorButtonDialog);
+        connect(ui.buttonPwell,            &QPushButton::clicked,  this, &SettingsDialog::colorButtonDialog);
 
         // HDL group of settings
-        connect(ui.buttonKeyword, SIGNAL(clicked()), SLOT(colorButtonDialog()));
-        connect(ui.buttonType, SIGNAL(clicked()), SLOT(colorButtonDialog()));
-        connect(ui.buttonAttribute, SIGNAL(clicked()), SLOT(colorButtonDialog()));
-        connect(ui.buttonBlock, SIGNAL(clicked()), SLOT(colorButtonDialog()));
-        connect(ui.buttonClass, SIGNAL(clicked()), SLOT(colorButtonDialog()));
-        connect(ui.buttonData, SIGNAL(clicked()), SLOT(colorButtonDialog()));
-        connect(ui.buttonComment, SIGNAL(clicked()), SLOT(colorButtonDialog()));
-        connect(ui.buttonSystem, SIGNAL(clicked()), SLOT(colorButtonDialog()));
+        connect(ui.buttonKeyword,          &QPushButton::clicked,  this, &SettingsDialog::colorButtonDialog);
+        connect(ui.buttonType,             &QPushButton::clicked,  this, &SettingsDialog::colorButtonDialog);
+        connect(ui.buttonAttribute,        &QPushButton::clicked,  this, &SettingsDialog::colorButtonDialog);
+        connect(ui.buttonBlock,            &QPushButton::clicked,  this, &SettingsDialog::colorButtonDialog);
+        connect(ui.buttonClass,            &QPushButton::clicked,  this, &SettingsDialog::colorButtonDialog);
+        connect(ui.buttonData,             &QPushButton::clicked,  this, &SettingsDialog::colorButtonDialog);
+        connect(ui.buttonComment,          &QPushButton::clicked,  this, &SettingsDialog::colorButtonDialog);
+        connect(ui.buttonSystem,           &QPushButton::clicked,  this, &SettingsDialog::colorButtonDialog);
     }
 
     /*!

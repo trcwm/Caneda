@@ -55,7 +55,7 @@ namespace Caneda
         layout->addWidget(m_lineEdit);
         layout->addWidget(m_browseButton);
 
-        connect(m_browseButton, SIGNAL(clicked()), SLOT(browseButtonClicked()));
+        connect(m_browseButton, &QToolButton::clicked, this, &FileBrowserLineEdit::browseButtonClicked);
 
         updateTexts(m_document->fileName());
     }
@@ -132,8 +132,7 @@ namespace Caneda
             ui.treeWidget->setItemWidget(item, 1, widget);
         }
 
-        connect(ui.buttonBox, SIGNAL(clicked(QAbstractButton*)),
-                this, SLOT(buttonClicked(QAbstractButton*)));
+        connect(ui.buttonBox, &QDialogButtonBox::clicked, this, &SaveDocumentsDialog::buttonClicked);
     }
 
     //! \brief Check what button was pressed and accept/reject the dialog.

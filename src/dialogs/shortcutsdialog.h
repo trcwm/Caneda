@@ -152,7 +152,7 @@ namespace Caneda
 
         void applyShortcuts();
         void restoreShortcuts();
-        void restoreDefaults(QAbstractButton *button);
+        void restoreDefaults();
 
     private:
         ShortcutsDialogModel *m_model;

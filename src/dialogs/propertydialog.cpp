@@ -318,10 +318,9 @@ namespace Caneda
         ui.tableView->setEditTriggers(QAbstractItemView::AnyKeyPressed | QAbstractItemView::DoubleClicked);
         ui.tableView->resizeColumnsToContents();
 
-        connect(ui.m_filterEdit, SIGNAL(textChanged(const QString &)),
-                this, SLOT(filterTextChanged()));
-        connect(ui.m_addButton, SIGNAL(clicked()), SLOT(addProperty()));
-        connect(ui.m_removeButton, SIGNAL(clicked()), SLOT(removeProperty()));
+        connect(ui.m_filterEdit,   &QLineEdit::textChanged, this, &PropertyDialog::filterTextChanged);
+        connect(ui.m_addButton,    &QToolButton::clicked,   this, &PropertyDialog::addProperty);
+        connect(ui.m_removeButton, &QToolButton::clicked,   this, &PropertyDialog::removeProperty);
     }
 
     /*!

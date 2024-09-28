@@ -37,9 +37,10 @@ namespace Caneda
         font.setPointSize(10);
         setFont(font);
 
-        connect(this, SIGNAL(focussed()), this, SLOT(updateCursorPosition()));
-        connect(this, SIGNAL(cursorPositionChanged()), this, SLOT(updateCursorPosition()));
-        connect(this, SIGNAL(cursorPositionChanged()), this, SLOT(highlightCurrentLine()));
+        connect(this, &TextEdit::focussed,                    this, &TextEdit::updateCursorPosition);
+        connect(this, &QPlainTextEdit::cursorPositionChanged, this, &TextEdit::updateCursorPosition);
+        connect(this, &QPlainTextEdit::cursorPositionChanged, this, &TextEdit::highlightCurrentLine);
+
         highlightCurrentLine();
     }
 

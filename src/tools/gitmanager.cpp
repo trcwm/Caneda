@@ -44,15 +44,15 @@ namespace Caneda
         // Set up git processes
         gitProcess = new QProcess(this);
         gitProcess->setWorkingDirectory(m_path);
-        connect(gitProcess, SIGNAL(finished(int)), SLOT(slotUpdateOutput()));
+        connect(gitProcess, qOverload<int, QProcess::ExitStatus>(&QProcess::finished), this, &GitManager::slotUpdateOutput);
 
         gitProcessHistory = new QProcess(this);
         gitProcessHistory->setWorkingDirectory(m_path);
-        connect(gitProcessHistory, SIGNAL(finished(int)), SLOT(slotUpdateHistory()));
+        connect(gitProcessHistory, qOverload<int, QProcess::ExitStatus>(&QProcess::finished), this, &GitManager::slotUpdateHistory);
 
         // Conections signal/slots
-        connect(ui.btnSaveBackup, SIGNAL(clicked()), SLOT(slotSaveBackup()));
-        connect(ui.btnRestoreBackup, SIGNAL(clicked()), SLOT(slotRestore()));
+        connect(ui.btnSaveBackup,    &QPushButton::clicked, this, &GitManager::slotSaveBackup);
+        connect(ui.btnRestoreBackup, &QPushButton::clicked, this, &GitManager::slotRestore);
 
         // Show actual history
         slotHistory();

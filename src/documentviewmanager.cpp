@@ -80,8 +80,7 @@ namespace Caneda
         DocumentData *data = documentDataForDocument(document);
         data->views.insert(0, newView);
 
-        connect(newView, SIGNAL(focussedIn(IView*)), this,
-                SLOT(onViewFocussedIn(IView*)));
+        connect(newView, &IView::focussedIn, this, &DocumentViewManager::onViewFocussedIn);
 
         emit changed();
 

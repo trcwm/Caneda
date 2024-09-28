@@ -49,9 +49,9 @@ namespace Caneda
             ui.fitInPageButton->hide();
         }
 
-        connect(ui.printerChoice, SIGNAL(toggled(bool)), this, SLOT(onChoiceToggled()));
-        connect(ui.pdfChoice, SIGNAL(toggled(bool)), this, SLOT(onChoiceToggled()));
-        connect(ui.browseButton, SIGNAL(clicked()), this, SLOT(onBrowseButtonClicked()));
+        connect(ui.printerChoice, &QRadioButton::toggled, this, &PrintDialog::onChoiceToggled);
+        connect(ui.pdfChoice,     &QRadioButton::toggled, this, &PrintDialog::onChoiceToggled);
+        connect(ui.browseButton,  &QToolButton::clicked,  this, &PrintDialog::onBrowseButtonClicked);
 
         m_printer = new QPrinter;
         m_printer->setPageOrientation(QPageLayout::Landscape);

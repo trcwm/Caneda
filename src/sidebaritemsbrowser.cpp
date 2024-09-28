@@ -171,10 +171,12 @@ namespace Caneda
         layout->addWidget(m_treeView);
 
         // Signals and slots connections
-        connect(m_model, SIGNAL(rowsInserted(QModelIndex, int, int)), m_treeView, SLOT(expandAll()));
-        connect(m_filterEdit, SIGNAL(textChanged(const QString &)), this, SLOT(filterTextChanged()));
-        connect(m_treeView, SIGNAL(clicked(QModelIndex)), this, SLOT(itemClicked(QModelIndex)));
-        connect(m_treeView, SIGNAL(activated(QModelIndex)), this, SLOT(itemClicked(QModelIndex)));
+        connect(m_model,      &QStandardItemModel::rowsInserted, m_treeView, &QTreeView::expandAll);
+        connect(m_filterEdit, &QLineEdit::textChanged,           this,       &SidebarItemsBrowser::filterTextChanged);
+        connect(m_treeView,   QOverload<const QModelIndex &>::of(&QTreeView::clicked),   this, QOverload<const QModelIndex &>::of(&SidebarItemsBrowser::itemClicked));
+        connect(m_treeView,   QOverload<const QModelIndex &>::of(&QTreeView::activated), this, QOverload<const QModelIndex &>::of(&SidebarItemsBrowser::itemClicked));
+
+        QOverload<const QModelIndex &>::of(&QTreeView::clicked);
 
         setWindowTitle(tr("Components Browser"));
     }

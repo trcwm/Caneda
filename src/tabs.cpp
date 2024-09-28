@@ -81,8 +81,8 @@ namespace Caneda
             layout->removeWidget(widget);
             widget->setParent(nullptr);
 
-            disconnect(m_view, SIGNAL(focussedIn(IView*)), this,
-                    SLOT(onViewFocusChange(IView*)));
+            disconnect(m_view, &IView::focussedIn, this, &ViewContainer::onViewFocusChange);
+
             setToolBar(nullptr);
         }
 
@@ -93,8 +93,7 @@ namespace Caneda
             widget->setParent(this);
             layout->addWidget(widget);
 
-            connect(m_view, SIGNAL(focussedIn(IView*)), this,
-                    SLOT(onViewFocusChange(IView*)));
+            connect(m_view, &IView::focussedIn, this, &ViewContainer::onViewFocusChange);
 
             setToolBar(m_view->toolBar());
         }
@@ -352,12 +351,9 @@ namespace Caneda
 
         m_views.insert(0, view);
 
-        connect(view, SIGNAL(focussedIn(IView*)), this,
-                SLOT(onViewFocussedIn(IView*)));
-        connect(view->document(), SIGNAL(documentChanged(IDocument*)),
-                this, SLOT(onDocumentChanged(IDocument*)));
-        connect(view, SIGNAL(statusBarMessage(const QString &)), this,
-                SLOT(onStatusBarMessage(const QString &)));
+        connect(view, &IView::focussedIn, this, &Tab::onViewFocussedIn);
+        connect(view->document(), SIGNAL(documentChanged(IDocument*)), this, SLOT(onDocumentChanged(IDocument*)));
+        connect(view, &IView::statusBarMessage, this, &Tab::onStatusBarMessage);
 
         emit tabInfoChanged(this);
     }
@@ -388,10 +384,9 @@ namespace Caneda
     TabWidget::TabWidget(QWidget *parent) : QTabWidget(parent)
     {
         setTabBar(new QTabBar(this));
-        connect(this, SIGNAL(currentChanged(int)), this,
-                SLOT(updateTabContext()));
-        connect(this, SIGNAL(tabCloseRequested(int)), this,
-                SLOT(onTabCloseRequested(int)));
+
+        connect(this, &TabWidget::currentChanged,    this, &TabWidget::updateTabContext);
+        connect(this, &TabWidget::tabCloseRequested, this, &TabWidget::onTabCloseRequested);
     }
 
     QList<Tab*> TabWidget::tabs() const
@@ -415,9 +410,9 @@ namespace Caneda
     void TabWidget::insertTab(int index, Tab *tab)
     {
         QTabWidget::insertTab(index, tab, tab->tabIcon(), tab->tabText());
-        connect(tab, SIGNAL(tabInfoChanged(Tab*)), this, SLOT(updateTabContext()));
-        connect(tab, SIGNAL(statusBarMessage(Tab*, const QString&)), this,
-                SLOT(onStatusBarMessage(Tab*, const QString&)));
+
+        connect(tab, &Tab::tabInfoChanged,   this, &TabWidget::updateTabContext);
+        connect(tab, &Tab::statusBarMessage, this, &TabWidget::onStatusBarMessage);
 
         IView *view = tab->activeView();
         if (!view) {

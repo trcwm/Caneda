@@ -86,12 +86,12 @@ namespace Caneda
         buttonDeleteFile->setToolTip(tr("Delete file/folder"));
         buttonDeleteFile->setWhatsThis(tr("Delete file/folder"));
 
-        connect(buttonUp, SIGNAL(clicked()), this, SLOT(slotUpFolder()));
-        connect(buttonBack, SIGNAL(clicked()), this, SLOT(slotBackFolder()));
-        connect(buttonForward, SIGNAL(clicked()), this, SLOT(slotForwardFolder()));
-        connect(buttonHome, SIGNAL(clicked()), this, SLOT(slotHomeFolder()));
-        connect(buttonNewFolder, SIGNAL(clicked()), this, SLOT(slotNewFolder()));
-        connect(buttonDeleteFile, SIGNAL(clicked()), this, SLOT(slotDeleteFile()));
+        connect(buttonUp,         &QToolButton::clicked, this, &FolderBrowser::slotUpFolder);
+        connect(buttonBack,       &QToolButton::clicked, this, &FolderBrowser::slotBackFolder);
+        connect(buttonForward,    &QToolButton::clicked, this, &FolderBrowser::slotForwardFolder);
+        connect(buttonHome,       &QToolButton::clicked, this, &FolderBrowser::slotHomeFolder);
+        connect(buttonNewFolder,  &QToolButton::clicked, this, &FolderBrowser::slotNewFolder);
+        connect(buttonDeleteFile, &QToolButton::clicked, this, &FolderBrowser::slotDeleteFile);
 
         toolbar->addWidget(buttonUp);
         toolbar->addWidget(buttonBack);
@@ -111,9 +111,7 @@ namespace Caneda
         m_listView->setModel(m_model);
         layout->addWidget(m_listView);
 
-        // Signals and slots connections
-        connect(m_listView, SIGNAL(activated(QModelIndex)),
-                this, SLOT(slotOnDoubleClicked(QModelIndex)));
+        connect(m_listView, &QListView::activated, this, &FolderBrowser::slotOnDoubleClicked);
 
         setWindowTitle(tr("Folder Browser"));
     }

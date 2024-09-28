@@ -47,8 +47,8 @@ namespace Caneda
 
         ui.layout->addWidget(m_projectsSidebar);
 
-        connect(m_projectsSidebar, SIGNAL(itemDoubleClicked(QString, QString)),
-                this, SLOT(itemDoubleClicked(QString, QString)));
+        connect(m_projectsSidebar, &SidebarItemsBrowser::itemDoubleClicked,
+                this, &ProjectFileOpenDialog::itemDoubleClicked);
 
         m_fileName = QString();
     }

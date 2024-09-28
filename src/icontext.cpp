@@ -182,8 +182,9 @@ namespace Caneda
         StateHandler *handler = StateHandler::instance();
         m_sidebarItems = new SidebarItemsModel(this);
         m_sidebarBrowser = new SidebarItemsBrowser(m_sidebarItems);
-        connect(m_sidebarBrowser, SIGNAL(itemClicked(const QString&, const QString&)), handler,
-                SLOT(insertItem(const QString&, const QString&)));
+
+        connect(m_sidebarBrowser, QOverload<const QString&, const QString&>::of(&SidebarItemsBrowser::itemClicked),
+                handler,          QOverload<const QString&, const QString&>::of(&StateHandler::insertItem));
 
         Settings *settings = Settings::instance();
 
@@ -282,8 +283,8 @@ namespace Caneda
         StateHandler *handler = StateHandler::instance();
         QuickInsert *quickInsert = new QuickInsert(m_sidebarItems);
 
-        connect(quickInsert, SIGNAL(itemClicked(const QString&, const QString&)), handler,
-                SLOT(insertItem(const QString&, const QString&)));
+        connect(quickInsert, QOverload<const QString&, const QString&>::of(&QuickInsert::itemClicked),
+                handler,     QOverload<const QString&, const QString&>::of(&StateHandler::insertItem));
 
         quickInsert->exec(QCursor::pos());
 
@@ -299,8 +300,9 @@ namespace Caneda
         StateHandler *handler = StateHandler::instance();
         m_sidebarItems = new SidebarItemsModel(this);
         m_sidebarBrowser = new SidebarItemsBrowser(m_sidebarItems);
-        connect(m_sidebarBrowser, SIGNAL(itemClicked(const QString&, const QString&)), handler,
-                SLOT(insertItem(const QString&, const QString&)));
+
+        connect(m_sidebarBrowser, QOverload<const QString&, const QString&>::of(&SidebarItemsBrowser::itemClicked),
+                handler,          QOverload<const QString&, const QString&>::of(&StateHandler::insertItem));
 
         // Load schematic libraries
         LibraryManager *libraryManager = LibraryManager::instance();
@@ -405,8 +407,8 @@ namespace Caneda
         StateHandler *handler = StateHandler::instance();
         QuickInsert *quickInsert = new QuickInsert(m_sidebarItems);
 
-        connect(quickInsert, SIGNAL(itemClicked(const QString&, const QString&)), handler,
-                SLOT(insertItem(const QString&, const QString&)));
+        connect(quickInsert, QOverload<const QString&, const QString&>::of(&QuickInsert::itemClicked),
+                handler,     QOverload<const QString&, const QString&>::of(&StateHandler::insertItem));
 
         quickInsert->exec(QCursor::pos());
 
@@ -490,8 +492,9 @@ namespace Caneda
         StateHandler *handler = StateHandler::instance();
         m_sidebarItems = new SidebarItemsModel(this);
         m_sidebarBrowser = new SidebarItemsBrowser(m_sidebarItems);
-        connect(m_sidebarBrowser, SIGNAL(itemClicked(const QString&, const QString&)), handler,
-                SLOT(insertItem(const QString&, const QString&)));
+
+        connect(m_sidebarBrowser, QOverload<const QString&, const QString&>::of(&SidebarItemsBrowser::itemClicked),
+                handler,          QOverload<const QString&, const QString&>::of(&StateHandler::insertItem));
 
         QList<QPair<QString, QPixmap> > miscellaneousItems;
         miscellaneousItems << qMakePair(QObject::tr("Port Symbol"),
@@ -572,8 +575,8 @@ namespace Caneda
         StateHandler *handler = StateHandler::instance();
         QuickInsert *quickInsert = new QuickInsert(m_sidebarItems);
 
-        connect(quickInsert, SIGNAL(itemClicked(const QString&, const QString&)), handler,
-                SLOT(insertItem(const QString&, const QString&)));
+        connect(quickInsert, QOverload<const QString&, const QString&>::of(&QuickInsert::itemClicked),
+                handler,     QOverload<const QString&, const QString&>::of(&StateHandler::insertItem));
 
         quickInsert->exec(QCursor::pos());
 

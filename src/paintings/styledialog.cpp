@@ -364,26 +364,26 @@ namespace Caneda
         ui.lineColorButton->setIcon(lineColorPixmap);
         ui.fillColorButton->setIcon(fillColorPixmap);
 
-        connect(ui.startAngleSpinBox, SIGNAL(valueChanged(int)), SLOT(updatePreview()));
-        connect(ui.spanAngleSpinBox, SIGNAL(valueChanged(int)), SLOT(updatePreview()));
+        connect(ui.startAngleSpinBox,  QOverload<int>::of(&QSpinBox::valueChanged), this, &StyleDialog::updatePreview);
+        connect(ui.spanAngleSpinBox,   QOverload<int>::of(&QSpinBox::valueChanged), this, &StyleDialog::updatePreview);
 
-        connect(ui.arrowStyleComboBox, SIGNAL(activated(int)), SLOT(updatePreview()));
-        connect(ui.arrowWidthSpinBox, SIGNAL(valueChanged(int)), SLOT(updatePreview()));
-        connect(ui.arrowHeightSpinBox, SIGNAL(valueChanged(int)), SLOT(updatePreview()));
+        connect(ui.arrowStyleComboBox, QOverload<int>::of(&QComboBox::activated),   this, &StyleDialog::updatePreview);
+        connect(ui.arrowWidthSpinBox,  QOverload<int>::of(&QSpinBox::valueChanged), this, &StyleDialog::updatePreview);
+        connect(ui.arrowHeightSpinBox, QOverload<int>::of(&QSpinBox::valueChanged), this, &StyleDialog::updatePreview);
 
-        connect(ui.lineWidthSpinBox, SIGNAL(valueChanged(int)), SLOT(updatePreview()));
-        connect(ui.lineColorButton, SIGNAL(clicked()), SLOT(launchColorDialog()));
-        connect(ui.lineStyleComboBox, SIGNAL(activated(int)), SLOT(updatePreview()));
+        connect(ui.lineWidthSpinBox,   QOverload<int>::of(&QSpinBox::valueChanged), this, &StyleDialog::updatePreview);
+        connect(ui.lineColorButton,    &QToolButton::clicked,                       this, &StyleDialog::launchColorDialog);
+        connect(ui.lineStyleComboBox,  QOverload<int>::of(&QComboBox::activated),   this, &StyleDialog::updatePreview);
 
-        connect(ui.fillColorButton, SIGNAL(clicked()), SLOT(launchColorDialog()));
-        connect(ui.fillStyleComboBox, SIGNAL(activated(int)), SLOT(updatePreview()));
+        connect(ui.fillColorButton,    &QToolButton::clicked,                       this, &StyleDialog::launchColorDialog);
+        connect(ui.fillStyleComboBox,  QOverload<int>::of(&QComboBox::activated),   this, &StyleDialog::updatePreview);
 
-        connect(this, SIGNAL(accepted()), SLOT(applySettings()));
+        connect(this, &StyleDialog::accepted, this, &StyleDialog::applySettings);
 
         previewWidget = new PreviewWidget(painting->type());
         ui.previewLayout->addWidget(previewWidget);
 
-        connect(ui.backgroundCheckBox, SIGNAL(toggled(bool)), previewWidget, SLOT(toggleBackground(bool)));
+        connect(ui.backgroundCheckBox, &QCheckBox::toggled, previewWidget, &PreviewWidget::toggleBackground);
 
         updatePreview();
     }

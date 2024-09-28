@@ -64,11 +64,9 @@ namespace Caneda
 
         m_sidebarItems = new SidebarItemsModel(this);
         m_projectsSidebar = new SidebarItemsBrowser(m_sidebarItems, this);
-        connect(m_projectsSidebar, SIGNAL(itemClicked(const QString&, const QString&)), this,
-                SIGNAL(itemClicked(const QString&, const QString&)));
-        connect(m_projectsSidebar, SIGNAL(itemDoubleClicked(const QString&, const QString&)), this,
-                SLOT(slotOnDoubleClicked(const QString&, const QString&)));
 
+        connect(m_projectsSidebar, QOverload<const QString&, const QString&>::of(&SidebarItemsBrowser::itemClicked),      this, &Project::itemClicked);
+        connect(m_projectsSidebar,                                               &SidebarItemsBrowser::itemDoubleClicked, this, &Project::slotOnDoubleClicked);
 
         layout->addWidget(toolbar);
         layout->addWidget(m_projectsSidebar);

@@ -91,7 +91,7 @@ namespace Caneda
 
         m_zoomBandClicks = 0;
 
-        connect(undoStack(), SIGNAL(cleanChanged(bool)), this, SIGNAL(changed()));
+        connect(undoStack(), &QUndoStack::cleanChanged, this, &GraphicsScene::changed);
     }
 
     /**********************************************************************

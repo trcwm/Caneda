@@ -78,11 +78,10 @@ namespace Caneda
         m_toolBar = new QToolBar();
 
         DocumentViewManager *manager = DocumentViewManager::instance();
-        connect(manager, SIGNAL(changed()), this, SLOT(onDocumentViewManagerChanged()));
+        connect(manager, &DocumentViewManager::changed, this, &IView::onDocumentViewManagerChanged);
 
         m_documentSelector = new QComboBox(m_toolBar);
-        connect(m_documentSelector, SIGNAL(currentIndexChanged(int)), this,
-                SLOT(onDocumentSelectorIndexChanged(int)));
+        connect(m_documentSelector, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &IView::onDocumentSelectorIndexChanged);
 
 
         QToolButton *splitHorizontalButton = new QToolButton(m_toolBar);
@@ -92,9 +91,9 @@ namespace Caneda
         QToolButton *closeViewButton = new QToolButton(m_toolBar);
         closeViewButton->setIcon(Caneda::icon("view-left-close"));
 
-        connect(splitHorizontalButton, SIGNAL(clicked()), this, SLOT(slotSplitHorizontal()));
-        connect(splitVerticalButton, SIGNAL(clicked()), this, SLOT(slotSplitVertical()));
-        connect(closeViewButton, SIGNAL(clicked()), this, SLOT(slotCloseView()));
+        connect(splitHorizontalButton, &QToolButton::clicked, this, &IView::slotSplitHorizontal);
+        connect(splitVerticalButton,   &QToolButton::clicked, this, &IView::slotSplitVertical);
+        connect(closeViewButton,       &QToolButton::clicked, this, &IView::slotCloseView);
 
         m_toolBar->addWidget(m_documentSelector);
         m_toolBar->addSeparator();
@@ -184,12 +183,10 @@ namespace Caneda
     LayoutView::LayoutView(LayoutDocument *document) : IView(document)
     {
         m_graphicsView = new GraphicsView(document->graphicsScene());
-        connect(m_graphicsView, SIGNAL(focussedIn(GraphicsView*)), this,
-                SLOT(onWidgetFocussedIn()));
-        connect(m_graphicsView, SIGNAL(focussedOut(GraphicsView*)), this,
-                SLOT(onWidgetFocussedOut()));
-        connect(m_graphicsView, SIGNAL(cursorPositionChanged(const QString &)),
-                this, SIGNAL(statusBarMessage(const QString &)));
+
+        connect(m_graphicsView, &GraphicsView::focussedIn,            this, &LayoutView::onWidgetFocussedIn);
+        connect(m_graphicsView, &GraphicsView::focussedOut,           this, &LayoutView::onWidgetFocussedOut);
+        connect(m_graphicsView, &GraphicsView::cursorPositionChanged, this, &LayoutView::statusBarMessage);
     }
 
     //! \brief Destructor.
@@ -257,12 +254,10 @@ namespace Caneda
     SchematicView::SchematicView(SchematicDocument *document) : IView(document)
     {
         m_graphicsView = new GraphicsView(document->graphicsScene());
-        connect(m_graphicsView, SIGNAL(focussedIn(GraphicsView*)), this,
-                SLOT(onWidgetFocussedIn()));
-        connect(m_graphicsView, SIGNAL(focussedOut(GraphicsView*)), this,
-                SLOT(onWidgetFocussedOut()));
-        connect(m_graphicsView, SIGNAL(cursorPositionChanged(const QString &)),
-                this, SIGNAL(statusBarMessage(const QString &)));
+
+        connect(m_graphicsView, &GraphicsView::focussedIn,            this, &SchematicView::onWidgetFocussedIn);
+        connect(m_graphicsView, &GraphicsView::focussedOut,           this, &SchematicView::onWidgetFocussedOut);
+        connect(m_graphicsView, &GraphicsView::cursorPositionChanged, this, &SchematicView::statusBarMessage);
     }
 
     //! \brief Destructor.
@@ -334,12 +329,9 @@ namespace Caneda
         m_chartView->populate();
 
         //! \todo Reimplement this
-//        connect(m_chartView, SIGNAL(focussedIn(ChartView*)), this,
-//                SLOT(onWidgetFocussedIn()));
-//        connect(m_chartView, SIGNAL(focussedOut(ChartView*)), this,
-//                SLOT(onWidgetFocussedOut()));
-        connect(m_chartView, SIGNAL(cursorPositionChanged(const QString &)),
-                this, SIGNAL(statusBarMessage(const QString &)));
+        //connect(m_chartView, &ChartView::focussedIn,            this, &SimulationView::onWidgetFocussedIn);
+        //connect(m_chartView, &ChartView::focussedOut,           this, &SimulationView::onWidgetFocussedOut);
+        connect(m_chartView, &ChartView::cursorPositionChanged, this, &SimulationView::statusBarMessage);
     }
 
     //! \brief Destructor.
@@ -408,12 +400,10 @@ namespace Caneda
     SymbolView::SymbolView(SymbolDocument *document) : IView(document)
     {
         m_graphicsView = new GraphicsView(document->graphicsScene());
-        connect(m_graphicsView, SIGNAL(focussedIn(GraphicsView*)), this,
-                SLOT(onWidgetFocussedIn()));
-        connect(m_graphicsView, SIGNAL(focussedOut(GraphicsView*)), this,
-                SLOT(onWidgetFocussedOut()));
-        connect(m_graphicsView, SIGNAL(cursorPositionChanged(const QString &)),
-                this, SIGNAL(statusBarMessage(const QString &)));
+
+        connect(m_graphicsView, &GraphicsView::focussedIn,            this, &SymbolView::onWidgetFocussedIn);
+        connect(m_graphicsView, &GraphicsView::focussedOut,           this, &SymbolView::onWidgetFocussedOut);
+        connect(m_graphicsView, &GraphicsView::cursorPositionChanged, this, &SymbolView::statusBarMessage);
     }
 
     //! \brief Destructor.
@@ -481,10 +471,9 @@ namespace Caneda
     TextView::TextView(TextDocument *document) : IView(document)
     {
         m_textEdit = new TextEdit(document->textDocument());
-        connect(m_textEdit, SIGNAL(focussed()), this,
-                SLOT(onFocussed()));
-        connect(m_textEdit, SIGNAL(cursorPositionChanged(const QString &)),
-                this, SIGNAL(statusBarMessage(const QString &)));
+
+        connect(m_textEdit, &TextEdit::focussed,              this, &TextView::onFocussed);
+        connect(m_textEdit, &TextEdit::cursorPositionChanged, this, &TextView::statusBarMessage);
     }
 
     //! \brief Destructor.

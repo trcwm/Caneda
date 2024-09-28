@@ -150,21 +150,21 @@ namespace Caneda
         layout->addWidget(m_listView);
 
         // Signals and slots connections
-        connect(buttonUp, SIGNAL(clicked()), this, SLOT(slotUpFolder()));
-        connect(buttonBack, SIGNAL(clicked()), this, SLOT(slotBackFolder()));
-        connect(buttonForward, SIGNAL(clicked()), this, SLOT(slotForwardFolder()));
-        connect(buttonHome, SIGNAL(clicked()), this, SLOT(slotHomeFolder()));
+        connect(buttonUp,      &QToolButton::clicked, this, &QuickOpen::slotUpFolder);
+        connect(buttonBack,    &QToolButton::clicked, this, &QuickOpen::slotBackFolder);
+        connect(buttonForward, &QToolButton::clicked, this, &QuickOpen::slotForwardFolder);
+        connect(buttonHome,    &QToolButton::clicked, this, &QuickOpen::slotHomeFolder);
 
-        connect(filterNone, SIGNAL(triggered(bool)), this, SLOT(filterFileTypes()));
-        connect(filterSchematics, SIGNAL(triggered(bool)), this, SLOT(filterFileTypes()));
-        connect(filterSymbols, SIGNAL(triggered(bool)), this, SLOT(filterFileTypes()));
-        connect(filterLayouts, SIGNAL(triggered(bool)), this, SLOT(filterFileTypes()));
-        connect(filterSimulations, SIGNAL(triggered(bool)), this, SLOT(filterFileTypes()));
-        connect(filterText, SIGNAL(triggered(bool)), this, SLOT(filterFileTypes()));
+        connect(filterNone,        &QAction::triggered, this, &QuickOpen::filterFileTypes);
+        connect(filterSchematics,  &QAction::triggered, this, &QuickOpen::filterFileTypes);
+        connect(filterSymbols,     &QAction::triggered, this, &QuickOpen::filterFileTypes);
+        connect(filterLayouts,     &QAction::triggered, this, &QuickOpen::filterFileTypes);
+        connect(filterSimulations, &QAction::triggered, this, &QuickOpen::filterFileTypes);
+        connect(filterText,        &QAction::triggered, this, &QuickOpen::filterFileTypes);
 
-        connect(m_filterEdit, SIGNAL(textChanged(const QString &)), this, SLOT(filterTextChanged()));
-        connect(m_filterEdit, SIGNAL(returnPressed()), this, SLOT(itemSelected()));
-        connect(m_listView, SIGNAL(activated(QModelIndex)), this, SLOT(itemSelected()));
+        connect(m_filterEdit, &QLineEdit::textChanged,   this, &QuickOpen::filterTextChanged);
+        connect(m_filterEdit, &QLineEdit::returnPressed, this, &QuickOpen::open);
+        connect(m_listView,   &QListView::activated,     this, &QuickOpen::open);
 
         // Filter the selected filetype and start with the focus on the filter
         filterGroup->actions().at(index)->trigger();
@@ -341,7 +341,7 @@ namespace Caneda
     }
 
     //! \brief Accept the dialog and open the selected item.
-    void QuickOpen::itemSelected()
+    void QuickOpen::open()
     {
         if(m_listView->currentIndex().isValid()) {
 

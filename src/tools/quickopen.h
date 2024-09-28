@@ -72,7 +72,7 @@ namespace Caneda
         void filterTextChanged();
         void filterFileTypes();
 
-        void itemSelected();
+        void open();
 
     private:
         QFileSystemModel *m_model;

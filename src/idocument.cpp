@@ -356,14 +356,11 @@ namespace Caneda
     LayoutDocument::LayoutDocument(QObject *parent) : IDocument(parent)
     {
         m_graphicsScene = new GraphicsScene(this);
-        connect(m_graphicsScene, SIGNAL(changed()), this,
-                SLOT(emitDocumentChanged()));
-        connect(m_graphicsScene->undoStack(), SIGNAL(canUndoChanged(bool)),
-                this, SLOT(emitDocumentChanged()));
-        connect(m_graphicsScene->undoStack(), SIGNAL(canRedoChanged(bool)),
-                this, SLOT(emitDocumentChanged()));
-        connect(m_graphicsScene, SIGNAL(selectionChanged()), this,
-                SLOT(emitDocumentChanged()));
+
+        connect(m_graphicsScene,              &GraphicsScene::changed,          this, &IDocument::emitDocumentChanged);
+        connect(m_graphicsScene->undoStack(), &QUndoStack::canUndoChanged,      this, &IDocument::emitDocumentChanged);
+        connect(m_graphicsScene->undoStack(), &QUndoStack::canRedoChanged,      this, &IDocument::emitDocumentChanged);
+        connect(m_graphicsScene,              &GraphicsScene::selectionChanged, this, &IDocument::emitDocumentChanged);
     }
 
     //! \brief Destructor.
@@ -623,14 +620,11 @@ namespace Caneda
     SchematicDocument::SchematicDocument(QObject *parent) : IDocument(parent)
     {
         m_graphicsScene = new GraphicsScene(this);
-        connect(m_graphicsScene, SIGNAL(changed()), this,
-                SLOT(emitDocumentChanged()));
-        connect(m_graphicsScene->undoStack(), SIGNAL(canUndoChanged(bool)),
-                this, SLOT(emitDocumentChanged()));
-        connect(m_graphicsScene->undoStack(), SIGNAL(canRedoChanged(bool)),
-                this, SLOT(emitDocumentChanged()));
-        connect(m_graphicsScene, SIGNAL(selectionChanged()), this,
-                SLOT(emitDocumentChanged()));
+
+        connect(m_graphicsScene,              &GraphicsScene::changed,          this, &IDocument::emitDocumentChanged);
+        connect(m_graphicsScene->undoStack(), &QUndoStack::canUndoChanged,      this, &IDocument::emitDocumentChanged);
+        connect(m_graphicsScene->undoStack(), &QUndoStack::canRedoChanged,      this, &IDocument::emitDocumentChanged);
+        connect(m_graphicsScene,              &GraphicsScene::selectionChanged, this, &IDocument::emitDocumentChanged);
     }
 
     //! \brief Destructor.
@@ -784,9 +778,12 @@ namespace Caneda
         /*! \todo In the future (after Qt5.6 is released), instead of this
          * first check, simply connect the simulation process with the slot
          * simulationError, in a way similar to the following:
-         * connect(simulationProcess, SIGNAL(errorOccurred(QProcess::ProcessError)), this, SLOT(simulationError(QProcess::ProcessError)));
+         *
+         * connect(simulationProcess, &QProcess::errorOccurred, this, &SchematicDocument::simulationError);
+         *
          * This will check against any simulator, instead of the current
          * check that only verifies the ngspice installation.
+         *
          * \sa simulationError()
          */
         if(!simulationError()) {
@@ -835,7 +832,7 @@ namespace Caneda
         simulationProcess->start(command, args);
 
         // The simulation results are opened in the simulationReady slot, to avoid blocking the interface while simulating
-        connect(simulationProcess, SIGNAL(finished(int, QProcess::ExitStatus)), this, SLOT(simulationReady(int)));
+        connect(simulationProcess, qOverload<int, QProcess::ExitStatus>(&QProcess::finished), this, &SchematicDocument::simulationReady);
     }
 
     void SchematicDocument::print(QPrinter *printer, bool fitInView)
@@ -1050,7 +1047,7 @@ namespace Caneda
                 dialog->setIcon(Caneda::icon("dialog-error"));
 
                 QAction *action = new QAction(Caneda::icon("help-contents"), tr("More info..."), this);
-                connect(action, SIGNAL(triggered()), SLOT(showSimulationHelp()));
+                connect(action, &QAction::triggered, this, &SchematicDocument::showSimulationHelp);
 
                 dialog->addAction(action);
                 dialog->show();
@@ -1138,7 +1135,7 @@ namespace Caneda
             dialog->setIcon(Caneda::icon("dialog-error"));
 
             QAction *action = new QAction(Caneda::icon("help-contents"), tr("More info..."), this);
-            connect(action, SIGNAL(triggered()), SLOT(showSimulationHelp()));
+            connect(action, &QAction::triggered, this, &SchematicDocument::showSimulationHelp);
 
             dialog->addAction(action);
             dialog->show();
@@ -1173,7 +1170,7 @@ namespace Caneda
             dialog->setIcon(Caneda::icon("dialog-error"));
 
             QAction *action = new QAction(Caneda::icon("help-contents"), tr("More info..."), this);
-            connect(action, SIGNAL(triggered()), SLOT(showSimulationHelp()));
+            connect(action, &QAction::triggered, this, &SchematicDocument::showSimulationHelp);
 
             dialog->addAction(action);
             dialog->show();
@@ -1309,14 +1306,11 @@ namespace Caneda
     SymbolDocument::SymbolDocument(QObject *parent) : IDocument(parent)
     {
         m_graphicsScene = new GraphicsScene(this);
-        connect(m_graphicsScene, SIGNAL(changed()), this,
-                SLOT(emitDocumentChanged()));
-        connect(m_graphicsScene->undoStack(), SIGNAL(canUndoChanged(bool)),
-                this, SLOT(emitDocumentChanged()));
-        connect(m_graphicsScene->undoStack(), SIGNAL(canRedoChanged(bool)),
-                this, SLOT(emitDocumentChanged()));
-        connect(m_graphicsScene, SIGNAL(selectionChanged()), this,
-                SLOT(emitDocumentChanged()));
+
+        connect(m_graphicsScene,              &GraphicsScene::changed,          this, &IDocument::emitDocumentChanged);
+        connect(m_graphicsScene->undoStack(), &QUndoStack::canUndoChanged,      this, &IDocument::emitDocumentChanged);
+        connect(m_graphicsScene->undoStack(), &QUndoStack::canRedoChanged,      this, &IDocument::emitDocumentChanged);
+        connect(m_graphicsScene,              &GraphicsScene::selectionChanged, this, &IDocument::emitDocumentChanged);
     }
 
     //! \brief Destructor.
@@ -1578,14 +1572,9 @@ namespace Caneda
         m_textDocument = new QTextDocument;
         m_textDocument->setModified(false);
 
-        connect(m_textDocument, SIGNAL(undoAvailable(bool)),
-                this, SLOT(emitDocumentChanged()));
-        connect(m_textDocument, SIGNAL(redoAvailable(bool)),
-                this, SLOT(emitDocumentChanged()));
-        connect(m_textDocument, SIGNAL(modificationChanged(bool)),
-                this, SLOT(emitDocumentChanged()));
-        connect(m_textDocument, SIGNAL(contentsChanged()),
-                this, SLOT(onContentsChanged()));
+        connect(m_textDocument, &QTextDocument::undoAvailable,       this, &IDocument::emitDocumentChanged);
+        connect(m_textDocument, &QTextDocument::redoAvailable,       this, &IDocument::emitDocumentChanged);
+        connect(m_textDocument, &QTextDocument::modificationChanged, this, &IDocument::emitDocumentChanged);
     }
 
     //! \brief Destructor.
@@ -1693,8 +1682,7 @@ namespace Caneda
         simulationProcess->setProcessChannelMode(QProcess::MergedChannels);  // Output std:error and std:output together into the same file
         simulationProcess->setStandardOutputFile(path + "/" + baseName + ".log", QIODevice::WriteOnly);  // Create a log file
 
-        connect(simulationProcess, SIGNAL(finished(int, QProcess::ExitStatus)), this, SLOT(simulationLog(int)));
-
+        connect(simulationProcess, qOverload<int, QProcess::ExitStatus>(&QProcess::finished), this, &TextDocument::simulationLog);
 
         if (suffix == "net" || suffix == "cir" || suffix == "spc" || suffix == "sp") {
             // It is a netlist file, we should invoke a spice simulator in batch mode
@@ -1743,7 +1731,7 @@ namespace Caneda
         }
 
         // The simulation results are opened in the simulationReady slot, to achieve non-modal simulations
-        connect(simulationProcess, SIGNAL(finished(int, QProcess::ExitStatus)), this, SLOT(simulationReady(int)));
+        connect(simulationProcess, qOverload<int, QProcess::ExitStatus>(&QProcess::finished), this, &TextDocument::simulationReady);
     }
 
     void TextDocument::print(QPrinter *printer, bool fitInView)
@@ -1891,7 +1879,8 @@ namespace Caneda
         simulationProcess->setWorkingDirectory(path);
         simulationProcess->setProcessChannelMode(QProcess::MergedChannels);  // Output std:error and std:output together into the same file
         simulationProcess->setStandardOutputFile(path + "/" + baseName + ".log", QIODevice::Append);  // Create a log file
-        connect(simulationProcess, SIGNAL(finished(int, QProcess::ExitStatus)), this, SLOT(simulationLog(int)));
+
+        connect(simulationProcess, qOverload<int, QProcess::ExitStatus>(&QProcess::finished), this, &TextDocument::simulationLog);
 
         // Open the resulting waveforms
         if (suffix == "net" || suffix == "cir" || suffix == "spc" || suffix == "sp") {

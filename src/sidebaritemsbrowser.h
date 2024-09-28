@@ -87,7 +87,7 @@ namespace Caneda
         explicit SidebarItemsBrowser(QStandardItemModel *model, QWidget *parent = nullptr);
         ~SidebarItemsBrowser() override;
 
-    signals:
+    Q_SIGNALS:
         void itemClicked(const QString& item, const QString& category);
         void itemDoubleClicked(const QString& item, const QString& category);
 

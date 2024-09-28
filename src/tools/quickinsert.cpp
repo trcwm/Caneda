@@ -70,10 +70,10 @@ namespace Caneda
         layout->addWidget(m_treeView);
 
         // Signals and slots connections
-        connect(m_model, SIGNAL(rowsInserted(QModelIndex, int, int)), m_treeView, SLOT(expandAll()));
-        connect(m_filterEdit, SIGNAL(textChanged(const QString &)), this, SLOT(filterTextChanged()));
-        connect(m_filterEdit, SIGNAL(returnPressed()), this, SLOT(insertItem()));
-        connect(m_treeView, SIGNAL(activated(QModelIndex)), this, SLOT(insertItem()));
+        connect(m_model,      &SidebarItemsModel::rowsInserted, m_treeView, &QTreeView::expandAll);
+        connect(m_filterEdit, &QLineEdit::textChanged,   this, &QuickInsert::filterTextChanged);
+        connect(m_filterEdit, &QLineEdit::returnPressed, this, &QuickInsert::insertItem);
+        connect(m_treeView,   &QTreeView::activated,     this, &QuickInsert::insertItem);
 
         // Start with the focus on the filter
         m_filterEdit->setFocus();

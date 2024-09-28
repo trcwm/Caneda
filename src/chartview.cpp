@@ -114,7 +114,7 @@ namespace Caneda
 
         // Context menu event
         setContextMenuPolicy(Qt::CustomContextMenu);
-        connect(this, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(contextMenuEvent(const QPoint &)));
+        connect(this, &ChartView::customContextMenuRequested, this, &ChartView::contextMenuEvent);
     }
 
     void ChartView::zoomIn()

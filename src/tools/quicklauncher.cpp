@@ -143,9 +143,9 @@ namespace Caneda
         layout->addWidget(m_listView);
 
         // Signals and slots connections
-        connect(m_filterEdit, SIGNAL(textChanged(const QString &)), this, SLOT(filterTextChanged()));
-        connect(m_filterEdit, SIGNAL(returnPressed()), this, SLOT(triggerAction()));
-        connect(m_listView, SIGNAL(activated(QModelIndex)), this, SLOT(triggerAction()));
+        connect(m_filterEdit, &QLineEdit::textChanged,   this, &QuickLauncher::filterTextChanged);
+        connect(m_filterEdit, &QLineEdit::returnPressed, this, &QuickLauncher::triggerAction);
+        connect(m_listView,   &QListView::activated,     this, &QuickLauncher::triggerAction);
 
         // Start with the focus on the filter
         m_filterEdit->setFocus();
