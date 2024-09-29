@@ -1,6 +1,7 @@
 /***************************************************************************
  * Copyright (C) 2011 Aurélien Gâteau <agateau@kde.org>                    *
  * Copyright (C) 2014 Dominik Haumann <dhaumann@kde.org>                   *
+ * Copyright (C) 2015 by Pablo Daniel Pareja Obregon                       *
  *                                                                         *
  * This is free software; you can redistribute it and/or modify            *
  * it under the terms of the GNU General Public License as published by    *
@@ -29,14 +30,12 @@ namespace Caneda
     class MessageWidgetPrivate;
 
     /*!
-     * \brief A widget to provide feedback or propose opportunistic interactions.
+     * \brief Widget to provide feedback based on current interactions.
      *
      * MessageWidget can be used to provide inline positive or negative
-     * feedback, or to implement opportunistic interactions.
-     *
-     * As a feedback widget, MessageWidget provides a less intrusive alternative
-     * to "OK Only" message boxes. If you want to avoid a modal MessageBox,
-     * consider using MessageWidget instead.
+     * feedback, based on current interactions. As a feedback widget,
+     * MessageWidget provides a less intrusive alternative to modal message
+     * boxes.
      *
      * <b>Negative feedback</b>
      *
@@ -46,49 +45,11 @@ namespace Caneda
      *
      * Example: User fills a form, clicks "Submit".
      *
-     * @li Expected feedback: form closes
-     * @li First indicator of failure: form stays there
+     * @li Expected feedback: form closes.
+     * @li First indicator of failure: form stays there.
      * @li Second indicator of failure: a MessageWidget appears on top of the
-     * form, explaining the error condition
+     * form, explaining the error condition.
      *
-     * When used to provide negative feedback, MessageWidget should be placed
-     * close to its context. In the case of a form, it should appear on top of the
-     * form entries.
-     *
-     * MessageWidget should get inserted in the existing layout. Space should not
-     * be reserved for it, otherwise it becomes "dead space", ignored by the user.
-     * MessageWidget should also not appear as an overlay to prevent blocking
-     * access to elements the user needs to interact with to fix the failure.
-     *
-     * <b>Positive feedback</b>
-     *
-     * MessageWidget can be used for positive feedback but it shouldn't be
-     * overused. It is often enough to provide feedback by simply showing the
-     * results of an action.
-     *
-     * Examples of acceptable uses:
-     *
-     * @li Confirm success of "critical" transactions
-     * @li Indicate completion of background tasks
-     *
-     * Example of unadapted uses:
-     *
-     * @li Indicate successful saving of a file
-     * @li Indicate a file has been successfully removed
-     *
-     * <b>Opportunistic interaction</b>
-     *
-     * Opportunistic interaction is the situation where the application suggests to
-     * the user an action he could be interested in perform, either based on an
-     * action the user just triggered or an event which the application noticed.
-     *
-     * Example of acceptable uses:
-     *
-     * @li A browser can propose remembering a recently entered password
-     * @li A music collection can propose ripping a CD which just got inserted
-     * @li A chat application may notify the user a "special friend" just connected
-     *
-     * @author Aurélien Gâteau <agateau@kde.org>
      */
     class MessageWidget : public QFrame
     {
@@ -267,6 +228,9 @@ namespace Caneda
          */
         void animatedHide();
 
+        void slotTimeLineChanged(qreal);
+        void slotTimeLineFinished();
+
         /**
          * Define an icon to be shown on the left of the text
          */
@@ -325,9 +289,6 @@ namespace Caneda
     private:
         MessageWidgetPrivate *const d;
         friend class MessageWidgetPrivate;
-
-        Q_PRIVATE_SLOT(d, void slotTimeLineChanged(qreal))
-        Q_PRIVATE_SLOT(d, void slotTimeLineFinished())
     };
 
 } // namespace Caneda

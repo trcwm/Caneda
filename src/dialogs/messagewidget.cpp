@@ -57,8 +57,6 @@ namespace Caneda
         void createLayout();
         void updateSnapShot();
         void updateLayout();
-        void slotTimeLineChanged(qreal);
-        void slotTimeLineFinished();
 
         int bestContentHeight() const;
     };
@@ -69,9 +67,9 @@ namespace Caneda
 
         q->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 
-        timeLine = new QTimeLine(500, q);
-        QObject::connect(timeLine, SIGNAL(valueChanged(qreal)), q, SLOT(slotTimeLineChanged(qreal)));
-        QObject::connect(timeLine, SIGNAL(finished()),          q, SLOT(slotTimeLineFinished()));
+        timeLine = new QTimeLine(5, q);
+        QObject::connect(timeLine, &QTimeLine::finished, q, &MessageWidget::slotTimeLineFinished);
+        QObject::connect(timeLine, &QTimeLine::finished, q, &MessageWidget::slotTimeLineFinished);
 
         content = new QFrame(q);
         content->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
@@ -174,29 +172,6 @@ namespace Caneda
         contentSnapShot.setDevicePixelRatio(q->devicePixelRatio());
         contentSnapShot.fill(Qt::transparent);
         content->render(&contentSnapShot, QPoint(), QRegion(), QWidget::DrawChildren);
-    }
-
-    void MessageWidgetPrivate::slotTimeLineChanged(qreal value)
-    {
-        q->setFixedHeight(int(qMin(value * 2, qreal(1.0)) * content->height()));
-        q->update();
-    }
-
-    void MessageWidgetPrivate::slotTimeLineFinished()
-    {
-        if (timeLine->direction() == QTimeLine::Forward) {
-            // Show
-            // We set the whole geometry here, because it may be wrong if a
-            // MessageWidget is shown right when the toplevel window is created.
-            content->setGeometry(0, 0, q->width(), bestContentHeight());
-
-            // notify about finished animation
-            emit q->showAnimationFinished();
-        } else {
-            // hide and notify about finished animation
-            q->hide();
-            emit q->hideAnimationFinished();
-        }
     }
 
     int MessageWidgetPrivate::bestContentHeight() const
@@ -459,6 +434,39 @@ namespace Caneda
     {
         return (d->timeLine->direction() == QTimeLine::Forward)
             && (d->timeLine->state() == QTimeLine::Running);
+    }
+
+//    void MessageWidget::slotTimeLineChanged(qreal value)
+//    {
+//        d->slotTimeLineChanged(value);
+//    }
+
+//    void MessageWidget::slotTimeLineFinished()
+//    {
+//        d->slotTimeLineFinished();
+//    }
+
+    void MessageWidget::slotTimeLineChanged(qreal value)
+    {
+        setFixedHeight(int(qMin(value * 2, qreal(1.0)) * d->content->height()));
+        update();
+    }
+
+    void MessageWidget::slotTimeLineFinished()
+    {
+        if (d->timeLine->direction() == QTimeLine::Forward) {
+            // Show
+            // We set the whole geometry here, because it may be wrong if a
+            // MessageWidget is shown right when the toplevel window is created.
+            d->content->setGeometry(0, 0, width(), d->bestContentHeight());
+
+            // notify about finished animation
+            emit showAnimationFinished();
+        } else {
+            // hide and notify about finished animation
+            hide();
+            emit hideAnimationFinished();
+        }
     }
 
     QIcon MessageWidget::icon() const
