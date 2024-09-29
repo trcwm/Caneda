@@ -71,7 +71,7 @@ namespace Caneda
 
         timeLine = new QTimeLine(500, q);
         QObject::connect(timeLine, SIGNAL(valueChanged(qreal)), q, SLOT(slotTimeLineChanged(qreal)));
-        QObject::connect(timeLine, SIGNAL(finished()), q, SLOT(slotTimeLineFinished()));
+        QObject::connect(timeLine, SIGNAL(finished()),          q, SLOT(slotTimeLineFinished()));
 
         content = new QFrame(q);
         content->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);

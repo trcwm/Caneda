@@ -352,7 +352,7 @@ namespace Caneda
         m_views.insert(0, view);
 
         connect(view, &IView::focussedIn, this, &Tab::onViewFocussedIn);
-        connect(view->document(), SIGNAL(documentChanged(IDocument*)), this, SLOT(onDocumentChanged(IDocument*)));
+        connect(view->document(), &IDocument::documentChanged, this, &Tab::onDocumentChanged);
         connect(view, &IView::statusBarMessage, this, &Tab::onStatusBarMessage);
 
         emit tabInfoChanged(this);
