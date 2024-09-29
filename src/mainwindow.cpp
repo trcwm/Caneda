@@ -160,7 +160,13 @@ namespace Caneda
         // Set the dialog to open in the current file folder
         QFileInfo info(manager->currentDocument()->fileName());
         QString path = info.path();
-        m_folderBrowser->setCurrentFolder(path);
+
+        if(!path.isEmpty()) {
+            m_folderBrowser->setCurrentFolder(path);
+        }
+        else {
+            m_folderBrowser->setCurrentFolder(QDir::homePath());
+        }
     }
 
     //! \brief Opens the file new dialog.
@@ -757,7 +763,13 @@ namespace Caneda
             QFileInfo info(document->fileName());
             QString path = info.path();
 
-            quickBrowser->setCurrentFolder(path);
+            if(!path.isEmpty()) {
+                quickBrowser->setCurrentFolder(path);
+            }
+            else {
+                quickBrowser->setCurrentFolder(QDir::homePath());
+            }
+
         }
 
         connect(quickBrowser, QOverload<const QString&>::of(&QuickOpen::itemSelected), this, &MainWindow::open);
