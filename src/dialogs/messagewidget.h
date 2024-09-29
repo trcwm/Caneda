@@ -66,7 +66,8 @@ namespace Caneda
     public:
 
         /**
-         * Available message types.
+         * \brief Available message types.
+         *
          * The background colors are chosen depending on the message type.
          */
         enum MessageType {
@@ -76,185 +77,52 @@ namespace Caneda
             Error
         };
 
-        /**
-         * Constructs a MessageWidget with the specified @p parent.
-         */
         explicit MessageWidget(QWidget *parent = nullptr);
-
-        /**
-         * Constructs a MessageWidget with the specified @p parent and
-         * contents @p text.
-         */
         explicit MessageWidget(const QString &text, QWidget *parent = nullptr);
 
-        /**
-         * Destructor.
-         */
         ~MessageWidget() override;
 
-        /**
-         * Get the text of this message widget.
-         * @see setText()
-         */
+        MessageType messageType() const;
         QString text() const;
-
-        /**
-         * Check whether word wrap is enabled.
-         *
-         * If word wrap is enabled, the message widget wraps the displayed text
-         * as required to the available width of the widget. This is useful to
-         * avoid breaking widget layouts.
-         *
-         * @see setWordWrap()
-         */
         bool wordWrap() const;
 
-        /**
-         * Check whether the close button is visible.
-         *
-         * @see setCloseButtonVisible()
-         */
         bool isCloseButtonVisible() const;
 
-        /**
-         * Get the type of this message.
-         * By default, the type is set to MessageWidget::Information.
-         *
-         * @see MessageWidget::MessageType, setMessageType()
-         */
-        MessageType messageType() const;
-
-        /**
-         * Add @p action to the message widget.
-         * For each action a button is added to the message widget in the
-         * order the actions were added.
-         *
-         * @param action the action to add
-         * @see removeAction(), QWidget::actions()
-         */
         void addAction(QAction *action);
-
-        /**
-         * Remove @p action from the message widget.
-         *
-         * @param action the action to remove
-         * @see MessageWidget::MessageType, addAction(), setMessageType()
-         */
         void removeAction(QAction *action);
 
-        /**
-         * Returns the preferred size of the message widget.
-         */
         QSize sizeHint() const Q_DECL_OVERRIDE;
-
-        /**
-         * Returns the minimum size of the message widget.
-         */
         QSize minimumSizeHint() const Q_DECL_OVERRIDE;
-
-        /**
-         * Returns the required height for @p width.
-         * @param width the width in pixels
-         */
         int heightForWidth(int width) const Q_DECL_OVERRIDE;
 
-        /**
-         * The icon shown on the left of the text. By default, no icon is shown.
-         */
-        QIcon icon() const;
-
-        /**
-         * Check whether the hide animation started by calling animatedHide()
-         * is still running. If animations are disabled, this function always
-         * returns @e false.
-         *
-         * @see animatedHide(), hideAnimationFinished()
-         */
         bool isHideAnimationRunning() const;
-
-        /**
-         * Check whether the show animation started by calling animatedShow()
-         * is still running. If animations are disabled, this function always
-         * returns @e false.
-         *
-         * @see animatedShow(), showAnimationFinished()
-         */
         bool isShowAnimationRunning() const;
 
-    public Q_SLOTS:
-        /**
-         * Set the text of the message widget to @p text.
-         * If the message widget is already visible, the text changes on the fly.
-         *
-         * @param text the text to display, rich text is allowed
-         * @see text()
-         */
-        void setText(const QString &text);
+        QIcon icon() const;
 
-        /**
-         * Set word wrap to @p wordWrap. If word wrap is enabled, the text()
-         * of the message widget is wrapped to fit the available width.
-         * If word wrap is disabled, the message widget's minimum size is
-         * such that the entire text fits.
-         *
-         * @param wordWrap disable/enable word wrap
-         * @see wordWrap()
-         */
+    public Q_SLOTS:
+        void setMessageType(MessageWidget::MessageType type);
+        void setText(const QString &text);
         void setWordWrap(bool wordWrap);
 
-        /**
-         * Set the visibility of the close button. If @p visible is @e true,
-         * a close button is shown that calls animatedHide() if clicked.
-         *
-         * @see closeButtonVisible(), animatedHide()
-         */
         void setCloseButtonVisible(bool visible);
 
-        /**
-         * Set the message type to @p type.
-         * By default, the message type is set to MessageWidget::Information.
-         *
-         * @see messageType(), MessageWidget::MessageType
-         */
-        void setMessageType(MessageWidget::MessageType type);
-
-        /**
-         * Show the widget using an animation.
-         */
         void animatedShow();
-
-        /**
-         * Hide the widget using an animation.
-         */
         void animatedHide();
-
         void slotTimeLineChanged(qreal);
         void slotTimeLineFinished();
 
-        /**
-         * Define an icon to be shown on the left of the text
-         */
         void setIcon(const QIcon &icon);
 
     Q_SIGNALS:
-        /**
-         * This signal is emitted when the user clicks a link in the text label.
-         * The URL referred to by the href anchor is passed in contents.
-         * @param contents text of the href anchor
-         * @see QLabel::linkActivated()
-         */
+        //! \brief This signal is emitted when the user clicks a link in the text label.
         void linkActivated(const QString &contents);
 
-        /**
-         * This signal is emitted when the user hovers over a link in the text label.
-         * The URL referred to by the href anchor is passed in contents.
-         * @param contents text of the href anchor
-         * @see QLabel::linkHovered()
-         */
+        //! \brief This signal is emitted when the user hovers over a link in the text label.
         void linkHovered(const QString &contents);
 
         /**
-         * This signal is emitted when the hide animation is finished, started by
+         * \brief This signal is emitted when the hide animation is finished, started by
          * calling animatedHide(). If animations are disabled, this signal is
          * emitted immediately after the message widget got hidden.
          *
@@ -267,7 +135,7 @@ namespace Caneda
         void hideAnimationFinished();
 
         /**
-         * This signal is emitted when the show animation is finished, started by
+         * \brief This signal is emitted when the show animation is finished, started by
          * calling animatedShow(). If animations are disabled, this signal is
          * emitted immediately after the message widget got shown.
          *
@@ -281,9 +149,7 @@ namespace Caneda
 
     protected:
         void paintEvent(QPaintEvent *event) Q_DECL_OVERRIDE;
-
         bool event(QEvent *event) Q_DECL_OVERRIDE;
-
         void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
 
     private:
