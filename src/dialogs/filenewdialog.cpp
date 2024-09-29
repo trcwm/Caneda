@@ -43,10 +43,6 @@ namespace Caneda
         ui.choiceSymbol->setIcon(am->actionForName("fileNewSymbol")->icon());
         ui.choiceSymbol->setText(am->actionForName("fileNewSymbol")->text());
 
-        ui.choiceLayout->addAction(am->actionForName("fileNewLayout"));
-        ui.choiceLayout->setIcon(am->actionForName("fileNewLayout")->icon());
-        ui.choiceLayout->setText(am->actionForName("fileNewLayout")->text());
-
         ui.choiceText->addAction(am->actionForName("fileNewText"));
         ui.choiceText->setIcon(am->actionForName("fileNewText")->icon());
         ui.choiceText->setText(am->actionForName("fileNewText")->text());
@@ -62,9 +58,6 @@ namespace Caneda
             }
             else if(ui.choiceSymbol->isChecked()) {
                 ui.choiceSymbol->actions().first()->trigger();
-            }
-            else if(ui.choiceLayout->isChecked()) {
-                ui.choiceLayout->actions().first()->trigger();
             }
             else if(ui.choiceText->isChecked()) {
                 ui.choiceText->actions().first()->trigger();

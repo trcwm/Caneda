@@ -74,15 +74,6 @@ namespace Caneda
         defaultSettings["gui/hdl/comment"] = QVariant(QColor(Qt::red));
         defaultSettings["gui/hdl/system"] = QVariant(QColor(Qt::darkYellow));
 
-        defaultSettings["gui/layout/metal1"] = QVariant(QColor(Qt::blue));
-        defaultSettings["gui/layout/metal2"] = QVariant(QColor(Qt::gray));
-        defaultSettings["gui/layout/poly1"] = QVariant(QColor(Qt::red));
-        defaultSettings["gui/layout/poly2"] = QVariant(QColor(Qt::darkRed));
-        defaultSettings["gui/layout/active"] = QVariant(QColor(Qt::green));
-        defaultSettings["gui/layout/contact"] = QVariant(QColor(Qt::black));
-        defaultSettings["gui/layout/nwell"] = QVariant(QColor(Qt::darkYellow));
-        defaultSettings["gui/layout/pwell"] = QVariant(QColor(Qt::darkCyan));
-
         defaultSettings["sim/simulationEngine"] = QVariant(QString("ngspice"));  //! \todo In the future this could be replaced by an enum, to avoid problems
         defaultSettings["sim/simulationCommand"] = QVariant(QString("ngspice -b -r %filename.raw %filename.net"));
         defaultSettings["sim/outputFormat"] = QVariant(QString("binary"));  //! \todo In the future this could be replaced by an enum, to avoid problems
@@ -121,7 +112,6 @@ namespace Caneda
 
         defaultSettings["shortcuts/openSchematic"] = QVariant(QKeySequence(tr("F2")));
         defaultSettings["shortcuts/openSymbol"] = QVariant(QKeySequence(tr("F3")));
-        defaultSettings["shortcuts/openLayout"] = QVariant(QKeySequence(tr("F4")));
         defaultSettings["shortcuts/simulate"] = QVariant(QKeySequence(QKeySequence::Refresh));
         defaultSettings["shortcuts/openSimulation"] = QVariant(QKeySequence(tr("F6")));
         defaultSettings["shortcuts/openLog"] = QVariant(QKeySequence(tr("F7")));

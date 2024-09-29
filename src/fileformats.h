@@ -32,7 +32,6 @@ namespace Caneda
     class GraphicsScene;
     class ChartSeries;
     class ChartScene;
-    class LayoutDocument;
     class SchematicDocument;
     class SimulationDocument;
     class SymbolDocument;
@@ -123,40 +122,6 @@ namespace Caneda
         SymbolDocument *m_symbolDocument;
         ComponentData *m_component;
         QString m_fileName;
-    };
-
-    /*!
-     * \brief This class handles all the access to the layout documents file
-     * format.
-     *
-     * This class is in charge of saving and loading all layout related
-     * documents. This is the only class that knows about layout document
-     * formats, and has the access functions to return a LayoutDocument,
-     * with all of its components.
-     *
-     * \sa \ref DocumentFormats
-     */
-    class FormatXmlLayout : public QObject
-    {
-        Q_OBJECT
-
-    public:
-        explicit FormatXmlLayout(LayoutDocument *document = nullptr);
-
-        bool save() const;
-        bool load() const;
-
-    private:
-        QString saveText() const;
-        void savePaintings(Caneda::XmlWriter *writer) const;
-
-        bool loadFromText(const QString &text) const;
-        void loadPaintings(Caneda::XmlReader *reader) const;
-
-        GraphicsScene* graphicsScene() const;
-        QString fileName() const;
-
-        LayoutDocument *m_layoutDocument;
     };
 
     /*!

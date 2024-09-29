@@ -67,7 +67,6 @@ namespace Caneda
         void newFile();
         void newSchematic();
         void newSymbol();
-        void newLayout();
         void newText();
         void open(QString fileName = QString());
         void openFileFormat(const QString &suffix);
@@ -111,7 +110,6 @@ namespace Caneda
         void removeFromProject();
         void closeProject();
 
-        void openLayout();
         void openSchematic();
         void openSymbol();
         void simulate();

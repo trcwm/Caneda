@@ -25,7 +25,6 @@
 
 #include "arrow.h"
 #include "ellipsearc.h"
-#include "layer.h"
 
 #include <QBrush>
 #include <QColorDialog>
@@ -345,22 +344,6 @@ namespace Caneda
             ui.fillGroupBox->hide();
         }
         
-        if(painting->type() == Painting::LayerType) {
-            Layer *layer = canedaitem_cast<Layer*>(painting);
-            ui.layerComboBox->setCurrentIndex(layer->layerName());
-            ui.layerLabelLineEdit->setText(layer->netLabel());
-            ui.layerLabelLineEdit->setClearButtonEnabled(true);
-            ui.layerWidthSpinBox->setValue(qRound(layer->rect().width()));
-            ui.layerHeightSpinBox->setValue(qRound(layer->rect().height()));
-
-            ui.lineGroupBox->hide();
-            ui.fillGroupBox->hide();
-            ui.previewGroupBox->hide();
-        }
-        else {
-            ui.layerGroupBox->hide();
-        }
-
         ui.lineColorButton->setIcon(lineColorPixmap);
         ui.fillColorButton->setIcon(fillColorPixmap);
 
@@ -456,16 +439,6 @@ namespace Caneda
             EllipseArc *arc = static_cast<EllipseArc*>(painting);
             arc->setStartAngle(previewWidget->startAngle());
             arc->setSpanAngle(previewWidget->spanAngle());
-        }
-        else if(painting->type() == Painting::LayerType) {
-            Layer *layer = static_cast<Layer*>(painting);
-            layer->setLayerName((Layer::LayerName)ui.layerComboBox->currentIndex());
-            layer->setNetLabel(ui.layerLabelLineEdit->text());
-
-            QRectF newRect = layer->rect();
-            newRect.setWidth(ui.layerWidthSpinBox->value());
-            newRect.setHeight(ui.layerHeightSpinBox->value());
-            layer->setPaintingRect(newRect);
         }
 
         GraphicsScene *scene = qobject_cast<GraphicsScene*>(painting->scene());

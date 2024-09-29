@@ -34,7 +34,6 @@ namespace Caneda
     class GraphicsView;
     class ChartView;
     class DocumentViewManager;
-    class LayoutDocument;
     class IContext;
     class IDocument;
     class SchematicDocument;
@@ -107,51 +106,6 @@ namespace Caneda
     /*************************************************************************
      *                  Specialized IView Implementations                    *
      *************************************************************************/
-    /*!
-     * \brief This class represents the layout view interface
-     * implementation.
-     *
-     * This class represents the view for a document, in a manner
-     * similar to Qt's Graphics View Architecture, and provides the view
-     * widget, which visualizes the contents of a scene. The view is included
-     * as a pointer to GraphicsView, that contains all the view specific
-     * methods. You can attach several views to the same scene, to provide
-     * different viewports into the same data set of the document (for example,
-     * when using split views).
-     *
-     * \sa IContext, IDocument, IView, \ref DocumentViewFramework
-     * \sa LayoutContext, LayoutDocument
-     */
-    class LayoutView : public IView
-    {
-        Q_OBJECT
-
-    public:
-        explicit LayoutView(LayoutDocument *document);
-        ~LayoutView() override;
-
-        // IView interface methods
-        virtual QWidget* toWidget() const override;
-        virtual IContext* context() const override;
-
-        virtual void zoomIn() override;
-        virtual void zoomOut() override;
-        virtual void zoomFitInBest() override;
-        virtual void zoomOriginal() override;
-
-        virtual IView* duplicate() override;
-
-        virtual void updateSettingsChanges() override;
-        // End of IView interface methods
-
-    private Q_SLOTS:
-        void onWidgetFocussedIn();
-        void onWidgetFocussedOut();
-
-    private:
-        GraphicsView *m_graphicsView;
-    };
-
     /*!
      * \brief This class represents the schematic view interface
      * implementation.

@@ -175,78 +175,6 @@ namespace Caneda
         manager->closeView(this);
     }
 
-
-    /*************************************************************************
-     *                             LayoutView                                *
-     *************************************************************************/
-    //! \brief Constructor.
-    LayoutView::LayoutView(LayoutDocument *document) : IView(document)
-    {
-        m_graphicsView = new GraphicsView(document->graphicsScene());
-
-        connect(m_graphicsView, &GraphicsView::focussedIn,            this, &LayoutView::onWidgetFocussedIn);
-        connect(m_graphicsView, &GraphicsView::focussedOut,           this, &LayoutView::onWidgetFocussedOut);
-        connect(m_graphicsView, &GraphicsView::cursorPositionChanged, this, &LayoutView::statusBarMessage);
-    }
-
-    //! \brief Destructor.
-    LayoutView::~LayoutView()
-    {
-        delete m_graphicsView;
-    }
-
-    QWidget* LayoutView::toWidget() const
-    {
-        return m_graphicsView;
-    }
-
-    IContext* LayoutView::context() const
-    {
-        return LayoutContext::instance();
-    }
-
-    void LayoutView::zoomIn()
-    {
-        m_graphicsView->zoomIn();
-    }
-
-    void LayoutView::zoomOut()
-    {
-        m_graphicsView->zoomOut();
-    }
-
-    void LayoutView::zoomFitInBest()
-    {
-        m_graphicsView->zoomFitInBest();
-    }
-
-    void LayoutView::zoomOriginal()
-    {
-        m_graphicsView->zoomOriginal();
-    }
-
-    IView* LayoutView::duplicate()
-    {
-        return document()->createView();
-    }
-
-    void LayoutView::updateSettingsChanges()
-    {
-        m_graphicsView->invalidateScene();
-        m_graphicsView->resetCachedContent();
-    }
-
-    void LayoutView::onWidgetFocussedIn()
-    {
-        emit focussedIn(static_cast<IView*>(this));
-    }
-
-    void LayoutView::onWidgetFocussedOut()
-    {
-        emit focussedOut(static_cast<IView*>(this));
-    }
-
-
     /*************************************************************************
      *                           SchematicView                               *
      *************************************************************************/
@@ -392,7 +320,6 @@ namespace Caneda
         emit focussedOut(static_cast<IView*>(this));
     }
 
-
     /*************************************************************************
      *                             SymbolView                                *
      *************************************************************************/
@@ -462,7 +389,6 @@ namespace Caneda
     {
         emit focussedOut(static_cast<IView*>(this));
     }
-
 
     /*************************************************************************
      *                              TextView                                 *

@@ -196,13 +196,6 @@ namespace Caneda
         manager->newDocument(SymbolContext::instance());
     }
 
-    //! \brief Create a new layout file.
-    void MainWindow::newLayout()
-    {
-        DocumentViewManager *manager = DocumentViewManager::instance();
-        manager->newDocument(LayoutContext::instance());
-    }
-
     //! \brief Create a new text file.
     void MainWindow::newText()
     {
@@ -653,13 +646,6 @@ namespace Caneda
         }
     }
 
-    //! \brief Opens the layout document corresponding to the current file.
-    void MainWindow::openLayout()
-    {
-        LayoutContext *ly = LayoutContext::instance();
-        openFileFormat(ly->defaultSuffix());
-    }
-
     //! \brief Opens the schematic document corresponding to the current file.
     void MainWindow::openSchematic()
     {
@@ -949,11 +935,6 @@ namespace Caneda
         action->setWhatsThis(tr("New symbol file\n\nCreates a new symbol file document"));
         connect(action, &QAction::triggered, this, &MainWindow::newSymbol);
 
-        action = am->createAction("fileNewLayout", Caneda::icon("application-x-caneda-layout"), tr("&Layout file"));
-        action->setStatusTip(tr("Creates a new layout file document"));
-        action->setWhatsThis(tr("New layout file\n\nCreates a new layout file document"));
-        connect(action, &QAction::triggered, this, &MainWindow::newLayout);
-
         action = am->createAction("fileNewText", Caneda::icon("text-plain"), tr("&Text file"));
         action->setStatusTip(tr("Creates a new text file document"));
         action->setWhatsThis(tr("New text file\n\nCreates a new text file document"));
@@ -1154,11 +1135,6 @@ namespace Caneda
         action->setStatusTip(tr("Switches to symbol edit"));
         action->setWhatsThis(tr("Edit Circuit Symbol\n\nSwitches to symbol edit"));
         connect(action, &QAction::triggered, this, &MainWindow::openSymbol);
-
-        action = am->createAction("openLayout", Caneda::icon("draw-freehand"), tr("Edit circuit &layout"));
-        action->setStatusTip(tr("Switches to layout edit"));
-        action->setWhatsThis(tr("Edit Circuit Layout\n\nSwitches to layout edit"));
-        connect(action, &QAction::triggered, this, &MainWindow::openLayout);
 
         action = am->createAction("simulate", Caneda::icon("media-playback-start"), tr("Simulate"));
         action->setStatusTip(tr("Simulates the current circuit"));
@@ -1391,7 +1367,6 @@ namespace Caneda
         subMenu = menu->addMenu(Caneda::icon("document-new"), tr("&New"));
         subMenu->addAction(am->actionForName("fileNewSchematic"));
         subMenu->addAction(am->actionForName("fileNewSymbol"));
-        subMenu->addAction(am->actionForName("fileNewLayout"));
         subMenu->addAction(am->actionForName("fileNewText"));
 
         menu->addAction(am->actionForName("fileOpen"));
@@ -1492,7 +1467,6 @@ namespace Caneda
 
         menu->addAction(am->actionForName("openSchematic"));
         menu->addAction(am->actionForName("openSymbol"));
-        menu->addAction(am->actionForName("openLayout"));
 
         menu->addSeparator();
 

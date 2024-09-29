@@ -74,8 +74,7 @@ namespace Caneda
             EllipseArcType,
             GraphicLineType,
             GraphicTextType,
-            RectangleType,
-            LayerType
+            RectangleType
         };
 
         //! Returns paintingRect of this painting item.

@@ -136,11 +136,6 @@ namespace Caneda
             return Caneda::icon("application-x-caneda-symbol");
         }
 
-        context = LayoutContext::instance();
-        if(context->supportedSuffixes().contains(info.suffix())) {
-            return Caneda::icon("application-x-caneda-layout");
-        }
-
         context = SimulationContext::instance();
         if(context->supportedSuffixes().contains(info.suffix())) {
             return Caneda::icon("application-x-spice-simulation-raw");
