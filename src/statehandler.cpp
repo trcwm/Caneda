@@ -202,7 +202,7 @@ namespace Caneda
 
         // Get a component or painting based on the name and category.
         GraphicsItem *qItem = nullptr;
-        if(category == "Paint Tools" || category == "Layout Tools") {
+        if(category == "Paint Tools") {
             qItem = Painting::fromName(item);
         }
         else if(category == QObject::tr("Miscellaneous")) {
@@ -219,7 +219,7 @@ namespace Caneda
         }
 
         // If the item was not found in the fixed libraries, search for the
-        // item in the dinamic loaded libraries ("Components" category).
+        // item in the dynamic loaded libraries ("Components" category).
         if(!qItem) {
             ComponentDataPtr data = LibraryManager::instance()->componentData(item, category);
             if(data.constData()) {
@@ -231,7 +231,7 @@ namespace Caneda
 
         // Check if the item was successfully found and created
         if(qItem) {
-            if(category == "Paint Tools" || category == "Layout Tools") {
+            if(category == "Paint Tools") {
                 paintingDrawItem = static_cast<Painting*>(qItem);
                 paintingDrawItem->setPaintingRect(QRectF(0, 0, 0, 0));
                 performToggleAction("paintingDraw", true);

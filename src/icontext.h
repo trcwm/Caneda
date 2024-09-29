@@ -84,51 +84,6 @@ namespace Caneda
      *                Specialized IContext Implementations                   *
      *************************************************************************/
     /*!
-     * \brief This class represents the layout context interface
-     * implementation.
-     *
-     * Only one instance of this class is used during the whole life span of
-     * the program. This class answers the general questions like which file
-     * suffixes it can handle, points to the appropiate methods to create new
-     * documents of its type, etc.
-     *
-     * This class also provides objects like the toolbar, statusbar, etc, which
-     * are specific to this particular context.
-     *
-     * This class is a singleton class and its only static instance (returned
-     * by instance()) is to be used.
-     *
-     * \sa IContext, IDocument, IView, \ref DocumentViewFramework
-     * \sa LayoutDocument, LayoutView
-     */
-    class LayoutContext : public IContext
-    {
-        Q_OBJECT
-
-    public:
-        static LayoutContext* instance();
-
-        // IContext interface methods
-        virtual QStringList fileNameFilters() const override;
-        virtual QStringList supportedSuffixes() const override;
-
-        virtual IDocument* newDocument() override;
-        virtual IDocument* open(const QString &fileName, QString *errorMessage = nullptr) override;
-
-        virtual QToolBar* toolBar() override { return nullptr; }
-        virtual QWidget* sideBarWidget() override;
-        virtual void updateSideBar() override {}
-        virtual void quickInsert() override;
-        // End of IContext interface methods
-
-    private:
-        explicit LayoutContext(QObject *parent = nullptr);
-
-        SidebarItemsModel *m_sidebarItems;
-        SidebarItemsBrowser *m_sidebarBrowser;
-    };
-
-    /*!
      * \brief This class represents the schematic context interface
      * implementation.
      *

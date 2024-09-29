@@ -41,8 +41,7 @@ namespace Caneda
         ui.pagesList->item(0)->setIcon(Caneda::icon("preferences-other"));
         ui.pagesList->item(1)->setIcon(Caneda::icon("library"));
         ui.pagesList->item(2)->setIcon(Caneda::icon("media-playback-start"));
-        ui.pagesList->item(3)->setIcon(Caneda::icon("view-grid"));
-        ui.pagesList->item(4)->setIcon(Caneda::icon("code-context"));
+        ui.pagesList->item(3)->setIcon(Caneda::icon("code-context"));
 
         // Read the settings into the dialog widgets
         Settings *settings = Settings::instance();
@@ -65,16 +64,6 @@ namespace Caneda
         map["sim/simulationCommand"] = settings->currentValue("sim/simulationCommand");
         map["sim/simulationEngine"] = settings->currentValue("sim/simulationEngine");
         map["sim/outputFormat"] = settings->currentValue("sim/outputFormat");
-
-        // Layout group of settings
-        map["gui/layout/metal1"] = settings->currentValue("gui/layout/metal1");
-        map["gui/layout/metal2"] = settings->currentValue("gui/layout/metal2");
-        map["gui/layout/poly1"] = settings->currentValue("gui/layout/poly1");
-        map["gui/layout/poly2"] = settings->currentValue("gui/layout/poly2");
-        map["gui/layout/active"] = settings->currentValue("gui/layout/active");
-        map["gui/layout/contact"] = settings->currentValue("gui/layout/contact");
-        map["gui/layout/nwell"] = settings->currentValue("gui/layout/nwell");
-        map["gui/layout/pwell"] = settings->currentValue("gui/layout/pwell");
 
         // HDL group of settings
         map["gui/hdl/keyword"] = settings->currentValue("gui/hdl/keyword");
@@ -111,16 +100,6 @@ namespace Caneda
         // Simulation group of settings
         connect(ui.radioNgspiceMode,       &QRadioButton::clicked, this, &SettingsDialog::simulationEngineChanged);
         connect(ui.radioCustomMode,        &QRadioButton::clicked, this, &SettingsDialog::simulationEngineChanged);
-
-        // Layout group of settings
-        connect(ui.buttonMetal1,           &QPushButton::clicked,  this, &SettingsDialog::colorButtonDialog);
-        connect(ui.buttonMetal2,           &QPushButton::clicked,  this, &SettingsDialog::colorButtonDialog);
-        connect(ui.buttonPoly1,            &QPushButton::clicked,  this, &SettingsDialog::colorButtonDialog);
-        connect(ui.buttonPoly2,            &QPushButton::clicked,  this, &SettingsDialog::colorButtonDialog);
-        connect(ui.buttonActive,           &QPushButton::clicked,  this, &SettingsDialog::colorButtonDialog);
-        connect(ui.buttonContact,          &QPushButton::clicked,  this, &SettingsDialog::colorButtonDialog);
-        connect(ui.buttonNwell,            &QPushButton::clicked,  this, &SettingsDialog::colorButtonDialog);
-        connect(ui.buttonPwell,            &QPushButton::clicked,  this, &SettingsDialog::colorButtonDialog);
 
         // HDL group of settings
         connect(ui.buttonKeyword,          &QPushButton::clicked,  this, &SettingsDialog::colorButtonDialog);
@@ -258,16 +237,6 @@ namespace Caneda
         map["sim/simulationEngine"] = settings->defaultValue("sim/simulationEngine");
         map["sim/outputFormat"] = settings->defaultValue("sim/outputFormat");
 
-        // Layout group of settings
-        map["gui/layout/metal1"] = settings->defaultValue("gui/layout/metal1");
-        map["gui/layout/metal2"] = settings->defaultValue("gui/layout/metal2");
-        map["gui/layout/poly1"] = settings->defaultValue("gui/layout/poly1");
-        map["gui/layout/poly2"] = settings->defaultValue("gui/layout/poly2");
-        map["gui/layout/active"] = settings->defaultValue("gui/layout/active");
-        map["gui/layout/contact"] = settings->defaultValue("gui/layout/contact");
-        map["gui/layout/nwell"] = settings->defaultValue("gui/layout/nwell");
-        map["gui/layout/pwell"] = settings->defaultValue("gui/layout/pwell");
-
         // HDL group of settings
         map["gui/hdl/keyword"] = settings->defaultValue("gui/hdl/keyword");
         map["gui/hdl/type"] = settings->defaultValue("gui/hdl/type");
@@ -329,16 +298,6 @@ namespace Caneda
         else if(ui.radioAsciiMode->isChecked()) {
             settings->setCurrentValue("sim/outputFormat", QString("ascii"));
         }
-
-        // Layout group of settings
-        settings->setCurrentValue("gui/layout/metal1", getButtonColor(ui.buttonMetal1));
-        settings->setCurrentValue("gui/layout/metal2", getButtonColor(ui.buttonMetal2));
-        settings->setCurrentValue("gui/layout/poly1", getButtonColor(ui.buttonPoly1));
-        settings->setCurrentValue("gui/layout/poly2", getButtonColor(ui.buttonPoly2));
-        settings->setCurrentValue("gui/layout/active", getButtonColor(ui.buttonActive));
-        settings->setCurrentValue("gui/layout/contact", getButtonColor(ui.buttonContact));
-        settings->setCurrentValue("gui/layout/nwell", getButtonColor(ui.buttonNwell));
-        settings->setCurrentValue("gui/layout/pwell", getButtonColor(ui.buttonPwell));
 
         // HDL group of settings
         settings->setCurrentValue("gui/hdl/keyword", getButtonColor(ui.buttonKeyword));
@@ -402,16 +361,6 @@ namespace Caneda
         else if(map["sim/outputFormat"].toString() == "ascii") {
             ui.radioAsciiMode->setChecked(true);
         }
-
-        // Layout group of settings
-        setButtonColor(ui.buttonMetal1, map["gui/layout/metal1"].value<QColor>());
-        setButtonColor(ui.buttonMetal2, map["gui/layout/metal2"].value<QColor>());
-        setButtonColor(ui.buttonPoly1, map["gui/layout/poly1"].value<QColor>());
-        setButtonColor(ui.buttonPoly2, map["gui/layout/poly2"].value<QColor>());
-        setButtonColor(ui.buttonActive, map["gui/layout/active"].value<QColor>());
-        setButtonColor(ui.buttonContact, map["gui/layout/contact"].value<QColor>());
-        setButtonColor(ui.buttonNwell, map["gui/layout/nwell"].value<QColor>());
-        setButtonColor(ui.buttonPwell, map["gui/layout/pwell"].value<QColor>());
 
         // HDL group of settings
         setButtonColor(ui.buttonKeyword, map["gui/hdl/keyword"].value<QColor>());

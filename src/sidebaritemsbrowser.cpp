@@ -176,8 +176,6 @@ namespace Caneda
         connect(m_treeView,   QOverload<const QModelIndex &>::of(&QTreeView::clicked),   this, QOverload<const QModelIndex &>::of(&SidebarItemsBrowser::itemClicked));
         connect(m_treeView,   QOverload<const QModelIndex &>::of(&QTreeView::activated), this, QOverload<const QModelIndex &>::of(&SidebarItemsBrowser::itemClicked));
 
-        QOverload<const QModelIndex &>::of(&QTreeView::clicked);
-
         setWindowTitle(tr("Components Browser"));
     }
 

@@ -319,7 +319,6 @@ namespace Caneda
 
         emit changed();
 
-
         // Now if closeDocumentIfLastView is true and there are no more views
         // for the document, then just close the document too.
         if (closeDocumentIfLastView && data->views.isEmpty()) {
@@ -371,7 +370,6 @@ namespace Caneda
 
         return tab->activeView();
     }
-
 
     QList<IDocument*> DocumentViewManager::documents() const
     {
@@ -590,7 +588,6 @@ namespace Caneda
     {
         m_contexts << SchematicContext::instance();
         m_contexts << SymbolContext::instance();
-        m_contexts << LayoutContext::instance();
         m_contexts << SimulationContext::instance();
         m_contexts << TextContext::instance();
     }

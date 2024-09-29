@@ -28,7 +28,6 @@
 #include "graphicline.h"
 #include "graphicsscene.h"
 #include "graphictext.h"
-#include "layer.h"
 #include "rectangle.h"
 
 #include <QBrush>
@@ -88,31 +87,6 @@ namespace Caneda
                 return new GraphicText;
             }
 
-            else if(name == QObject::tr("Metal 1")) {
-                return new Layer(rect, Layer::Metal1);
-            }
-            else if(name == QObject::tr("Metal 2")) {
-                return new Layer(rect, Layer::Metal2);
-            }
-            else if(name == QObject::tr("Poly 1")) {
-                return new Layer(rect, Layer::Poly1);
-            }
-            else if(name == QObject::tr("Poly 2")) {
-                return new Layer(rect, Layer::Poly2);
-            }
-            else if(name == QObject::tr("Active")) {
-                return new Layer(rect, Layer::Active);
-            }
-            else if(name == QObject::tr("Contact")) {
-                return new Layer(rect, Layer::Contact);
-            }
-            else if(name == QObject::tr("N Well")) {
-                return new Layer(rect, Layer::NWell);
-            }
-            else if(name == QObject::tr("P Well")) {
-                return new Layer(rect, Layer::PWell);
-            }
-
         }
 
         // This is true usually when painting is being read from xml file.
@@ -135,9 +109,6 @@ namespace Caneda
             }
             else if(name == QLatin1String("text")) {
                 return new GraphicText;
-            }
-            else if(name == QLatin1String("layer")) {
-                return new Layer(rect);
             }
 
         }
