@@ -67,7 +67,7 @@
        <item>
         <widget class="QLabel" name="labelAbout">
          <property name="text">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Caneda&lt;/span&gt; - Circuits and Networks EDA&lt;br/&gt;An application for schematic capture and simulation.&lt;br/&gt;&lt;br/&gt;© 2008-2016 Caneda development team&lt;br/&gt;&lt;br/&gt;&lt;a href=&quot;http://www.caneda.org&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2980b9;&quot;&gt;http://www.caneda.org&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Caneda&lt;/span&gt; - Circuits and Networks EDA&lt;br/&gt;An application for schematic capture and simulation.&lt;br/&gt;&lt;br/&gt;© 2008-2024 Caneda development team&lt;br/&gt;&lt;br/&gt;&lt;a href=&quot;http://www.caneda.org&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2980b9;&quot;&gt;http://www.caneda.org&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="textFormat">
           <enum>Qt::RichText</enum>
