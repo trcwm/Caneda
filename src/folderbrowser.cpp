@@ -46,7 +46,7 @@ namespace Caneda
 
         QToolButton *buttonUp = new QToolButton(this);
         buttonUp->setIcon(Caneda::icon("go-up"));
-        buttonUp->setShortcut(Qt::Key_Backspace);
+        buttonUp->setShortcut(Qt::ALT + Qt::Key_Up);
         buttonUp->setStatusTip(tr("Go up one folder"));
         buttonUp->setToolTip(tr("Go up one folder"));
         buttonUp->setWhatsThis(tr("Go up one folder"));
@@ -69,7 +69,7 @@ namespace Caneda
 
         QToolButton *buttonHome = new QToolButton(this);
         buttonHome->setIcon(Caneda::icon("go-home"));
-        buttonHome->setShortcut(Qt::CTRL + Qt::Key_Home);
+        buttonHome->setShortcut(Qt::ALT + Qt::Key_Home);
         buttonHome->setStatusTip(tr("Go to the home folder"));
         buttonHome->setToolTip(tr("Go to the home folder"));
         buttonHome->setWhatsThis(tr("Go to the home folder"));

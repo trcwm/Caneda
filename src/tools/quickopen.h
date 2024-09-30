@@ -87,7 +87,7 @@ namespace Caneda
         QActionGroup *filterGroup;
         QAction *filterNone, *filterSchematics, *filterSimulations,
         *filterSymbols, *filterText;
-        QToolButton *buttonBack, *buttonForward;
+        QToolButton *buttonUp, *buttonBack, *buttonForward, *buttonHome;
     };
 
 } // namespace Caneda

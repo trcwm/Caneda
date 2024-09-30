@@ -51,16 +51,14 @@ namespace Caneda
         // Create the toolbar
         QToolBar *toolbar = new QToolBar(this);
 
-        QToolButton *buttonUp = new QToolButton(this);
+        buttonUp = new QToolButton(this);
         buttonUp->setIcon(Caneda::icon("go-up"));
-        buttonUp->setShortcut(Qt::Key_Backspace);
         buttonUp->setStatusTip(tr("Go up one folder"));
         buttonUp->setToolTip(tr("Go up one folder"));
         buttonUp->setWhatsThis(tr("Go up one folder"));
 
         buttonBack = new QToolButton(this);
         buttonBack->setIcon(Caneda::icon("go-previous"));
-        buttonBack->setShortcut(Qt::ALT + Qt::Key_Left);
         buttonBack->setStatusTip(tr("Go previous folder"));
         buttonBack->setToolTip(tr("Go previous folder"));
         buttonBack->setWhatsThis(tr("Go previous folder"));
@@ -68,15 +66,13 @@ namespace Caneda
 
         buttonForward = new QToolButton(this);
         buttonForward->setIcon(Caneda::icon("go-next"));
-        buttonForward->setShortcut(Qt::ALT + Qt::Key_Right);
         buttonForward->setStatusTip(tr("Go next folder"));
         buttonForward->setToolTip(tr("Go next folder"));
         buttonForward->setWhatsThis(tr("Go next folder"));
         buttonForward->setEnabled(false);
 
-        QToolButton *buttonHome = new QToolButton(this);
+        buttonHome = new QToolButton(this);
         buttonHome->setIcon(Caneda::icon("go-home"));
-        buttonHome->setShortcut(Qt::CTRL + Qt::Key_Home);
         buttonHome->setStatusTip(tr("Go to the home folder"));
         buttonHome->setToolTip(tr("Go to the home folder"));
         buttonHome->setWhatsThis(tr("Go to the home folder"));
@@ -143,6 +139,7 @@ namespace Caneda
 
         // Create a list view, set properties and proxy model
         m_listView = new QListView(this);
+        m_listView->installEventFilter(this);
         m_listView->setModel(m_proxyModel);
         m_listView->setRootIndex(m_proxyModel->mapFromSource(m_model->index(QDir::homePath())));
         layout->addWidget(m_listView);
@@ -235,11 +232,37 @@ namespace Caneda
     //! \brief Filter event to select the listView on down arrow key event
     bool QuickOpen::eventFilter(QObject *object, QEvent *event)
     {
-        if(object == m_filterEdit) {
-            if(event->type() == QEvent::KeyPress) {
-                QKeyEvent *keyEvent = static_cast<QKeyEvent*>(event);
-                if(keyEvent->key() == Qt::Key_Down) {
+        if(event->type() == QEvent::KeyPress) {
+            QKeyEvent *keyEvent = static_cast<QKeyEvent*>(event);
 
+            if(keyEvent->modifiers() == Qt::AltModifier) {
+                if(keyEvent->key() == Qt::Key_Up) {
+                    buttonUp->animateClick();  // Call this instead of slot directly to get visual feedback
+                    return true;
+                }
+                if(keyEvent->key() == Qt::Key_Left) {
+                    buttonBack->animateClick();  // Call this instead of slot directly to get visual feedback
+                    return true;
+                }
+                if(keyEvent->key() == Qt::Key_Right) {
+                    buttonForward->animateClick();  // Call this instead of slot directly to get visual feedback
+                    return true;
+                }
+                if(keyEvent->key() == Qt::Key_Home) {
+                    buttonHome->animateClick();  // Call this instead of slot directly to get visual feedback
+                    return true;
+                }
+            }
+
+            if(keyEvent->modifiers() == Qt::ControlModifier) {
+                if(keyEvent->key() == Qt::Key_F) {
+                    m_filterEdit->setFocus();
+                    return true;
+                }
+            }
+
+            if(object == m_filterEdit) {
+                if(keyEvent->key() == Qt::Key_Down) {
                     // Set the row next to the currently selected one
                     if(m_listView->currentIndex() == m_listView->model()->index(0,0, m_listView->rootIndex())) {
                         m_listView->setCurrentIndex(m_listView->model()->index(1,0, m_listView->rootIndex()));
@@ -255,7 +278,6 @@ namespace Caneda
                 }
             }
 
-            return false;
         }
 
         return QMenu::eventFilter(object, event);
