@@ -265,8 +265,10 @@ namespace Caneda
     //! \brief Destructor.
     SimulationView::~SimulationView()
     {
-        //! \todo Quick fix for crash when one view is closed
-        // delete m_chartView;
+        // If there are no more views for the document, delete the data (release the memory)
+        if (this->document()->views().isEmpty()) {
+            delete m_chartView;
+        }
     }
 
     QWidget* SimulationView::toWidget() const
