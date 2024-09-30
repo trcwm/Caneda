@@ -56,7 +56,7 @@ namespace Caneda
         bool save();
 
     private:
-        explicit Settings(QObject *parent = 0);
+        explicit Settings(QObject *parent = nullptr);
 
         QMap<QString, QVariant> defaultSettings;
         QMap<QString, QVariant> currentSettings;

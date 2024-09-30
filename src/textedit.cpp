@@ -31,17 +31,17 @@ namespace Caneda
         document->setDocumentLayout(layout);
         setDocument(document);
 
-        connect(this, SIGNAL(focussed()), this, SLOT(updateCursorPosition()));
-        connect(this, SIGNAL(cursorPositionChanged()), this, SLOT(updateCursorPosition()));
-        connect(this, SIGNAL(cursorPositionChanged()), this, SLOT(highlightCurrentLine()));
-        highlightCurrentLine();
-    }
+        QFont font;
+        font.setFamily("Monospace");
+        font.setFixedPitch(true);
+        font.setPointSize(10);
+        setFont(font);
 
-    void TextEdit::setPointSize(qreal size)
-    {
-        QFont fnt = font();
-        fnt.setPointSize(static_cast<int>(qRound(size)));
-        setFont(fnt);
+        connect(this, &TextEdit::focussed,                    this, &TextEdit::updateCursorPosition);
+        connect(this, &QPlainTextEdit::cursorPositionChanged, this, &TextEdit::updateCursorPosition);
+        connect(this, &QPlainTextEdit::cursorPositionChanged, this, &TextEdit::highlightCurrentLine);
+
+        highlightCurrentLine();
     }
 
     void TextEdit::focusInEvent(QFocusEvent *event)

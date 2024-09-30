@@ -50,13 +50,13 @@ namespace Caneda
         Q_OBJECT
 
     public:
-        explicit QuickInsert(SidebarItemsModel *model, QWidget *parent = 0);
+        explicit QuickInsert(SidebarItemsModel *model, QWidget *parent = nullptr);
 
     signals:
         void itemClicked(const QString& item, const QString& category);
 
     protected:
-        bool eventFilter(QObject *object, QEvent *event);
+        bool eventFilter(QObject *object, QEvent *event) override;
 
     private Q_SLOTS:
         void filterTextChanged();

@@ -80,10 +80,10 @@ namespace Caneda
         explicit MoveItemCmd(GraphicsItem *item,
                              const QPointF &init,
                              const QPointF &final,
-                             QUndoCommand *parent = 0);
+                             QUndoCommand *parent = nullptr);
 
-        void undo();
-        void redo();
+        void undo() override;
+        void redo() override;
 
     private:
         GraphicsItem *m_item;
@@ -100,10 +100,10 @@ namespace Caneda
     class DisconnectCmd : public QUndoCommand
     {
     public:
-        explicit DisconnectCmd(Port *p1, Port *p2, QUndoCommand *parent = 0);
+        explicit DisconnectCmd(Port *p1, Port *p2, QUndoCommand *parent = nullptr);
 
-        void undo();
-        void redo();
+        void undo() override;
+        void redo() override;
 
     private:
         Port *const m_port1;
@@ -121,10 +121,10 @@ namespace Caneda
     public:
         explicit InsertWireCmd(Wire *wire,
                                GraphicsScene *scene,
-                               QUndoCommand *parent = 0);
+                               QUndoCommand *parent = nullptr);
 
-        void undo();
-        void redo();
+        void undo() override;
+        void redo() override;
 
     private:
         Wire *m_wire;
@@ -143,10 +143,10 @@ namespace Caneda
         explicit InsertItemCmd(GraphicsItem *const item,
                                QPointF pos,
                                GraphicsScene *scene,
-                               QUndoCommand *parent = 0);
+                               QUndoCommand *parent = nullptr);
 
-        void undo();
-        void redo();
+        void undo() override;
+        void redo() override;
 
     protected:
         GraphicsItem *const m_item;
@@ -165,10 +165,10 @@ namespace Caneda
     public:
         explicit RemoveItemsCmd(const QList<GraphicsItem*> &items,
                                 GraphicsScene *scene,
-                                QUndoCommand *parent = 0);
+                                QUndoCommand *parent = nullptr);
 
-        void undo();
-        void redo();
+        void undo() override;
+        void redo() override;
 
     protected:
         QList<ItemPointPair> m_itemPointPairs;
@@ -187,10 +187,10 @@ namespace Caneda
         explicit RotateItemsCmd(const QList<GraphicsItem*> &items,
                                 const Caneda::AngleDirection,
                                 GraphicsScene *scene,
-                                QUndoCommand *parent = 0);
+                                QUndoCommand *parent = nullptr);
 
-        void undo();
-        void redo();
+        void undo() override;
+        void redo() override;
 
     protected:
         QList<GraphicsItem*> m_items;
@@ -210,10 +210,10 @@ namespace Caneda
         explicit MirrorItemsCmd(const QList<GraphicsItem*> items,
                                 const Qt::Axis axis,
                                 GraphicsScene *scene,
-                                QUndoCommand *parent = 0);
+                                QUndoCommand *parent = nullptr);
 
-        void undo();
-        void redo();
+        void undo() override;
+        void redo() override;
 
     protected:
         QList<GraphicsItem*> m_items;
@@ -233,10 +233,10 @@ namespace Caneda
         explicit ChangePaintingRectCmd(Painting *paintng,
                                        QRectF oldRect,
                                        QRectF newRect,
-                                       QUndoCommand *parent = 0);
+                                       QUndoCommand *parent = nullptr);
 
-        void undo();
-        void redo();
+        void undo() override;
+        void redo() override;
 
     protected:
         Painting *const m_painting;
@@ -255,10 +255,10 @@ namespace Caneda
     public:
         explicit ChangePaintingPropertyCmd(Painting *painting,
                                            QString oldText,
-                                           QUndoCommand *parent = 0);
+                                           QUndoCommand *parent = nullptr);
 
-        void undo();
-        void redo();
+        void undo() override;
+        void redo() override;
 
     protected:
         Painting *const m_painting;
@@ -278,10 +278,10 @@ namespace Caneda
         explicit ChangeGraphicTextCmd(GraphicText *text,
                                       QString oldText,
                                       QString newText,
-                                      QUndoCommand *parent = 0);
+                                      QUndoCommand *parent = nullptr);
 
-        void undo();
-        void redo();
+        void undo() override;
+        void redo() override;
 
     protected:
         GraphicText *const m_graphicText;
@@ -301,10 +301,10 @@ namespace Caneda
         explicit ChangePropertyMapCmd(PropertyGroup *propGroup,
                                       const PropertyMap& old,
                                       const PropertyMap& newMap,
-                                      QUndoCommand *parent = 0);
+                                      QUndoCommand *parent = nullptr);
 
-        void undo();
-        void redo();
+        void undo() override;
+        void redo() override;
 
     private:
         PropertyGroup *m_propertyGroup;

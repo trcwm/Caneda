@@ -67,7 +67,6 @@ namespace Caneda
         void newFile();
         void newSchematic();
         void newSymbol();
-        void newLayout();
         void newText();
         void open(QString fileName = QString());
         void openFileFormat(const QString &suffix);
@@ -111,7 +110,6 @@ namespace Caneda
         void removeFromProject();
         void closeProject();
 
-        void openLayout();
         void openSchematic();
         void openSymbol();
         void simulate();
@@ -141,7 +139,7 @@ namespace Caneda
         void statusBarMessage(const QString& newPos);
 
     private:
-        explicit MainWindow(QWidget *parent = 0);
+        explicit MainWindow(QWidget *parent = nullptr);
 
         void initActions();
         void initMouseActions();
@@ -156,8 +154,8 @@ namespace Caneda
         void loadSettings();
         void saveSettings();
 
-        void contextMenuEvent(QContextMenuEvent * event);
-        void closeEvent(QCloseEvent *closeEvent);
+        void contextMenuEvent(QContextMenuEvent * event) override;
+        void closeEvent(QCloseEvent *closeEvent) override;
 
         TabWidget *m_tabWidget;
         FolderBrowser *m_folderBrowser;

@@ -41,8 +41,7 @@ namespace Caneda
         ui.pagesList->item(0)->setIcon(Caneda::icon("preferences-other"));
         ui.pagesList->item(1)->setIcon(Caneda::icon("library"));
         ui.pagesList->item(2)->setIcon(Caneda::icon("media-playback-start"));
-        ui.pagesList->item(3)->setIcon(Caneda::icon("view-grid"));
-        ui.pagesList->item(4)->setIcon(Caneda::icon("code-context"));
+        ui.pagesList->item(3)->setIcon(Caneda::icon("code-context"));
 
         // Read the settings into the dialog widgets
         Settings *settings = Settings::instance();
@@ -66,16 +65,6 @@ namespace Caneda
         map["sim/simulationEngine"] = settings->currentValue("sim/simulationEngine");
         map["sim/outputFormat"] = settings->currentValue("sim/outputFormat");
 
-        // Layout group of settings
-        map["gui/layout/metal1"] = settings->currentValue("gui/layout/metal1");
-        map["gui/layout/metal2"] = settings->currentValue("gui/layout/metal2");
-        map["gui/layout/poly1"] = settings->currentValue("gui/layout/poly1");
-        map["gui/layout/poly2"] = settings->currentValue("gui/layout/poly2");
-        map["gui/layout/active"] = settings->currentValue("gui/layout/active");
-        map["gui/layout/contact"] = settings->currentValue("gui/layout/contact");
-        map["gui/layout/nwell"] = settings->currentValue("gui/layout/nwell");
-        map["gui/layout/pwell"] = settings->currentValue("gui/layout/pwell");
-
         // HDL group of settings
         map["gui/hdl/keyword"] = settings->currentValue("gui/hdl/keyword");
         map["gui/hdl/type"] = settings->currentValue("gui/hdl/type");
@@ -89,48 +78,38 @@ namespace Caneda
         updateWidgets(map);
 
         // Signals/slots connections
-        connect(ui.buttons, SIGNAL(accepted()), this, SLOT(applySettings()));
-        connect(ui.buttons, SIGNAL(rejected()), this, SLOT(reject()));
-        connect(ui.buttons, SIGNAL(clicked(QAbstractButton*)), this, SLOT(restoreDefaults(QAbstractButton*)));
-        connect(ui.pagesList, SIGNAL(currentRowChanged(int)), this, SLOT(changePage(int)));
+        connect(ui.buttons,   &QDialogButtonBox::accepted,     this, &SettingsDialog::applySettings);
+        connect(ui.buttons,   &QDialogButtonBox::rejected,     this, &SettingsDialog::reject);
+        connect(ui.buttons,   &QDialogButtonBox::clicked,      this, &SettingsDialog::restoreDefaults);
+        connect(ui.pagesList, &QListWidget::currentRowChanged, this, &SettingsDialog::changePage);
 
         // General group of settings
-        connect(ui.buttonBackground, SIGNAL(clicked()), SLOT(colorButtonDialog()));
-        connect(ui.buttonSimulationBackground, SIGNAL(clicked()), SLOT(colorButtonDialog()));
-        connect(ui.buttonForeground, SIGNAL(clicked()), SLOT(colorButtonDialog()));
-        connect(ui.buttonLine, SIGNAL(clicked()), SLOT(colorButtonDialog()));
-        connect(ui.buttonSelection, SIGNAL(clicked()), SLOT(colorButtonDialog()));
+        connect(ui.buttonBackground,           &QPushButton::clicked, this, &SettingsDialog::colorButtonDialog);
+        connect(ui.buttonSimulationBackground, &QPushButton::clicked, this, &SettingsDialog::colorButtonDialog);
+        connect(ui.buttonForeground,           &QPushButton::clicked, this, &SettingsDialog::colorButtonDialog);
+        connect(ui.buttonLine,                 &QPushButton::clicked, this, &SettingsDialog::colorButtonDialog);
+        connect(ui.buttonSelection,            &QPushButton::clicked, this, &SettingsDialog::colorButtonDialog);
 
         // Libraries group of settings
-        connect(ui.buttonAddLibrary, SIGNAL(clicked()), SLOT(slotAddLibrary()));
-        connect(ui.buttonRemoveLibrary, SIGNAL(clicked()), SLOT(slotRemoveLibrary()));
-        connect(ui.buttonAddHdlLibrary, SIGNAL(clicked()), SLOT(slotAddHdlLibrary()));
-        connect(ui.buttonRemoveHdlLibrary, SIGNAL(clicked()), SLOT(slotRemoveHdlLibrary()));
-        connect(ui.buttonGetNewLibraries, SIGNAL(clicked()), SLOT(slotGetNewLibraries()));
+        connect(ui.buttonAddLibrary,       &QPushButton::clicked,  this, &SettingsDialog::slotAddLibrary);
+        connect(ui.buttonRemoveLibrary,    &QPushButton::clicked,  this, &SettingsDialog::slotRemoveLibrary);
+        connect(ui.buttonAddHdlLibrary,    &QPushButton::clicked,  this, &SettingsDialog::slotAddHdlLibrary);
+        connect(ui.buttonRemoveHdlLibrary, &QPushButton::clicked,  this, &SettingsDialog::slotRemoveHdlLibrary);
+        connect(ui.buttonGetNewLibraries,  &QPushButton::clicked,  this, &SettingsDialog::slotGetNewLibraries);
 
         // Simulation group of settings
-        connect(ui.radioNgspiceMode, SIGNAL(clicked()), SLOT(simulationEngineChanged()));
-        connect(ui.radioCustomMode, SIGNAL(clicked()), SLOT(simulationEngineChanged()));
-
-        // Layout group of settings
-        connect(ui.buttonMetal1, SIGNAL(clicked()), SLOT(colorButtonDialog()));
-        connect(ui.buttonMetal2, SIGNAL(clicked()), SLOT(colorButtonDialog()));
-        connect(ui.buttonPoly1, SIGNAL(clicked()), SLOT(colorButtonDialog()));
-        connect(ui.buttonPoly2, SIGNAL(clicked()), SLOT(colorButtonDialog()));
-        connect(ui.buttonActive, SIGNAL(clicked()), SLOT(colorButtonDialog()));
-        connect(ui.buttonContact, SIGNAL(clicked()), SLOT(colorButtonDialog()));
-        connect(ui.buttonNwell, SIGNAL(clicked()), SLOT(colorButtonDialog()));
-        connect(ui.buttonPwell, SIGNAL(clicked()), SLOT(colorButtonDialog()));
+        connect(ui.radioNgspiceMode,       &QRadioButton::clicked, this, &SettingsDialog::simulationEngineChanged);
+        connect(ui.radioCustomMode,        &QRadioButton::clicked, this, &SettingsDialog::simulationEngineChanged);
 
         // HDL group of settings
-        connect(ui.buttonKeyword, SIGNAL(clicked()), SLOT(colorButtonDialog()));
-        connect(ui.buttonType, SIGNAL(clicked()), SLOT(colorButtonDialog()));
-        connect(ui.buttonAttribute, SIGNAL(clicked()), SLOT(colorButtonDialog()));
-        connect(ui.buttonBlock, SIGNAL(clicked()), SLOT(colorButtonDialog()));
-        connect(ui.buttonClass, SIGNAL(clicked()), SLOT(colorButtonDialog()));
-        connect(ui.buttonData, SIGNAL(clicked()), SLOT(colorButtonDialog()));
-        connect(ui.buttonComment, SIGNAL(clicked()), SLOT(colorButtonDialog()));
-        connect(ui.buttonSystem, SIGNAL(clicked()), SLOT(colorButtonDialog()));
+        connect(ui.buttonKeyword,          &QPushButton::clicked,  this, &SettingsDialog::colorButtonDialog);
+        connect(ui.buttonType,             &QPushButton::clicked,  this, &SettingsDialog::colorButtonDialog);
+        connect(ui.buttonAttribute,        &QPushButton::clicked,  this, &SettingsDialog::colorButtonDialog);
+        connect(ui.buttonBlock,            &QPushButton::clicked,  this, &SettingsDialog::colorButtonDialog);
+        connect(ui.buttonClass,            &QPushButton::clicked,  this, &SettingsDialog::colorButtonDialog);
+        connect(ui.buttonData,             &QPushButton::clicked,  this, &SettingsDialog::colorButtonDialog);
+        connect(ui.buttonComment,          &QPushButton::clicked,  this, &SettingsDialog::colorButtonDialog);
+        connect(ui.buttonSystem,           &QPushButton::clicked,  this, &SettingsDialog::colorButtonDialog);
     }
 
     /*!
@@ -258,16 +237,6 @@ namespace Caneda
         map["sim/simulationEngine"] = settings->defaultValue("sim/simulationEngine");
         map["sim/outputFormat"] = settings->defaultValue("sim/outputFormat");
 
-        // Layout group of settings
-        map["gui/layout/metal1"] = settings->defaultValue("gui/layout/metal1");
-        map["gui/layout/metal2"] = settings->defaultValue("gui/layout/metal2");
-        map["gui/layout/poly1"] = settings->defaultValue("gui/layout/poly1");
-        map["gui/layout/poly2"] = settings->defaultValue("gui/layout/poly2");
-        map["gui/layout/active"] = settings->defaultValue("gui/layout/active");
-        map["gui/layout/contact"] = settings->defaultValue("gui/layout/contact");
-        map["gui/layout/nwell"] = settings->defaultValue("gui/layout/nwell");
-        map["gui/layout/pwell"] = settings->defaultValue("gui/layout/pwell");
-
         // HDL group of settings
         map["gui/hdl/keyword"] = settings->defaultValue("gui/hdl/keyword");
         map["gui/hdl/type"] = settings->defaultValue("gui/hdl/type");
@@ -329,16 +298,6 @@ namespace Caneda
         else if(ui.radioAsciiMode->isChecked()) {
             settings->setCurrentValue("sim/outputFormat", QString("ascii"));
         }
-
-        // Layout group of settings
-        settings->setCurrentValue("gui/layout/metal1", getButtonColor(ui.buttonMetal1));
-        settings->setCurrentValue("gui/layout/metal2", getButtonColor(ui.buttonMetal2));
-        settings->setCurrentValue("gui/layout/poly1", getButtonColor(ui.buttonPoly1));
-        settings->setCurrentValue("gui/layout/poly2", getButtonColor(ui.buttonPoly2));
-        settings->setCurrentValue("gui/layout/active", getButtonColor(ui.buttonActive));
-        settings->setCurrentValue("gui/layout/contact", getButtonColor(ui.buttonContact));
-        settings->setCurrentValue("gui/layout/nwell", getButtonColor(ui.buttonNwell));
-        settings->setCurrentValue("gui/layout/pwell", getButtonColor(ui.buttonPwell));
 
         // HDL group of settings
         settings->setCurrentValue("gui/hdl/keyword", getButtonColor(ui.buttonKeyword));
@@ -402,16 +361,6 @@ namespace Caneda
         else if(map["sim/outputFormat"].toString() == "ascii") {
             ui.radioAsciiMode->setChecked(true);
         }
-
-        // Layout group of settings
-        setButtonColor(ui.buttonMetal1, map["gui/layout/metal1"].value<QColor>());
-        setButtonColor(ui.buttonMetal2, map["gui/layout/metal2"].value<QColor>());
-        setButtonColor(ui.buttonPoly1, map["gui/layout/poly1"].value<QColor>());
-        setButtonColor(ui.buttonPoly2, map["gui/layout/poly2"].value<QColor>());
-        setButtonColor(ui.buttonActive, map["gui/layout/active"].value<QColor>());
-        setButtonColor(ui.buttonContact, map["gui/layout/contact"].value<QColor>());
-        setButtonColor(ui.buttonNwell, map["gui/layout/nwell"].value<QColor>());
-        setButtonColor(ui.buttonPwell, map["gui/layout/pwell"].value<QColor>());
 
         // HDL group of settings
         setButtonColor(ui.buttonKeyword, map["gui/hdl/keyword"].value<QColor>());

@@ -27,6 +27,7 @@
 #include <QMenu>
 #include <QMouseEvent>
 
+#include <qwt_text.h>
 #include <qwt_legend.h>
 #include <qwt_plot_canvas.h>
 #include <qwt_plot_curve.h>
@@ -83,7 +84,7 @@ namespace Caneda
 
         // Panning with the middle mouse button
         QwtPlotPanner *panner = new QwtPlotPanner(m_canvas);
-        panner->setMouseButton(Qt::MidButton);
+        panner->setMouseButton(Qt::MiddleButton);
 
         // Zoom in/out with the wheel
         m_magnifier = new PlotMagnifier(m_canvas);
@@ -113,7 +114,7 @@ namespace Caneda
 
         // Context menu event
         setContextMenuPolicy(Qt::CustomContextMenu);
-        connect(this, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(contextMenuEvent(const QPoint &)));
+        connect(this, &ChartView::customContextMenuRequested, this, &ChartView::contextMenuEvent);
     }
 
     void ChartView::zoomIn()
@@ -141,12 +142,20 @@ namespace Caneda
     {
         QList<ChartSeries*> m_items = m_chartScene->items();
 
-        QColor color = QColor(0, 0, 0);
-        int colorIndex= 0;
+        // Avoid populating empty items
+        if(m_items.isEmpty()) {
+            return;
+        }
+
+        int colorIndex = 0;
         int valueIndex = 255;
+        int penWidth = 3;
 
         // Attach the items to the plot
         foreach(ChartSeries *item, m_items) {
+            QColor color = QColor(0, 0, 0);
+            QPen pen = QPen(color);
+
             // Recreate the curve to be able to attach
             // the same curve to different views
             ChartSeries *newCurve = new ChartSeries();
@@ -162,7 +171,10 @@ namespace Caneda
             // Select the style and color of the new curve
             newCurve->setRenderHint(ChartSeries::RenderAntialiased);
             color.setHsv(colorIndex , 200, valueIndex);
-            newCurve->setPen(QPen(color));
+            pen.setColor(color);
+            pen.setWidth(penWidth);
+
+            newCurve->setPen(pen);
 
             // If the curve is of type magnitude, avoid updating the color
             // for the next curve (that should be the phase).
@@ -171,9 +183,8 @@ namespace Caneda
                 continue;
             }
             else if(item->type() == "phase") {
-                QPen m_pen = QPen(color);
-                m_pen.setStyle(Qt::DashLine);
-                newCurve->setPen(m_pen);
+                pen.setStyle(Qt::DashLine);
+                newCurve->setPen(pen);
             }
 
             // Set the next color to be used (to change colors
@@ -216,6 +227,34 @@ namespace Caneda
         // displaying all waveforms contents.
         m_zoomer->setZoomBase();
     }
+
+    void ChartView::resetAxis()
+    {
+        QList<ChartSeries*> m_items = m_chartScene->items();
+        int idx = 0;
+        for (auto &itm : itemList(QwtPlotItem::Rtti_PlotCurve)) {
+            if (itm->isVisible()) {
+                break;
+            }
+            idx++;
+        }
+        if (idx >= m_items.count()) return;
+        if(m_items[idx]->type() == "voltage" || m_items[idx]->type() == "current") {
+            setAxisTitle(xBottom, QwtText(tr("Time [s]")));
+            setAxisTitle(yLeft, QwtText(tr("Voltage [V]")));
+            setAxisTitle(yRight, QwtText(tr("Current [A]")));
+            setLogAxis(QwtPlot::xBottom, false);
+        }
+        else {
+            setAxisTitle(xBottom, QwtText(tr("Frequency [Hz]")));
+            setAxisTitle(yLeft, QwtText(tr("Magnitude [dB]")));
+            setAxisTitle(yRight, QwtText(tr("Phase [º]")));
+            setLogAxis(QwtPlot::xBottom, true);
+        }
+
+        enableAxis(yRight);  // Always enable the y axis
+    }
+
 
     /*!
      * \brief Set axis scale logarithmic state.
@@ -275,6 +314,7 @@ namespace Caneda
         Settings *settings = Settings::instance();
         QColor foregroundColor = settings->currentValue("gui/foregroundColor").value<QColor>();
         QColor backgroundColor = settings->currentValue("gui/simulationBackgroundColor").value<QColor>();
+        QColor selectionColor = settings->currentValue("gui/selectionColor").value<QColor>();
 
         // Canvas
         QPalette canvasPalette(backgroundColor);
@@ -289,10 +329,19 @@ namespace Caneda
         else {
             m_grid->detach();
         }
+
+        // Tracker
+        QPen m_pen = QPen(QPen(selectionColor));
+        m_pen.setStyle(Qt::DashLine);
+
+        m_zoomer->setRubberBandPen(m_pen);
+        m_zoomer->setTrackerPen(m_pen);
     }
 
     void ChartView::print(QPrinter *printer, bool fitInView)
     {
+        Q_UNUSED(fitInView)
+
         QwtPlotRenderer renderer;
         renderer.setDiscardFlag(QwtPlotRenderer::DiscardNone, true);
         renderer.setDiscardFlag(QwtPlotRenderer::DiscardCanvasBackground, true);
@@ -320,6 +369,8 @@ namespace Caneda
     //! \brief Context menu.
     void ChartView::contextMenuEvent(const QPoint &pos)
     {
+        Q_UNUSED(pos)
+
         ActionManager* am = ActionManager::instance();
         QMenu *_menu = new QMenu();
 
@@ -353,6 +404,8 @@ namespace Caneda
     //! \brief Show plot properties dialog upon mouse double click.
     void ChartView::mouseDoubleClickEvent(QMouseEvent *event)
     {
+        Q_UNUSED(event)
+
         launchPropertiesDialog();
     }
 

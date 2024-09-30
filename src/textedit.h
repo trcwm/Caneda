@@ -48,16 +48,14 @@ namespace Caneda
         Q_OBJECT
 
     public:
-        explicit TextEdit(QTextDocument *document, QWidget *parent = 0);
-
-        void setPointSize(qreal size);
+        explicit TextEdit(QTextDocument *document, QWidget *parent = nullptr);
 
     Q_SIGNALS:
         void focussed();
         void cursorPositionChanged(const QString& newPos);
 
     protected:
-        void focusInEvent(QFocusEvent *event);
+        void focusInEvent(QFocusEvent *event) override;
 
     private slots:
         void updateCursorPosition();

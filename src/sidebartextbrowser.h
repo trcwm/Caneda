@@ -49,8 +49,8 @@ namespace Caneda
         Q_OBJECT
 
     public:
-        explicit SidebarTextBrowser(QWidget *parent = 0);
-        ~SidebarTextBrowser();
+        explicit SidebarTextBrowser(QWidget *parent = nullptr);
+        ~SidebarTextBrowser() override;
 
     private Q_SLOTS:
         void filterTextChanged();

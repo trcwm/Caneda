@@ -21,8 +21,6 @@
 #ifndef CANEDA_IVIEW_H
 #define CANEDA_IVIEW_H
 
-#include "global.h"
-
 #include <QObject>
 
 // Forward declaration
@@ -36,7 +34,6 @@ namespace Caneda
     class GraphicsView;
     class ChartView;
     class DocumentViewManager;
-    class LayoutDocument;
     class IContext;
     class IDocument;
     class SchematicDocument;
@@ -66,7 +63,7 @@ namespace Caneda
 
     public:
         explicit IView(IDocument *document);
-        ~IView();
+        ~IView() override;
 
         IDocument* document() const;
 
@@ -110,51 +107,6 @@ namespace Caneda
      *                  Specialized IView Implementations                    *
      *************************************************************************/
     /*!
-     * \brief This class represents the layout view interface
-     * implementation.
-     *
-     * This class represents the view for a document, in a manner
-     * similar to Qt's Graphics View Architecture, and provides the view
-     * widget, which visualizes the contents of a scene. The view is included
-     * as a pointer to GraphicsView, that contains all the view specific
-     * methods. You can attach several views to the same scene, to provide
-     * different viewports into the same data set of the document (for example,
-     * when using split views).
-     *
-     * \sa IContext, IDocument, IView, \ref DocumentViewFramework
-     * \sa LayoutContext, LayoutDocument
-     */
-    class LayoutView : public IView
-    {
-        Q_OBJECT
-
-    public:
-        explicit LayoutView(LayoutDocument *document);
-        ~LayoutView();
-
-        // IView interface methods
-        virtual QWidget* toWidget() const;
-        virtual IContext* context() const;
-
-        virtual void zoomIn();
-        virtual void zoomOut();
-        virtual void zoomFitInBest();
-        virtual void zoomOriginal();
-
-        virtual IView* duplicate();
-
-        virtual void updateSettingsChanges();
-        // End of IView interface methods
-
-    private Q_SLOTS:
-        void onWidgetFocussedIn();
-        void onWidgetFocussedOut();
-
-    private:
-        GraphicsView *m_graphicsView;
-    };
-
-    /*!
      * \brief This class represents the schematic view interface
      * implementation.
      *
@@ -175,20 +127,20 @@ namespace Caneda
 
     public:
         explicit SchematicView(SchematicDocument *document);
-        ~SchematicView();
+        ~SchematicView() override;
 
         // IView interface methods
-        virtual QWidget* toWidget() const;
-        virtual IContext* context() const;
+        virtual QWidget* toWidget() const override;
+        virtual IContext* context() const override;
 
-        virtual void zoomIn();
-        virtual void zoomOut();
-        virtual void zoomFitInBest();
-        virtual void zoomOriginal();
+        virtual void zoomIn() override;
+        virtual void zoomOut() override;
+        virtual void zoomFitInBest() override;
+        virtual void zoomOriginal() override;
 
-        virtual IView* duplicate();
+        virtual IView* duplicate() override;
 
-        virtual void updateSettingsChanges();
+        virtual void updateSettingsChanges() override;
         // End of IView interface methods
 
     private Q_SLOTS:
@@ -220,20 +172,20 @@ namespace Caneda
 
     public:
         explicit SimulationView(SimulationDocument *document);
-        ~SimulationView();
+        ~SimulationView() override;
 
         // IView interface methods
-        virtual QWidget* toWidget() const;
-        virtual IContext* context() const;
+        virtual QWidget* toWidget() const override;
+        virtual IContext* context() const override;
 
-        virtual void zoomIn();
-        virtual void zoomOut();
-        virtual void zoomFitInBest();
-        virtual void zoomOriginal();
+        virtual void zoomIn() override;
+        virtual void zoomOut() override;
+        virtual void zoomFitInBest() override;
+        virtual void zoomOriginal() override;
 
-        virtual IView* duplicate();
+        virtual IView* duplicate() override;
 
-        virtual void updateSettingsChanges();
+        virtual void updateSettingsChanges() override;
         // End of IView interface methods
 
     private Q_SLOTS:
@@ -265,20 +217,20 @@ namespace Caneda
 
     public:
         explicit SymbolView(SymbolDocument *document);
-        ~SymbolView();
+        ~SymbolView() override;
 
         // IView interface methods
-        virtual QWidget* toWidget() const;
-        virtual IContext* context() const;
+        virtual QWidget* toWidget() const override;
+        virtual IContext* context() const override;
 
-        virtual void zoomIn();
-        virtual void zoomOut();
-        virtual void zoomFitInBest();
-        virtual void zoomOriginal();
+        virtual void zoomIn() override;
+        virtual void zoomOut() override;
+        virtual void zoomFitInBest() override;
+        virtual void zoomOriginal() override;
 
-        virtual IView* duplicate();
+        virtual IView* duplicate() override;
 
-        virtual void updateSettingsChanges();
+        virtual void updateSettingsChanges() override;
         // End of IView interface methods
 
     private Q_SLOTS:
@@ -309,20 +261,20 @@ namespace Caneda
 
     public:
         explicit TextView(TextDocument *document);
-        ~TextView();
+        ~TextView() override;
 
         // IView interface methods
-        virtual QWidget* toWidget() const;
-        virtual IContext* context() const;
+        virtual QWidget* toWidget() const override;
+        virtual IContext* context() const override;
 
-        virtual void zoomIn();
-        virtual void zoomOut();
-        virtual void zoomFitInBest();
-        virtual void zoomOriginal();
+        virtual void zoomIn() override;
+        virtual void zoomOut() override;
+        virtual void zoomFitInBest() override {}
+        virtual void zoomOriginal() override {}
 
-        virtual IView* duplicate();
+        virtual IView* duplicate() override;
 
-        virtual void updateSettingsChanges();
+        virtual void updateSettingsChanges() override;
         // End of IView interface methods
 
     private Q_SLOTS:
@@ -330,12 +282,6 @@ namespace Caneda
 
     private:
         TextEdit *m_textEdit;
-
-        void setZoomLevel(qreal level);
-
-        const qreal m_originalZoom;
-        ZoomRange m_zoomRange;
-        qreal m_currentZoom;
     };
 
 } // namespace Caneda

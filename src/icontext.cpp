@@ -173,124 +173,6 @@ namespace Caneda
      */
 
     /*************************************************************************
-     *                          Layout Context                               *
-     *************************************************************************/
-    //! \brief Constructor.
-    LayoutContext::LayoutContext(QObject *parent) : IContext(parent)
-    {
-        // We create the sidebar corresponding to this context
-        StateHandler *handler = StateHandler::instance();
-        m_sidebarItems = new SidebarItemsModel(this);
-        m_sidebarBrowser = new SidebarItemsBrowser(m_sidebarItems);
-        connect(m_sidebarBrowser, SIGNAL(itemClicked(const QString&, const QString&)), handler,
-                SLOT(insertItem(const QString&, const QString&)));
-
-        Settings *settings = Settings::instance();
-
-        QPixmap layer(20,20);
-
-        QList<QPair<QString, QPixmap> > layerItems;
-        layer.fill(settings->currentValue("gui/layout/metal1").value<QColor>());
-        layerItems << qMakePair(QObject::tr("Metal 1"), layer);
-        layer.fill(settings->currentValue("gui/layout/metal2").value<QColor>());
-        layerItems << qMakePair(QObject::tr("Metal 2"), layer);
-        layer.fill(settings->currentValue("gui/layout/poly1").value<QColor>());
-        layerItems << qMakePair(QObject::tr("Poly 1"), layer);
-        layer.fill(settings->currentValue("gui/layout/poly2").value<QColor>());
-        layerItems << qMakePair(QObject::tr("Poly 2"), layer);
-        layer.fill(settings->currentValue("gui/layout/active").value<QColor>());
-        layerItems << qMakePair(QObject::tr("Active"), layer);
-        layer.fill(settings->currentValue("gui/layout/contact").value<QColor>());
-        layerItems << qMakePair(QObject::tr("Contact"), layer);
-        layer.fill(settings->currentValue("gui/layout/nwell").value<QColor>());
-        layerItems << qMakePair(QObject::tr("N Well"), layer);
-        layer.fill(settings->currentValue("gui/layout/pwell").value<QColor>());
-        layerItems << qMakePair(QObject::tr("P Well"), layer);
-
-        QList<QPair<QString, QPixmap> > paintingItems;
-        paintingItems << qMakePair(QObject::tr("Arrow"),
-                QPixmap(Caneda::imageDirectory() + "arrow.svg"));
-        paintingItems << qMakePair(QObject::tr("Ellipse"),
-                QPixmap(Caneda::imageDirectory() + "ellipse.svg"));
-        paintingItems << qMakePair(QObject::tr("Elliptic Arc"),
-                QPixmap(Caneda::imageDirectory() + "ellipsearc.svg"));
-        paintingItems << qMakePair(QObject::tr("Line"),
-                QPixmap(Caneda::imageDirectory() + "line.svg"));
-        paintingItems << qMakePair(QObject::tr("Rectangle"),
-                QPixmap(Caneda::imageDirectory() + "rectangle.svg"));
-        paintingItems << qMakePair(QObject::tr("Text"),
-                QPixmap(Caneda::imageDirectory() + "text.svg"));
-
-        m_sidebarItems->plugItems(layerItems, QObject::tr("Layout Tools"));
-        m_sidebarItems->plugItems(paintingItems, QObject::tr("Paint Tools"));
-    }
-
-    //! \copydoc MainWindow::instance()
-    LayoutContext* LayoutContext::instance()
-    {
-        static LayoutContext *context = 0;
-        if (!context) {
-            context = new LayoutContext();
-        }
-        return context;
-    }
-
-    QStringList LayoutContext::fileNameFilters() const
-    {
-        QStringList nameFilters;
-        nameFilters << QObject::tr("Layout-xml (*.xlay)");
-
-        return nameFilters;
-    }
-
-    QStringList LayoutContext::supportedSuffixes() const
-    {
-        // List of supported suffixes. The first suffix is the default value
-        // provided by defaultSuffix() for all dialogs.
-        QStringList supportedSuffixes;
-        supportedSuffixes << "xlay";
-
-        return supportedSuffixes;
-    }
-
-    IDocument* LayoutContext::newDocument()
-    {
-        return new LayoutDocument;
-    }
-
-    IDocument* LayoutContext::open(const QString &fileName,
-            QString *errorMessage)
-    {
-        LayoutDocument *document = new LayoutDocument();
-        document->setFileName(fileName);
-
-        if (!document->load(errorMessage)) {
-            delete document;
-            document = 0;
-        }
-
-        return document;
-    }
-
-    QWidget* LayoutContext::sideBarWidget()
-    {
-        return m_sidebarBrowser;
-    }
-
-    void LayoutContext::quickInsert()
-    {
-        StateHandler *handler = StateHandler::instance();
-        QuickInsert *quickInsert = new QuickInsert(m_sidebarItems);
-
-        connect(quickInsert, SIGNAL(itemClicked(const QString&, const QString&)), handler,
-                SLOT(insertItem(const QString&, const QString&)));
-
-        quickInsert->exec(QCursor::pos());
-
-        delete quickInsert;
-    }
-
-    /*************************************************************************
      *                         Schematic Context                             *
      *************************************************************************/
     //! \brief Constructor.
@@ -299,8 +181,9 @@ namespace Caneda
         StateHandler *handler = StateHandler::instance();
         m_sidebarItems = new SidebarItemsModel(this);
         m_sidebarBrowser = new SidebarItemsBrowser(m_sidebarItems);
-        connect(m_sidebarBrowser, SIGNAL(itemClicked(const QString&, const QString&)), handler,
-                SLOT(insertItem(const QString&, const QString&)));
+
+        connect(m_sidebarBrowser, QOverload<const QString&, const QString&>::of(&SidebarItemsBrowser::itemClicked),
+                handler,          QOverload<const QString&, const QString&>::of(&StateHandler::insertItem));
 
         // Load schematic libraries
         LibraryManager *libraryManager = LibraryManager::instance();
@@ -351,7 +234,7 @@ namespace Caneda
     //! \copydoc MainWindow::instance()
     SchematicContext* SchematicContext::instance()
     {
-        static SchematicContext *context = 0;
+        static SchematicContext *context = nullptr;
         if (!context) {
             context = new SchematicContext();
         }
@@ -389,7 +272,7 @@ namespace Caneda
 
         if (!document->load(errorMessage)) {
             delete document;
-            document = 0;
+            document = nullptr;
         }
 
         return document;
@@ -405,8 +288,8 @@ namespace Caneda
         StateHandler *handler = StateHandler::instance();
         QuickInsert *quickInsert = new QuickInsert(m_sidebarItems);
 
-        connect(quickInsert, SIGNAL(itemClicked(const QString&, const QString&)), handler,
-                SLOT(insertItem(const QString&, const QString&)));
+        connect(quickInsert, QOverload<const QString&, const QString&>::of(&QuickInsert::itemClicked),
+                handler,     QOverload<const QString&, const QString&>::of(&StateHandler::insertItem));
 
         quickInsert->exec(QCursor::pos());
 
@@ -425,7 +308,7 @@ namespace Caneda
     //! \copydoc MainWindow::instance()
     SimulationContext* SimulationContext::instance()
     {
-        static SimulationContext *context = 0;
+        static SimulationContext *context = nullptr;
         if (!context) {
             context = new SimulationContext();
         }
@@ -463,7 +346,7 @@ namespace Caneda
 
         if (!document->load(errorMessage)) {
             delete document;
-            document = 0;
+            document = nullptr;
         }
 
         return document;
@@ -490,8 +373,9 @@ namespace Caneda
         StateHandler *handler = StateHandler::instance();
         m_sidebarItems = new SidebarItemsModel(this);
         m_sidebarBrowser = new SidebarItemsBrowser(m_sidebarItems);
-        connect(m_sidebarBrowser, SIGNAL(itemClicked(const QString&, const QString&)), handler,
-                SLOT(insertItem(const QString&, const QString&)));
+
+        connect(m_sidebarBrowser, QOverload<const QString&, const QString&>::of(&SidebarItemsBrowser::itemClicked),
+                handler,          QOverload<const QString&, const QString&>::of(&StateHandler::insertItem));
 
         QList<QPair<QString, QPixmap> > miscellaneousItems;
         miscellaneousItems << qMakePair(QObject::tr("Port Symbol"),
@@ -518,7 +402,7 @@ namespace Caneda
     //! \copydoc MainWindow::instance()
     SymbolContext* SymbolContext::instance()
     {
-        static SymbolContext *context = 0;
+        static SymbolContext *context = nullptr;
         if (!context) {
             context = new SymbolContext();
         }
@@ -556,7 +440,7 @@ namespace Caneda
 
         if (!document->load(errorMessage)) {
             delete document;
-            document = 0;
+            document = nullptr;
         }
 
         return document;
@@ -572,8 +456,8 @@ namespace Caneda
         StateHandler *handler = StateHandler::instance();
         QuickInsert *quickInsert = new QuickInsert(m_sidebarItems);
 
-        connect(quickInsert, SIGNAL(itemClicked(const QString&, const QString&)), handler,
-                SLOT(insertItem(const QString&, const QString&)));
+        connect(quickInsert, QOverload<const QString&, const QString&>::of(&QuickInsert::itemClicked),
+                handler,     QOverload<const QString&, const QString&>::of(&StateHandler::insertItem));
 
         quickInsert->exec(QCursor::pos());
 
@@ -592,7 +476,7 @@ namespace Caneda
     //! \copydoc MainWindow::instance()
     TextContext* TextContext::instance()
     {
-        static TextContext *instance = 0;
+        static TextContext *instance = nullptr;
         if (!instance) {
             instance = new TextContext();
         }
@@ -640,7 +524,7 @@ namespace Caneda
 
         if (!document->load(errorMessage)) {
             delete document;
-            document = 0;
+            document = nullptr;
         }
 
         return document;

@@ -38,6 +38,7 @@ namespace Caneda
         libraries << Caneda::libDirectory() + "components/active";
         libraries << Caneda::libDirectory() + "components/cmos";
         libraries << Caneda::libDirectory() + "components/miscellaneous";
+        libraries << Caneda::libDirectory() + "components/measurement";
         libraries << Caneda::libDirectory() + "components/models";
         libraries << Caneda::libDirectory() + "components/passive";
         libraries << Caneda::libDirectory() + "components/semiconductor";
@@ -59,7 +60,7 @@ namespace Caneda
         defaultSettings["gui/gridVisible"] = QVariant(bool(true));
         defaultSettings["gui/foregroundColor"] = QVariant(QColor(Qt::darkGray));
         defaultSettings["gui/backgroundColor"] = QVariant(QColor(Qt::white));
-        defaultSettings["gui/simulationBackgroundColor"] = QVariant(QColor(Qt::white));
+        defaultSettings["gui/simulationBackgroundColor"] = QVariant(QColor(Qt::black));
         defaultSettings["gui/lineColor"] = QVariant(QColor(Qt::blue));
         defaultSettings["gui/selectionColor"] = QVariant(QColor(255, 128, 0)); // Dark orange
         defaultSettings["gui/lineWidth"] = QVariant(int(1));
@@ -72,15 +73,6 @@ namespace Caneda
         defaultSettings["gui/hdl/data"]= QVariant(QVariant(QColor(Qt::darkGreen)));
         defaultSettings["gui/hdl/comment"] = QVariant(QColor(Qt::red));
         defaultSettings["gui/hdl/system"] = QVariant(QColor(Qt::darkYellow));
-
-        defaultSettings["gui/layout/metal1"] = QVariant(QColor(Qt::blue));
-        defaultSettings["gui/layout/metal2"] = QVariant(QColor(Qt::gray));
-        defaultSettings["gui/layout/poly1"] = QVariant(QColor(Qt::red));
-        defaultSettings["gui/layout/poly2"] = QVariant(QColor(Qt::darkRed));
-        defaultSettings["gui/layout/active"] = QVariant(QColor(Qt::green));
-        defaultSettings["gui/layout/contact"] = QVariant(QColor(Qt::black));
-        defaultSettings["gui/layout/nwell"] = QVariant(QColor(Qt::darkYellow));
-        defaultSettings["gui/layout/pwell"] = QVariant(QColor(Qt::darkCyan));
 
         defaultSettings["sim/simulationEngine"] = QVariant(QString("ngspice"));  //! \todo In the future this could be replaced by an enum, to avoid problems
         defaultSettings["sim/simulationCommand"] = QVariant(QString("ngspice -b -r %filename.raw %filename.net"));
@@ -120,7 +112,6 @@ namespace Caneda
 
         defaultSettings["shortcuts/openSchematic"] = QVariant(QKeySequence(tr("F2")));
         defaultSettings["shortcuts/openSymbol"] = QVariant(QKeySequence(tr("F3")));
-        defaultSettings["shortcuts/openLayout"] = QVariant(QKeySequence(tr("F4")));
         defaultSettings["shortcuts/simulate"] = QVariant(QKeySequence(QKeySequence::Refresh));
         defaultSettings["shortcuts/openSimulation"] = QVariant(QKeySequence(tr("F6")));
         defaultSettings["shortcuts/openLog"] = QVariant(QKeySequence(tr("F7")));
@@ -146,7 +137,7 @@ namespace Caneda
     //! \copydoc MainWindow::instance()
     Settings* Settings::instance()
     {
-        static Settings *instance = 0;
+        static Settings *instance = nullptr;
         if (!instance) {
             instance = new Settings();
         }
@@ -223,6 +214,8 @@ namespace Caneda
         foreach (const QString& childKey, childKeys) {
             settings.setValue(childKey, currentValue(childKey));
         }
+
+        return true;
     }
 
 } // namespace Caneda

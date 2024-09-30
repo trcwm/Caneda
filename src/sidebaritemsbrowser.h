@@ -54,7 +54,7 @@ namespace Caneda
         Q_OBJECT
 
     public:
-        explicit SidebarItemsModel(QObject *parent = 0);
+        explicit SidebarItemsModel(QObject *parent = nullptr);
 
         void plugItems(const QList<QPair<QString, QPixmap> > &items, QString category);
         void plugLibrary(QString libraryName, QString category);
@@ -66,17 +66,16 @@ namespace Caneda
      * be inserted in graphic documents.
      *
      * This class implements the sidebar dockwidget corresponding to the
-     * LayoutContext, SchematicContext, and SymbolContext classes. It allows
-     * previously generated components to be inserted in these type of
-     * documents.
+     * SchematicContext, and SymbolContext classes. It allows previously
+     * generated components to be inserted in these type of documents.
      *
-     * The components depend on the final context class. In the LayoutContext,
-     * for example, components are layout layers; in the SchematicContext,
-     * components are electronic components; and in the SymbolContext,
-     * components are painting items. All these components are inserted into
-     * the currently opened document upon user double click.
+     * The components depend on the final context class. In the
+     * SchematicContext, for example, components are electronic components; and
+     * in the SymbolContext, components are painting items. All these
+     * components are inserted into the currently opened document upon user
+     * double click.
      *
-     * \sa LayoutContext, SchematicContext, SymbolContext, SidebarTextBrowser
+     * \sa SchematicContext, SymbolContext, SidebarTextBrowser
      * \sa QStandardItemModel
      */
     class SidebarItemsBrowser : public QWidget
@@ -84,15 +83,15 @@ namespace Caneda
         Q_OBJECT
 
     public:
-        explicit SidebarItemsBrowser(QStandardItemModel *model, QWidget *parent = 0);
-        ~SidebarItemsBrowser();
+        explicit SidebarItemsBrowser(QStandardItemModel *model, QWidget *parent = nullptr);
+        ~SidebarItemsBrowser() override;
 
-    signals:
+    Q_SIGNALS:
         void itemClicked(const QString& item, const QString& category);
         void itemDoubleClicked(const QString& item, const QString& category);
 
     protected:
-        bool eventFilter(QObject *object, QEvent *event);
+        bool eventFilter(QObject *object, QEvent *event) override;
 
     private Q_SLOTS:
         void filterTextChanged();

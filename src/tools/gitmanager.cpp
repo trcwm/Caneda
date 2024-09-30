@@ -44,15 +44,15 @@ namespace Caneda
         // Set up git processes
         gitProcess = new QProcess(this);
         gitProcess->setWorkingDirectory(m_path);
-        connect(gitProcess, SIGNAL(finished(int)), SLOT(slotUpdateOutput()));
+        connect(gitProcess, qOverload<int, QProcess::ExitStatus>(&QProcess::finished), this, &GitManager::slotUpdateOutput);
 
         gitProcessHistory = new QProcess(this);
         gitProcessHistory->setWorkingDirectory(m_path);
-        connect(gitProcessHistory, SIGNAL(finished(int)), SLOT(slotUpdateHistory()));
+        connect(gitProcessHistory, qOverload<int, QProcess::ExitStatus>(&QProcess::finished), this, &GitManager::slotUpdateHistory);
 
         // Conections signal/slots
-        connect(ui.btnSaveBackup, SIGNAL(clicked()), SLOT(slotSaveBackup()));
-        connect(ui.btnRestoreBackup, SIGNAL(clicked()), SLOT(slotRestore()));
+        connect(ui.btnSaveBackup,    &QPushButton::clicked, this, &GitManager::slotSaveBackup);
+        connect(ui.btnRestoreBackup, &QPushButton::clicked, this, &GitManager::slotRestore);
 
         // Show actual history
         slotHistory();
@@ -68,14 +68,14 @@ namespace Caneda
     void GitManager::slotSaveBackup()
     {
         // Run 'git init'
-        gitProcess->start(QString("git init"));
+        gitProcess->start(QString("git"), QStringList() << "init");
         gitProcess->waitForFinished();
         // Run 'git commit'
-        gitProcess->start(QString("git add *"));
+        gitProcess->start(QString("git"), QStringList() << "add" << "*");
         gitProcess->waitForFinished();
         QString description = (ui.editDescription->text().isEmpty() ? QString(tr("Backup saved by user")) : ui.editDescription->text());
         ui.editDescription->clear();
-        gitProcess->start(QString("git commit -a -m \"") + description + QString("\""));
+        gitProcess->start(QString("git"), QStringList() << "commit" << "-a" << "-m" << description);
         gitProcess->waitForFinished();
         slotHistory();
     }
@@ -94,18 +94,18 @@ namespace Caneda
      */
     void GitManager::slotRestore()
     {
-        gitProcess->start(QString("git checkout ."));
+        gitProcess->start(QString("git"), QStringList() << "checkout" << ".");
         gitProcess->waitForFinished();
         QString hash = ui.listHistory->currentItem()->data(Qt::AccessibleDescriptionRole).toString();
-        gitProcess->start(QString("git checkout -b temporal ") + hash);
+        gitProcess->start(QString("git"), QStringList() << "checkout" << "-b" << "temporal" << hash);
         gitProcess->waitForFinished();
-        gitProcess->start(QString("git merge master -s ours"));
+        gitProcess->start(QString("git"), QStringList() << "merge" << "master" << "-s" << "ours");
         gitProcess->waitForFinished();
-        gitProcess->start(QString("git checkout master"));
+        gitProcess->start(QString("git"), QStringList() << "checkout" << "master");
         gitProcess->waitForFinished();
-        gitProcess->start(QString("git merge temporal"));
+        gitProcess->start(QString("git"), QStringList() << "merge" << "temporal");
         gitProcess->waitForFinished();
-        gitProcess->start(QString("git branch -D temporal"));
+        gitProcess->start(QString("git"), QStringList() << "branch" << "-D" << "temporal");
         gitProcess->waitForFinished();
         slotHistory();
     }
@@ -121,7 +121,7 @@ namespace Caneda
     void GitManager::slotHistory()
     {
         // Run 'git log' with custom xml format to parse it with streamReader
-        gitProcessHistory->start(QString("git log --reverse --relative-date --format=format:\"<commit>%n<hash>%H</hash>%n<msg>%ar - %s</msg>%n</commit>\""));
+        gitProcessHistory->start(QString("git"), QStringList() << "log" << "--reverse" << "--relative-date" << "--format=format:\"<commit>%n<hash>%H</hash>%n<msg>%ar - %s</msg>%n</commit>\"");
     }
 
     /*!
@@ -168,6 +168,7 @@ namespace Caneda
                         item->setData(Qt::AccessibleDescriptionRole, reader->readElementText());
                     }
                 }
+                delete item;
             }
         }
 

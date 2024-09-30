@@ -67,9 +67,8 @@ namespace Caneda
 
         mainLayout->addWidget(textEdit);
 
-        connect(textEdit, SIGNAL(currentCharFormatChanged(const QTextCharFormat &)),
-                SLOT(currentCharFormatChanged(const QTextCharFormat &)));
-        connect(textEdit, SIGNAL(cursorPositionChanged()), SLOT(cursorPositionChanged()));
+        connect(textEdit, &QTextEdit::currentCharFormatChanged, this, &GraphicTextDialog::currentCharFormatChanged);
+        connect(textEdit, &QTextEdit::cursorPositionChanged,    this, &GraphicTextDialog::cursorPositionChanged);
 
         textEdit->setFocus();
 
@@ -78,37 +77,35 @@ namespace Caneda
         alignmentChanged(textEdit->alignment());
         subSuperAlignmentChanged(textEdit->currentCharFormat().verticalAlignment());
 
-        connect(textEdit->document(), SIGNAL(undoAvailable(bool)),
-                actionUndo, SLOT(setEnabled(bool)));
-        connect(textEdit->document(), SIGNAL(redoAvailable(bool)),
-                actionRedo, SLOT(setEnabled(bool)));
+        connect(textEdit->document(), &QTextDocument::undoAvailable, actionUndo, &QAction::setEnabled);
+        connect(textEdit->document(), &QTextDocument::redoAvailable, actionRedo, &QAction::setEnabled);
 
         actionUndo->setEnabled(textEdit->document()->isUndoAvailable());
         actionRedo->setEnabled(textEdit->document()->isRedoAvailable());
 
-        connect(actionUndo, SIGNAL(triggered()), textEdit, SLOT(undo()));
-        connect(actionRedo, SIGNAL(triggered()), textEdit, SLOT(redo()));
+        connect(actionUndo, &QAction::triggered, textEdit, &QTextEdit::undo);
+        connect(actionRedo, &QAction::triggered, textEdit, &QTextEdit::redo);
 
         actionCut->setEnabled(false);
         actionCopy->setEnabled(false);
 
-        connect(actionCut, SIGNAL(triggered()), textEdit, SLOT(cut()));
-        connect(actionCopy, SIGNAL(triggered()), textEdit, SLOT(copy()));
-        connect(actionPaste, SIGNAL(triggered()), textEdit, SLOT(paste()));
+        connect(actionCut,   &QAction::triggered, textEdit, &QTextEdit::cut);
+        connect(actionCopy,  &QAction::triggered, textEdit, &QTextEdit::copy);
+        connect(actionPaste, &QAction::triggered, textEdit, &QTextEdit::paste);
 
-        connect(textEdit, SIGNAL(copyAvailable(bool)), actionCut, SLOT(setEnabled(bool)));
-        connect(textEdit, SIGNAL(copyAvailable(bool)), actionCopy, SLOT(setEnabled(bool)));
+        connect(textEdit, &QTextEdit::copyAvailable, actionCut,  &QAction::setEnabled);
+        connect(textEdit, &QTextEdit::copyAvailable, actionCopy, &QAction::setEnabled);
 
-        connect(QApplication::clipboard(), SIGNAL(dataChanged()), SLOT(clipboardDataChanged()));
+        connect(QApplication::clipboard(), &QClipboard::dataChanged, this, &GraphicTextDialog::clipboardDataChanged);
 
-        QDialogButtonBox *buttonBox =
-            new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel,
-                    Qt::Horizontal, this);
+        QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel,
+                                                           Qt::Horizontal, this);
 
         buttonBox->button(QDialogButtonBox::Ok)->setText(tr("&OK"));
 
-        connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
-        connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
+        connect(buttonBox, &QDialogButtonBox::accepted, this, &GraphicTextDialog::accept);
+        connect(buttonBox, &QDialogButtonBox::rejected, this, &GraphicTextDialog::reject);
+
         mainLayout->addWidget(buttonBox);
         adjustSize();
     }
@@ -186,7 +183,7 @@ namespace Caneda
         QFont bold;
         bold.setBold(true);
         actionTextBold->setFont(bold);
-        connect(actionTextBold, SIGNAL(triggered()), this, SLOT(textBold()));
+        connect(actionTextBold, &QAction::triggered, this, &GraphicTextDialog::textBold);
         tb->addAction(actionTextBold);
 
         actionTextBold->setCheckable(true);
@@ -196,7 +193,7 @@ namespace Caneda
         QFont italic;
         italic.setItalic(true);
         actionTextItalic->setFont(italic);
-        connect(actionTextItalic, SIGNAL(triggered()), this, SLOT(textItalic()));
+        connect(actionTextItalic, &QAction::triggered, this, &GraphicTextDialog::textItalic);
         tb->addAction(actionTextItalic);
 
         actionTextItalic->setCheckable(true);
@@ -206,13 +203,13 @@ namespace Caneda
         QFont underline;
         underline.setUnderline(true);
         actionTextUnderline->setFont(underline);
-        connect(actionTextUnderline, SIGNAL(triggered()), this, SLOT(textUnderline()));
+        connect(actionTextUnderline, &QAction::triggered, this, &GraphicTextDialog::textUnderline);
         tb->addAction(actionTextUnderline);
 
         actionTextUnderline->setCheckable(true);
 
         QActionGroup *grp = new QActionGroup(this);
-        connect(grp, SIGNAL(triggered(QAction *)), this, SLOT(textAlign(QAction *)));
+        connect(grp, &QActionGroup::triggered, this, &GraphicTextDialog::textAlign);
 
         actionAlignLeft = new QAction(Caneda::icon("format-justify-left"), tr("&Left"), grp);
         actionAlignLeft->setShortcut(Qt::CTRL + Qt::Key_L);
@@ -233,7 +230,7 @@ namespace Caneda
         QPixmap pix(16, 16);
         pix.fill(Qt::black);
         actionTextColor = new QAction(pix, tr("&Color..."), this);
-        connect(actionTextColor, SIGNAL(triggered()), this, SLOT(textColor()));
+        connect(actionTextColor, &QAction::triggered, this, &GraphicTextDialog::textColor);
         tb->addAction(actionTextColor);
 
         tb = new QToolBar(this);
@@ -247,13 +244,11 @@ namespace Caneda
         comboStyle->addItem("Ordered List (Decimal)");
         comboStyle->addItem("Ordered List (Alpha lower)");
         comboStyle->addItem("Ordered List (Alpha upper)");
-        connect(comboStyle, SIGNAL(activated(int)),
-                this, SLOT(textStyle(int)));
+        connect(comboStyle, QOverload<int>::of(&QComboBox::activated), this, &GraphicTextDialog::textStyle);
 
         comboFont = new QFontComboBox(tb);
         tb->addWidget(comboFont);
-        connect(comboFont, SIGNAL(activated(const QString &)),
-                this, SLOT(textFamily(const QString &)));
+        connect(comboFont, &QFontComboBox::textActivated, this, &GraphicTextDialog::textFamily);
         comboFont->setCurrentFont(font());
 
         comboSize = new QComboBox(tb);
@@ -266,13 +261,13 @@ namespace Caneda
             comboSize->addItem(QString::number(size));
         }
 
-        connect(comboSize, SIGNAL(activated(const QString &)),
-                this, SLOT(textSize(const QString &)));
+        connect(comboSize, &QComboBox::textActivated, this, &GraphicTextDialog::textSize);
+
         comboSize->setCurrentIndex(comboSize->findText(QString::number(QApplication::font()
                         .pointSize())));
         tb->addSeparator();
         grp = new QActionGroup(this);
-        connect(grp, SIGNAL(triggered(QAction *)), this, SLOT(textAlignSubSuperScript(QAction *)));
+        connect(grp, &QActionGroup::triggered, this, &GraphicTextDialog::textAlignSubSuperScript);
 
         actionAlignSubscript = new QAction(Caneda::icon("format-text-subscript"), tr("Subscript"), grp);
         actionAlignSubscript->setCheckable(true);

@@ -34,27 +34,27 @@ namespace Caneda
     class Rectangle : public Painting
     {
     public:
-        explicit Rectangle(const QRectF &rect, QGraphicsItem *parent = 0);
+        explicit Rectangle(const QRectF &rect, QGraphicsItem *parent = nullptr);
 
         //! \copydoc GraphicsItem::Type
         enum { Type = Painting::RectangleType };
         //! \copydoc GraphicsItem::type()
-        int type() const { return Type; }
+        int type() const override { return Type; }
 
-        QPainterPath shapeForRect(const QRectF& rect) const;
+        QPainterPath shapeForRect(const QRectF& rect) const override;
 
-        void paint(QPainter *, const QStyleOptionGraphicsItem*, QWidget *);
+        void paint(QPainter *, const QStyleOptionGraphicsItem*, QWidget *) override;
 
         //! \brief Returns rectangle coords as QRectF.
         QRectF rect() const { return paintingRect(); }
         void setRect(const QRectF& rect) { setPaintingRect(rect); }
 
-        Rectangle* copy() const;
+        Rectangle* copy() const override;
 
-        void saveData(Caneda::XmlWriter *writer) const;
-        void loadData(Caneda::XmlReader *reader);
+        void saveData(Caneda::XmlWriter *writer) const override;
+        void loadData(Caneda::XmlReader *reader) override;
 
-        void launchPropertiesDialog();
+        void launchPropertiesDialog() override;
     };
 
 } // namespace Caneda

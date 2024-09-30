@@ -24,6 +24,7 @@
 
 #include <QKeySequenceEdit>
 #include <QMessageBox>
+#include <QPushButton>
 #include <QSortFilterProxyModel>
 
 namespace Caneda
@@ -46,6 +47,9 @@ namespace Caneda
                                             const QStyleOptionViewItem &option,
                                             const QModelIndex &index) const
     {
+        Q_UNUSED(option)
+        Q_UNUSED(index)
+
         QKeySequenceEdit *editor = new QKeySequenceEdit(parent);
         return editor;
     }
@@ -86,6 +90,8 @@ namespace Caneda
                                                 const QStyleOptionViewItem &option,
                                                 const QModelIndex &index) const
     {
+        Q_UNUSED(index)
+
         editor->setGeometry(option.rect);
     }
 
@@ -208,6 +214,8 @@ namespace Caneda
                                        const QVariant& value,
                                        int role)
     {
+        Q_UNUSED(role)
+
         if(index.isValid() && index.column() == 1){
 
             // Check if the shortcut is already used
@@ -284,10 +292,10 @@ namespace Caneda
         ui.tableView->setItemDelegateForColumn(1, new ShortcutDelegate(this));
 
         // Signals and slots connections
-        connect(ui.lineEdit, SIGNAL(textChanged(const QString &)), this, SLOT(filterTextChanged()));
-        connect(ui.buttonBox, SIGNAL(accepted()), this, SLOT(applyShortcuts()));
-        connect(ui.buttonBox, SIGNAL(rejected()), this, SLOT(restoreShortcuts()));
-        connect(ui.buttonBox, SIGNAL(clicked(QAbstractButton*)), this, SLOT(restoreDefaults(QAbstractButton*)));
+        connect(ui.lineEdit,  &QLineEdit::textChanged,     this, &ShortcutsDialog::filterTextChanged);
+        connect(ui.buttonBox, &QDialogButtonBox::accepted, this, &ShortcutsDialog::applyShortcuts);
+        connect(ui.buttonBox, &QDialogButtonBox::rejected, this, &ShortcutsDialog::restoreShortcuts);
+        connect(ui.buttonBox->button(QDialogButtonBox::RestoreDefaults), &QPushButton::clicked, this, &ShortcutsDialog::restoreDefaults);
     }
 
     //! \brief Filters actions according to user input on a QLineEdit.
@@ -327,20 +335,18 @@ namespace Caneda
     }
 
     //! \brief Load default action shortcuts
-    void ShortcutsDialog::restoreDefaults(QAbstractButton *button)
+    void ShortcutsDialog::restoreDefaults()
     {
-        if(ui.buttonBox->buttonRole(button) == QDialogButtonBox::ResetRole) {
-            m_model->beginResetModel();
+        m_model->beginResetModel();
 
-            Settings *settings = Settings::instance();
+        Settings *settings = Settings::instance();
 
-            foreach(QAction *action, m_actions) {
-                QString name = "shortcuts/" + action->objectName();
-                action->setShortcut(settings->defaultValue(name).value<QKeySequence>());
-            }
-
-            m_model->endResetModel();
+        foreach(QAction *action, m_actions) {
+            QString name = "shortcuts/" + action->objectName();
+            action->setShortcut(settings->defaultValue(name).value<QKeySequence>());
         }
+
+        m_model->endResetModel();
     }
 
 } // namespace Caneda

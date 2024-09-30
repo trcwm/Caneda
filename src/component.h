@@ -79,13 +79,13 @@ namespace Caneda
     class Component : public GraphicsItem
     {
     public:
-        explicit Component(QGraphicsItem *parent = 0);
-        ~Component();
+        explicit Component(QGraphicsItem *parent = nullptr);
+        ~Component() override;
 
         //! \copydoc GraphicsItem::Type
         enum { Type = GraphicsItem::ComponentType };
         //! \copydoc GraphicsItem::type()
-        int type() const { return Type; }
+        int type() const override { return Type; }
 
         //! Returns name of the component (without localization).
         QString name() const { return d->name; }
@@ -118,14 +118,14 @@ namespace Caneda
 
         QString model(const QString &type) const;
 
-        void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *);
+        void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *) override;
 
-        Component* copy() const;
+        Component* copy() const override;
 
-        void saveData(Caneda::XmlWriter *writer) const;
-        void loadData(Caneda::XmlReader *reader);
+        void saveData(Caneda::XmlWriter *writer) const override;
+        void loadData(Caneda::XmlReader *reader) override;
 
-        void launchPropertiesDialog();
+        void launchPropertiesDialog() override;
 
     protected:
         QRectF adjustedBoundRect(const QRectF &rect);

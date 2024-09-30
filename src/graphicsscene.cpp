@@ -22,20 +22,20 @@
 #include "graphicsscene.h"
 
 #include "actionmanager.h"
+#include "component.h"
 #include "documentviewmanager.h"
 #include "ellipsearc.h"
 #include "graphicsview.h"
 #include "graphictextdialog.h"
 #include "idocument.h"
 #include "iview.h"
-#include "library.h"
 #include "portsymbol.h"
 #include "property.h"
-#include "propertydialog.h"
 #include "settings.h"
 #include "wire.h"
 #include "xmlutilities.h"
 
+#include <QApplication>
 #include <QClipboard>
 #include <QGraphicsSceneEvent>
 #include <QKeySequence>
@@ -74,9 +74,9 @@ namespace Caneda
 
         // Wire state machine
         m_currentlyWiring = false;
-        m_currentWiringWire = NULL;
+        m_currentWiringWire = nullptr;
 
-        m_paintingDrawItem = 0;
+        m_paintingDrawItem = nullptr;
         m_paintingDrawClicks = 0;
 
         Settings *settings = Settings::instance();
@@ -91,7 +91,7 @@ namespace Caneda
 
         m_zoomBandClicks = 0;
 
-        connect(undoStack(), SIGNAL(cleanChanged(bool)), this, SIGNAL(changed()));
+        connect(undoStack(), &QUndoStack::cleanChanged, this, &GraphicsScene::changed);
     }
 
     /**********************************************************************
@@ -127,7 +127,7 @@ namespace Caneda
 
         writer->writeEndDocument();
 
-        QClipboard *clipboard =  QApplication::clipboard();
+        QClipboard *clipboard = QApplication::clipboard();
         clipboard->setText(clipText);
     }
 
@@ -236,7 +236,7 @@ namespace Caneda
 
             // Move item
             QPointF itemPos = (*it)->pos();
-            m_undoStack->push(new MoveItemCmd(*it, itemPos, itemPos + delta));;
+            m_undoStack->push(new MoveItemCmd(*it, itemPos, itemPos + delta));
             ++it;
         }
 
@@ -294,7 +294,7 @@ namespace Caneda
         disconnectItems(items);
 
         // Sort items
-        qSort(items.begin(), items.end(), pointCmpFunction_X);
+        std::sort(items.begin(), items.end(), pointCmpFunction_X);
         qreal x1 = items.first()->pos().x();
         qreal x2 = items.last()->pos().x();
 
@@ -334,7 +334,7 @@ namespace Caneda
         disconnectItems(items);
 
         // Sort items
-        qSort(items.begin(), items.end(), pointCmpFunction_Y);
+        std::sort(items.begin(), items.end(), pointCmpFunction_Y);
         qreal y1 = items.first()->pos().y();
         qreal y2 = items.last()->pos().y();
 
@@ -390,8 +390,6 @@ namespace Caneda
         QPainter p(printer);
         p.setRenderHints(Caneda::DefaulRenderHints);
 
-        const bool fullPage = printer->fullPage();
-
         const bool viewGridStatus = Settings::instance()->currentValue("gui/gridVisible").value<bool>();
         Settings::instance()->setCurrentValue("gui/gridVisible", false);
 
@@ -402,7 +400,7 @@ namespace Caneda
         }
         else {
             //Printing on one or more pages
-            QRectF printedArea = fullPage ? printer->paperRect() : printer->pageRect();
+            QRectF printedArea = printer->pageLayout().fullRect();
 
             const int horizontalPages =
                 qCeil(diagramRect.width() / printedArea.width());
@@ -868,11 +866,11 @@ namespace Caneda
             }
 
             // Extrema grid points
-            qreal left = int(rect.left()) - (int(rect.left()) % drawingGridWidth);
-            qreal top = int(rect.top()) - (int(rect.top()) % drawingGridHeight);
-            qreal right = int(rect.right()) - (int(rect.right()) % drawingGridWidth);
-            qreal bottom = int(rect.bottom()) - (int(rect.bottom()) % drawingGridHeight);
-            qreal x, y;
+            int left = int(rect.left()) - (int(rect.left()) % drawingGridWidth);
+            int top = int(rect.top()) - (int(rect.top()) % drawingGridHeight);
+            int right = int(rect.right()) - (int(rect.right()) % drawingGridWidth);
+            int bottom = int(rect.bottom()) - (int(rect.bottom()) % drawingGridHeight);
+            int x, y;
 
             // Draw grid
             painter->setBrush(Qt::NoBrush);
@@ -1025,8 +1023,7 @@ namespace Caneda
     void GraphicsScene::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
     {
         if(m_mouseAction == Normal) {
-            ActionManager* am = ActionManager::instance();
-            QMenu *menu = new QMenu();
+
             IDocument *document = DocumentViewManager::instance()->currentDocument();
 
             switch(selectedItems().size()) {
@@ -1044,6 +1041,9 @@ namespace Caneda
 
             default:
                 // Launch the context menu of multiple items selected.
+                QMenu *menu = new QMenu();
+                ActionManager* am = ActionManager::instance();
+
                 menu->addAction(am->actionForName("editCut"));
                 menu->addAction(am->actionForName("editCopy"));
                 menu->addAction(am->actionForName("editDelete"));
@@ -1121,9 +1121,7 @@ namespace Caneda
             case Normal:
                 normalEvent(event);
                 break;
-
-            default:;
-        };
+        }
     }
 
     /*!
@@ -1199,7 +1197,7 @@ namespace Caneda
 
             default:
                 qDebug() << "GraphicsScene::normalEvent() :  Unknown event type";
-        };
+        }
     }
 
     /*!
@@ -1275,8 +1273,8 @@ namespace Caneda
             return;
         }
 
-        EllipseArc *arc = 0;
-        GraphicText *text = 0;
+        EllipseArc *arc = nullptr;
+        GraphicText *text = nullptr;
         QPointF dest = event->scenePos();
         dest += m_paintingDrawItem->paintingRect().topLeft();
         dest = smartNearingGridPoint(dest);
@@ -1505,7 +1503,7 @@ namespace Caneda
 
             if(m_currentWiringWire->port2()->hasAnyConnection()) {
                 // If a connection was made, detach current wire and finalize
-                m_currentWiringWire = NULL;
+                m_currentWiringWire = nullptr;
                 m_currentlyWiring = false;
             }
             else  {
@@ -1533,7 +1531,7 @@ namespace Caneda
             splitAndCreateNodes(m_currentWiringWire);
 
             // Detach current wire and finalize
-            m_currentWiringWire = NULL;
+            m_currentWiringWire = nullptr;
             m_currentlyWiring = false;
 
             return;
@@ -1971,7 +1969,7 @@ namespace Caneda
     void GraphicsScene::resetState()
     {
         // Clear focus on any item on this scene.
-        setFocusItem(0);
+        setFocusItem(nullptr);
         // Clear selection.
         clearSelection();
 
@@ -1988,7 +1986,7 @@ namespace Caneda
 
         // Reset drawing item
         delete m_paintingDrawItem;
-        m_paintingDrawItem = 0;
+        m_paintingDrawItem = nullptr;
         m_paintingDrawClicks = 0;
 
         // Clear zoom

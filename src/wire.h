@@ -41,13 +41,14 @@ namespace Caneda
     {
     public:
         explicit Wire(const QPointF &startPos, const QPointF &endPos,
-                      QGraphicsItem *parent = 0);
-        ~Wire();
+                      QGraphicsItem *parent = nullptr);
+
+        ~Wire() override;
 
         //! \copydoc GraphicsItem::Type
         enum { Type = GraphicsItem::WireType };
         //! \copydoc GraphicsItem::type()
-        int type() const { return Type; }
+        int type() const override { return Type; }
 
         //! Return's the list's first member.
         Port* port1() const { return m_ports[0]; }
@@ -58,28 +59,28 @@ namespace Caneda
         void movePort2(const QPointF& newScenePos);
 
         //! Return true if wire is horizontal
-        bool isHorizontal() const { return port1()->pos().y() == port2()->pos().y(); }
+        bool isHorizontal() const { return int(port1()->pos().y()) == int(port2()->pos().y()); }
         //! Return true if wire is vertical
-        bool isVertical() const { return port1()->pos().x() == port2()->pos().x(); }
+        bool isVertical() const { return int(port1()->pos().x()) == int(port2()->pos().x()); }
         //! Check if port 1 and 2 overlap
         bool isNull() const { return port1()->scenePos() == port2()->scenePos(); }
 
         void updateGeometry();
-        QRectF boundingRect() const;
+        QRectF boundingRect() const override;
 
         void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
-                QWidget *widget = 0);
+                   QWidget *widget = nullptr) override;
 
-        Wire* copy() const;
+        Wire* copy() const override;
 
-        void saveData(Caneda::XmlWriter *writer) const;
-        void loadData(Caneda::XmlReader *reader);
+        void saveData(Caneda::XmlWriter *writer) const override;
+        void loadData(Caneda::XmlReader *reader) override;
 
         //! \copydoc GraphicsItem::launchPropertiesDialog()
-        void launchPropertiesDialog() {}
+        void launchPropertiesDialog() override {}
 
     protected:
-        void contextMenuEvent(QGraphicsSceneContextMenuEvent *event);
+        void contextMenuEvent(QGraphicsSceneContextMenuEvent *event) override;
     };
 
 } // namespace Caneda

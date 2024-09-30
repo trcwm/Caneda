@@ -86,15 +86,15 @@ namespace Caneda
         ui.comboFormat->addItem(tr("SVG (*.svg)"), "SVG");
         slotChangeFilesExtension();
 
-        connect(ui.btnBrowse, SIGNAL(clicked()), SLOT(slotChooseDirectory()));
-        connect(ui.spinWidth, SIGNAL(valueChanged(int)), SLOT(slotCorrectHeight()));
-        connect(ui.spinHeight, SIGNAL(valueChanged(int)), SLOT(slotCorrectWidth()));
-        connect(ui.btnLock, SIGNAL(toggled(bool)), SLOT(slotLockRatioChanged()));
-        connect(ui.btnReset, SIGNAL(clicked()), this, SLOT(slotResetSize()));
-        connect(ui.btnPreview, SIGNAL(clicked()), SLOT(slotPreview()));
-        connect(ui.comboFormat, SIGNAL(currentIndexChanged(int)), SLOT(slotChangeFilesExtension()));
+        connect(ui.btnBrowse,   &QToolButton::clicked,                               this, &ExportDialog::slotChooseDirectory);
+        connect(ui.spinWidth,   QOverload<int>::of(&QSpinBox::valueChanged),         this, &ExportDialog::slotCorrectHeight);
+        connect(ui.spinHeight,  QOverload<int>::of(&QSpinBox::valueChanged),         this, &ExportDialog::slotCorrectWidth);
+        connect(ui.btnLock,     &QToolButton::toggled,                               this, &ExportDialog::slotLockRatioChanged);
+        connect(ui.btnReset,    &QToolButton::clicked,                               this, &ExportDialog::slotResetSize);
+        connect(ui.btnPreview,  &QPushButton::clicked,                               this, &ExportDialog::slotPreview);
+        connect(ui.comboFormat, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &ExportDialog::slotChangeFilesExtension);
 
-        connect(this, SIGNAL(accepted()), SLOT(slotExport()));
+        connect(this, &ExportDialog::accepted, this, &ExportDialog::slotExport);
     }
 
     //! Ask the user for a folder destination
@@ -122,7 +122,7 @@ namespace Caneda
         qreal ratio = diagramRatio();
 
         ui.spinWidth->blockSignals(true);
-        ui.spinWidth->setValue(ui.spinHeight->value() * ratio);
+        ui.spinWidth->setValue(int(ui.spinHeight->value() * ratio));
         ui.spinWidth->blockSignals(false);
     }
 
@@ -139,7 +139,7 @@ namespace Caneda
         qreal ratio = diagramRatio();
 
         ui.spinHeight->blockSignals(true);
-        ui.spinHeight->setValue(ui.spinWidth->value() / ratio);
+        ui.spinHeight->setValue(int(ui.spinWidth->value() / ratio));
         ui.spinHeight->blockSignals(false);
     }
 
@@ -166,8 +166,8 @@ namespace Caneda
         ui.spinWidth->blockSignals(true);
         ui.spinHeight->blockSignals(true);
 
-        ui.spinWidth->setValue(size.width());
-        ui.spinHeight->setValue(size.height());
+        ui.spinWidth->setValue(int(size.width()));
+        ui.spinHeight->setValue(int(size.height()));
 
         ui.spinWidth->blockSignals(false);
         ui.spinHeight->blockSignals(false);
@@ -185,7 +185,7 @@ namespace Caneda
         QGraphicsView *preview_view = new QGraphicsView(preview_scene);
         preview_view->setDragMode(QGraphicsView::ScrollHandDrag);
         QDialogButtonBox *buttons = new QDialogButtonBox(QDialogButtonBox::Ok);
-        connect(buttons, SIGNAL(accepted()), &preview_dialog, SLOT(accept()));
+        connect(buttons, &QDialogButtonBox::accepted, &preview_dialog, &QDialog::accept);
 
         QVBoxLayout *vboxlayout1 = new QVBoxLayout();
         vboxlayout1->addWidget(preview_view);

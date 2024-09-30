@@ -38,7 +38,7 @@ namespace Caneda
         Q_OBJECT
 
     public:
-        explicit SettingsDialog(QWidget *parent = 0);
+        explicit SettingsDialog(QWidget *parent = nullptr);
 
     private Q_SLOTS:
         void colorButtonDialog();

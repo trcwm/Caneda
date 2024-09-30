@@ -1,5 +1,5 @@
 /***************************************************************************
- * Copyright (C) 2013-2015 by Pablo Daniel Pareja Obregon                  *
+ * Copyright (C) 2013 by Pablo Daniel Pareja Obregon                       *
  *                                                                         *
  * This is free software; you can redistribute it and/or modify            *
  * it under the terms of the GNU General Public License as published by    *
@@ -48,7 +48,6 @@ namespace Caneda
  * Caneda's document file format handling is in charge of the following classes:
  * \li FormatXmlSchematic
  * \li FormatXmlSymbol
- * \li FormatXmlLayout
  * \li FormatRawSimulation. This class does not implement a Caneda's specific
  * format, but rather reads the standard spice simulation raw waveform data.
  *
@@ -371,70 +370,7 @@ namespace Caneda
  * For more information on how to use models inside the symbol documents, see
  * the \ref ModelsFormat page.
  *
- * \section Layouts Layout Format
- * This file format is implemented by the FormatXmlLayout class. This format
- * is currently under specification, and is therefore having heavy
- * modifications, as the file evolves.
- *
- * \todo Improve or finish this file format's specification.
- *
-\code
-// Heading:
-// All documents must begin with the following heading, showing the document
-// version and document type (caneda).
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE caneda>
-// Caneda version:
-// The following tag indicates the Caneda version that was used to create this
-// document.
-//
-// Attibutes list:
-//        * version (#required): The version of Caneda for which the file was
-//          written.
-<caneda version="0.1.0">
-
-    // Paintings tag:
-    // The paintings tag represents a list of tags that describe some type of
-    // layer mask or geometry.
-    <paintings>
-        // Painting tag:
-        // Each painting tag describes some type of layer mask or geometry, for
-        // example a line, a rectangle, etc. The name attribute is required as
-        // well as the dimensions and position of the painting.
-        //
-        // Attibutes list:
-        //      * name (#required): This string's value is always "layer" and
-        //        in the future may be replaced by the layer number.
-        //      * rect (#required): This tag represents the geometry of the
-        //        layer item, indicated as a bounding rectangle.
-        //      * pos (#required): This tuple represents the layer mask
-        //        location inside the layout coordinate system.
-        //      * transform (#required): This tag indicates the transform
-        //        matrix of the layer mask, thus allowing for rotations and
-        //        other special operations to be applied.
-        <painting name="layer" rect="0,0,390,180" pos="320,-80" transform="1,0,0,1,0,0">
-            // Property tag:
-            // This tag is used to represent the different properties of the
-            // layer.
-            //
-            // Attibutes:
-            //      * layerName (#required): Represents the layer name as a
-            //        number, that will be translated into a layer type by the
-            //        program (metal1, active, poly, etc).
-            //      * netLabel (#required): Represents the net to which this
-            //        layer corresponds. May be used in the future to perform a
-            //        layout to schematic asossiation.
-            <properties layerName="4" netLabel=""/>
-        </painting>
-
-        <painting name="layer" rect="0,0,290,80" pos="-40,-110" transform="1,0,0,1,0,0">
-            <properties layerName="2" netLabel=""/>
-        </painting>
-    </paintings>
-</component>
-\endcode
- *
- * \sa  FormatXmlSchematic, FormatXmlSymbol, FormatXmlLayout, FormatRawSimulation, \ref ModelsFormat
+ * \sa  FormatXmlSchematic, FormatXmlSymbol, FormatRawSimulation, \ref ModelsFormat
  */
 
 } // namespace Caneda

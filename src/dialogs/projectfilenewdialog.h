@@ -41,13 +41,13 @@ namespace Caneda
         Q_OBJECT
 
     public:
-        explicit ProjectFileNewDialog(QWidget *parent = 0);
+        explicit ProjectFileNewDialog(QWidget *parent = nullptr);
 
         QString fileName() const { return m_filename; }
         Caneda::ProjectFileNewChoice userChoice() const { return m_userchoice; }
 
     public Q_SLOTS:
-        virtual void done(int r);
+        virtual void done(int r) override;
 
     private:
         QString m_filename;

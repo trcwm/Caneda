@@ -1,6 +1,7 @@
 /***************************************************************************
  * Copyright (C) 2011 Aurélien Gâteau <agateau@kde.org>                    *
  * Copyright (C) 2014 Dominik Haumann <dhaumann@kde.org>                   *
+ * Copyright (C) 2015 by Pablo Daniel Pareja Obregon                       *
  *                                                                         *
  * This is free software; you can redistribute it and/or modify            *
  * it under the terms of the GNU General Public License as published by    *
@@ -57,8 +58,6 @@ namespace Caneda
         void createLayout();
         void updateSnapShot();
         void updateLayout();
-        void slotTimeLineChanged(qreal);
-        void slotTimeLineFinished();
 
         int bestContentHeight() const;
     };
@@ -69,9 +68,9 @@ namespace Caneda
 
         q->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 
-        timeLine = new QTimeLine(500, q);
-        QObject::connect(timeLine, SIGNAL(valueChanged(qreal)), q, SLOT(slotTimeLineChanged(qreal)));
-        QObject::connect(timeLine, SIGNAL(finished()), q, SLOT(slotTimeLineFinished()));
+        timeLine = new QTimeLine(5, q);
+        QObject::connect(timeLine, &QTimeLine::finished, q, &MessageWidget::slotTimeLineFinished);
+        QObject::connect(timeLine, &QTimeLine::finished, q, &MessageWidget::slotTimeLineFinished);
 
         content = new QFrame(q);
         content->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
@@ -85,15 +84,14 @@ namespace Caneda
         textLabel = new QLabel(content);
         textLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
         textLabel->setTextInteractionFlags(Qt::TextBrowserInteraction);
-        QObject::connect(textLabel, SIGNAL(linkActivated(QString)), q, SIGNAL(linkActivated(QString)));
-        QObject::connect(textLabel, SIGNAL(linkHovered(QString)), q, SIGNAL(linkHovered(QString)));
+        QObject::connect(textLabel, &QLabel::linkActivated, q, &MessageWidget::linkActivated);
+        QObject::connect(textLabel, &QLabel::linkHovered,   q, &MessageWidget::linkHovered);
 
         QAction *closeAction = new QAction(q);
         closeAction->setText(MessageWidget::tr("&Close"));
         closeAction->setToolTip(MessageWidget::tr("Close message"));
         closeAction->setIcon(q->style()->standardIcon(QStyle::SP_DialogCloseButton));
-
-        QObject::connect(closeAction, SIGNAL(triggered(bool)), q, SLOT(animatedHide()));
+        QObject::connect(closeAction, &QAction::triggered, q, &MessageWidget::animatedHide);
 
         closeButton = new QToolButton(content);
         closeButton->setAutoRaise(true);
@@ -150,7 +148,7 @@ namespace Caneda
             }
 
             layout->addWidget(closeButton);
-        };
+        }
 
         if (q->isVisible()) {
             q->setFixedHeight(content->sizeHint().height());
@@ -177,29 +175,6 @@ namespace Caneda
         content->render(&contentSnapShot, QPoint(), QRegion(), QWidget::DrawChildren);
     }
 
-    void MessageWidgetPrivate::slotTimeLineChanged(qreal value)
-    {
-        q->setFixedHeight(qMin(value * 2, qreal(1.0)) * content->height());
-        q->update();
-    }
-
-    void MessageWidgetPrivate::slotTimeLineFinished()
-    {
-        if (timeLine->direction() == QTimeLine::Forward) {
-            // Show
-            // We set the whole geometry here, because it may be wrong if a
-            // MessageWidget is shown right when the toplevel window is created.
-            content->setGeometry(0, 0, q->width(), bestContentHeight());
-
-            // notify about finished animation
-            emit q->showAnimationFinished();
-        } else {
-            // hide and notify about finished animation
-            q->hide();
-            emit q->hideAnimationFinished();
-        }
-    }
-
     int MessageWidgetPrivate::bestContentHeight() const
     {
         int height = content->heightForWidth(q->width());
@@ -213,6 +188,11 @@ namespace Caneda
     /*************************************************************************
      *                           MessageWidget                               *
      *************************************************************************/
+    /*!
+     * \brief Constructs a MessageWidget.
+     *
+     * \param parent Parent of the widget.
+     */
     MessageWidget::MessageWidget(QWidget *parent)
         : QFrame(parent)
         , d(new MessageWidgetPrivate)
@@ -220,6 +200,10 @@ namespace Caneda
         d->init(this);
     }
 
+    /**
+     * \brief Constructs a MessageWidget with the specified @p parent and
+     * contents @p text.
+     */
     MessageWidget::MessageWidget(const QString &text, QWidget *parent)
         : QFrame(parent)
         , d(new MessageWidgetPrivate)
@@ -228,22 +212,43 @@ namespace Caneda
         setText(text);
     }
 
+    /**
+     * \brief Destructor.
+     */
     MessageWidget::~MessageWidget()
     {
         delete d;
     }
 
+    /**
+     * \brief Get the text of this message widget.
+     *
+     * @see setText()
+     */
     QString MessageWidget::text() const
     {
         return d->textLabel->text();
     }
 
+    /**
+     * \brief Set the text of the message widget to @p text.
+     * If the message widget is already visible, the text changes on the fly.
+     *
+     * @param text the text to display, rich text is allowed
+     * @see text()
+     */
     void MessageWidget::setText(const QString &text)
     {
         d->textLabel->setText(text);
         updateGeometry();
     }
 
+    /**
+     * \brief Get the type of this message.
+     * By default, the type is set to MessageWidget::Information.
+     *
+     * @see MessageWidget::MessageType, setMessageType()
+     */
     MessageWidget::MessageType MessageWidget::messageType() const
     {
         return d->messageType;
@@ -268,6 +273,12 @@ namespace Caneda
         return c;
     }
 
+    /**
+     * \brief Set the message type to @p type.
+     * By default, the message type is set to MessageWidget::Information.
+     *
+     * @see messageType(), MessageWidget::MessageType
+     */
     void MessageWidget::setMessageType(MessageWidget::MessageType type)
     {
         d->messageType = type;
@@ -310,61 +321,60 @@ namespace Caneda
             .arg(bg2.name())
             .arg(border.name())
             // DefaultFrameWidth returns the size of the external margin + border width. We know our border is 1px, so we subtract this from the frame normal QStyle FrameWidth to get our margin
-            .arg(style()->pixelMetric(QStyle::PM_DefaultFrameWidth, 0, this) - 1)
+            .arg(style()->pixelMetric(QStyle::PM_DefaultFrameWidth, nullptr, this) - 1)
             .arg(fg.name())
         );
     }
 
+    //! \brief Returns the preferred size of the message widget.
     QSize MessageWidget::sizeHint() const
     {
         ensurePolished();
         return d->content->sizeHint();
     }
 
+    //! \brief Returns the minimum size of the message widget.
     QSize MessageWidget::minimumSizeHint() const
     {
         ensurePolished();
         return d->content->minimumSizeHint();
     }
 
-    bool MessageWidget::event(QEvent *event)
-    {
-        if (event->type() == QEvent::Polish && !d->content->layout()) {
-            d->createLayout();
-        }
-        return QFrame::event(event);
-    }
-
-    void MessageWidget::resizeEvent(QResizeEvent *event)
-    {
-        QFrame::resizeEvent(event);
-
-        if (d->timeLine->state() == QTimeLine::NotRunning) {
-            d->content->resize(width(), d->bestContentHeight());
-        }
-    }
-
+    /**
+     * \brief Returns the required height for @p width.
+     *
+     * @param width the width in pixels
+     */
     int MessageWidget::heightForWidth(int width) const
     {
         ensurePolished();
         return d->content->heightForWidth(width);
     }
 
-    void MessageWidget::paintEvent(QPaintEvent *event)
-    {
-        QFrame::paintEvent(event);
-        if (d->timeLine->state() == QTimeLine::Running) {
-            QPainter painter(this);
-            painter.setOpacity(d->timeLine->currentValue() * d->timeLine->currentValue());
-            painter.drawPixmap(0, 0, d->contentSnapShot);
-        }
-    }
-
+    /**
+     * \brief Check whether word wrap is enabled.
+     *
+     * If word wrap is enabled, the message widget wraps the displayed text
+     * as required to the available width of the widget. This is useful to
+     * avoid breaking widget layouts.
+     *
+     * @see setWordWrap()
+     */
     bool MessageWidget::wordWrap() const
     {
         return d->wordWrap;
     }
 
+    /**
+     * \brief Set word wrap to @p wordWrap. If word wrap is enabled, the text()
+     * of the message widget is wrapped to fit the available width.
+     *
+     * If word wrap is disabled, the message widget's minimum size is
+     * such that the entire text fits.
+     *
+     * @param wordWrap disable/enable word wrap
+     * @see wordWrap()
+     */
     void MessageWidget::setWordWrap(bool wordWrap)
     {
         d->wordWrap = wordWrap;
@@ -381,32 +391,59 @@ namespace Caneda
         }
     }
 
+    /**
+     * \brief Check whether the close button is visible.
+     *
+     * @see setCloseButtonVisible()
+     */
     bool MessageWidget::isCloseButtonVisible() const
     {
         return d->closeButton->isVisible();
     }
 
+    /**
+     * \brief Set the visibility of the close button. If @p visible is @e true,
+     * a close button is shown that calls animatedHide() if clicked.
+     *
+     * @see closeButtonVisible(), animatedHide()
+     */
     void MessageWidget::setCloseButtonVisible(bool show)
     {
         d->closeButton->setVisible(show);
         updateGeometry();
     }
 
+    /**
+     * \brief Add @p action to the message widget.
+     *
+     * For each action a button is added to the message widget in the
+     * order the actions were added.
+     *
+     * @param action the action to add
+     * @see removeAction(), QWidget::actions()
+     */
     void MessageWidget::addAction(QAction *action)
     {
         QFrame::addAction(action);
         d->updateLayout();
     }
 
+    /**
+     * \brief Remove @p action from the message widget.
+     *
+     * @param action the action to remove
+     * @see MessageWidget::MessageType, addAction(), setMessageType()
+     */
     void MessageWidget::removeAction(QAction *action)
     {
         QFrame::removeAction(action);
         d->updateLayout();
     }
 
+    //! \brief Show the widget using an animation.
     void MessageWidget::animatedShow()
     {
-        if (!style()->styleHint(QStyle::SH_Widget_Animate, 0, this)) {
+        if (!style()->styleHint(QStyle::SH_Widget_Animate, nullptr, this)) {
             show();
             emit showAnimationFinished();
             return;
@@ -429,9 +466,10 @@ namespace Caneda
         }
     }
 
+    //! \brief Hide the widget using an animation.
     void MessageWidget::animatedHide()
     {
-        if (!style()->styleHint(QStyle::SH_Widget_Animate, 0, this)) {
+        if (!style()->styleHint(QStyle::SH_Widget_Animate, nullptr, this)) {
             hide();
             emit hideAnimationFinished();
             return;
@@ -450,23 +488,62 @@ namespace Caneda
         }
     }
 
+    /**
+     * \brief Check whether the hide animation started by calling animatedHide()
+     * is still running. If animations are disabled, this function always
+     * returns @e false.
+     *
+     * @see animatedHide(), hideAnimationFinished()
+     */
     bool MessageWidget::isHideAnimationRunning() const
     {
         return (d->timeLine->direction() == QTimeLine::Backward)
             && (d->timeLine->state() == QTimeLine::Running);
     }
 
+    /**
+     * \brief Check whether the show animation started by calling animatedShow()
+     * is still running. If animations are disabled, this function always
+     * returns @e false.
+     *
+     * @see animatedShow(), showAnimationFinished()
+     */
     bool MessageWidget::isShowAnimationRunning() const
     {
         return (d->timeLine->direction() == QTimeLine::Forward)
             && (d->timeLine->state() == QTimeLine::Running);
     }
 
+    void MessageWidget::slotTimeLineChanged(qreal value)
+    {
+        setFixedHeight(int(qMin(value * 2, qreal(1.0)) * d->content->height()));
+        update();
+    }
+
+    void MessageWidget::slotTimeLineFinished()
+    {
+        if (d->timeLine->direction() == QTimeLine::Forward) {
+            // Show
+            // We set the whole geometry here, because it may be wrong if a
+            // MessageWidget is shown right when the toplevel window is created.
+            d->content->setGeometry(0, 0, width(), d->bestContentHeight());
+
+            // notify about finished animation
+            emit showAnimationFinished();
+        } else {
+            // hide and notify about finished animation
+            hide();
+            emit hideAnimationFinished();
+        }
+    }
+
+    //! \brief The icon shown on the left of the text. By default, no icon is shown.
     QIcon MessageWidget::icon() const
     {
         return d->icon;
     }
 
+    //! \brief Define an icon to be shown on the left of the text
     void MessageWidget::setIcon(const QIcon &icon)
     {
         d->icon = icon;
@@ -476,6 +553,33 @@ namespace Caneda
             const int size = style()->pixelMetric(QStyle::PM_ToolBarIconSize);
             d->iconLabel->setPixmap(d->icon.pixmap(size));
             d->iconLabel->show();
+        }
+    }
+
+    void MessageWidget::paintEvent(QPaintEvent *event)
+    {
+        QFrame::paintEvent(event);
+        if (d->timeLine->state() == QTimeLine::Running) {
+            QPainter painter(this);
+            painter.setOpacity(d->timeLine->currentValue() * d->timeLine->currentValue());
+            painter.drawPixmap(0, 0, d->contentSnapShot);
+        }
+    }
+
+    bool MessageWidget::event(QEvent *event)
+    {
+        if (event->type() == QEvent::Polish && !d->content->layout()) {
+            d->createLayout();
+        }
+        return QFrame::event(event);
+    }
+
+    void MessageWidget::resizeEvent(QResizeEvent *event)
+    {
+        QFrame::resizeEvent(event);
+
+        if (d->timeLine->state() == QTimeLine::NotRunning) {
+            d->content->resize(width(), d->bestContentHeight());
         }
     }
 

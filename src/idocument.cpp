@@ -28,7 +28,6 @@
 #include "graphicsscene.h"
 #include "icontext.h"
 #include "iview.h"
-#include "mainwindow.h"
 #include "messagewidget.h"
 #include "portsymbol.h"
 #include "settings.h"
@@ -349,274 +348,6 @@ namespace Caneda
         emit documentChanged(this);
     }
 
-
-    /*************************************************************************
-     *                           LayoutDocument                              *
-     *************************************************************************/
-    //! \brief Constructor.
-    LayoutDocument::LayoutDocument(QObject *parent) : IDocument(parent)
-    {
-        m_graphicsScene = new GraphicsScene(this);
-        connect(m_graphicsScene, SIGNAL(changed()), this,
-                SLOT(emitDocumentChanged()));
-        connect(m_graphicsScene->undoStack(), SIGNAL(canUndoChanged(bool)),
-                this, SLOT(emitDocumentChanged()));
-        connect(m_graphicsScene->undoStack(), SIGNAL(canRedoChanged(bool)),
-                this, SLOT(emitDocumentChanged()));
-        connect(m_graphicsScene, SIGNAL(selectionChanged()), this,
-                SLOT(emitDocumentChanged()));
-    }
-
-    //! \brief Destructor.
-    LayoutDocument::~LayoutDocument()
-    {
-        delete m_graphicsScene;
-    }
-
-    IContext* LayoutDocument::context()
-    {
-        return LayoutContext::instance();
-    }
-
-    bool LayoutDocument::isModified() const
-    {
-        return !m_graphicsScene->undoStack()->isClean();
-    }
-
-    bool LayoutDocument::canUndo() const
-    {
-        return m_graphicsScene->undoStack()->canUndo();
-    }
-
-    bool LayoutDocument::canRedo() const
-    {
-        return m_graphicsScene->undoStack()->canRedo();
-    }
-
-    void LayoutDocument::undo()
-    {
-        m_graphicsScene->undoStack()->undo();
-    }
-
-    void LayoutDocument::redo()
-    {
-        m_graphicsScene->undoStack()->redo();
-    }
-
-    bool LayoutDocument::canCut() const
-    {
-        QList<QGraphicsItem*> qItems = m_graphicsScene->selectedItems();
-        QList<GraphicsItem*> schItems = filterItems<GraphicsItem>(qItems);
-
-        return schItems.isEmpty() == false;
-    }
-
-    bool LayoutDocument::canCopy() const
-    {
-        return LayoutDocument::canCut();
-    }
-
-    void LayoutDocument::cut()
-    {
-        QList<QGraphicsItem*> qItems = m_graphicsScene->selectedItems();
-        QList<GraphicsItem*> schItems = filterItems<GraphicsItem>(qItems);
-
-        if(!schItems.isEmpty()) {
-            m_graphicsScene->cutItems(schItems);
-        }
-    }
-
-    void LayoutDocument::copy()
-    {
-        QList<QGraphicsItem*> qItems = m_graphicsScene->selectedItems();
-        QList<GraphicsItem*> schItems = filterItems<GraphicsItem>(qItems);
-
-        if(!schItems.isEmpty()) {
-            m_graphicsScene->copyItems(schItems);
-        }
-    }
-
-    void LayoutDocument::paste()
-    {
-        StateHandler::instance()->paste();
-    }
-
-    void LayoutDocument::selectAll()
-    {
-        QPainterPath path;
-        path.addRect(m_graphicsScene->sceneRect());
-        m_graphicsScene->setSelectionArea(path);
-    }
-
-    void LayoutDocument::enterHierarchy()
-    {
-        //! \todo Implement this
-    }
-
-    void LayoutDocument::exitHierarchy()
-    {
-        //! \todo Implement this
-    }
-
-    void LayoutDocument::alignTop()
-    {
-        alignElements(Qt::AlignTop);
-    }
-
-    void LayoutDocument::alignBottom()
-    {
-        alignElements(Qt::AlignBottom);
-    }
-
-    void LayoutDocument::alignLeft()
-    {
-        alignElements(Qt::AlignLeft);
-    }
-
-    void LayoutDocument::alignRight()
-    {
-        alignElements(Qt::AlignRight);
-    }
-
-    void LayoutDocument::distributeHorizontal()
-    {
-        if (!m_graphicsScene->distributeElements(Qt::Horizontal)) {
-            QMessageBox::information(0, tr("Info"),
-                    tr("At least two elements must be selected!"));
-        }
-    }
-
-    void LayoutDocument::distributeVertical()
-    {
-        if (!m_graphicsScene->distributeElements(Qt::Vertical)) {
-            QMessageBox::information(0, tr("Info"),
-                    tr("At least two elements must be selected!"));
-        }
-    }
-
-    void LayoutDocument::centerHorizontal()
-    {
-        alignElements(Qt::AlignHCenter);
-    }
-
-    void LayoutDocument::centerVertical()
-    {
-        alignElements(Qt::AlignVCenter);
-    }
-
-    void LayoutDocument::simulate()
-    {
-        //! \todo Implement this
-    }
-
-    void LayoutDocument::print(QPrinter *printer, bool fitInView)
-    {
-        m_graphicsScene->print(printer, fitInView);
-    }
-
-    void LayoutDocument::exportImage(QPaintDevice &device)
-    {
-        m_graphicsScene->exportImage(device);
-    }
-
-    QSizeF LayoutDocument::documentSize()
-    {
-        return m_graphicsScene->itemsBoundingRect().size();
-    }
-
-    bool LayoutDocument::load(QString *errorMessage)
-    {
-        QFileInfo info(fileName());
-
-        if(info.suffix() == "xlay") {
-            FormatXmlLayout *format = new FormatXmlLayout(this);
-            return format->load();
-        }
-
-        if (errorMessage) {
-            *errorMessage = tr("Unknown file format!");
-        }
-
-        return false;
-    }
-
-    bool LayoutDocument::save(QString *errorMessage)
-    {
-        if(fileName().isEmpty()) {
-            if (errorMessage) {
-                *errorMessage = tr("Empty file name");
-            }
-            return false;
-        }
-
-        QFileInfo info(fileName());
-
-        if(info.suffix() == "xlay") {
-            FormatXmlLayout *format = new FormatXmlLayout(this);
-            if(!format->save()) {
-                return false;
-            }
-
-            m_graphicsScene->undoStack()->clear();
-            return true;
-        }
-
-        if(errorMessage) {
-            *errorMessage = tr("Unknown file format!");
-        }
-
-        return false;
-    }
-
-    IView* LayoutDocument::createView()
-    {
-        return new LayoutView(this);
-    }
-
-    void LayoutDocument::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
-    {
-        // Launch the context of the current document
-        ActionManager* am = ActionManager::instance();
-        QMenu *_menu = new QMenu();
-        _menu->addAction(am->actionForName("select"));
-        _menu->addAction(am->actionForName("editDelete"));
-
-        _menu->addSeparator();
-
-        _menu->addAction(am->actionForName("editPaste"));
-
-        _menu->addSeparator();
-
-        _menu->addAction(am->actionForName("openSchematic"));
-        _menu->addAction(am->actionForName("openSymbol"));
-
-        _menu->exec(event->screenPos());
-    }
-
-    void LayoutDocument::launchPropertiesDialog()
-    {
-        // Get a list of selected items
-        QList<QGraphicsItem*> qItems = m_graphicsScene->selectedItems();
-        QList<GraphicsItem*> schItems = filterItems<GraphicsItem>(qItems);
-
-        // If there is any selection, launch corresponding properties dialog.
-        if(!schItems.isEmpty()) {
-            foreach(GraphicsItem *item, schItems) {
-                item->launchPropertiesDialog();
-            }
-        }
-    }
-
-    //! \brief Align selected elements appropriately based on \a alignment
-    void LayoutDocument::alignElements(Qt::Alignment alignment)
-    {
-        if (!m_graphicsScene->alignElements(alignment)) {
-            QMessageBox::information(0, tr("Info"),
-                    tr("At least two elements must be selected!"));
-        }
-    }
-
-
     /*************************************************************************
      *                          SchematicDocument                            *
      *************************************************************************/
@@ -624,14 +355,11 @@ namespace Caneda
     SchematicDocument::SchematicDocument(QObject *parent) : IDocument(parent)
     {
         m_graphicsScene = new GraphicsScene(this);
-        connect(m_graphicsScene, SIGNAL(changed()), this,
-                SLOT(emitDocumentChanged()));
-        connect(m_graphicsScene->undoStack(), SIGNAL(canUndoChanged(bool)),
-                this, SLOT(emitDocumentChanged()));
-        connect(m_graphicsScene->undoStack(), SIGNAL(canRedoChanged(bool)),
-                this, SLOT(emitDocumentChanged()));
-        connect(m_graphicsScene, SIGNAL(selectionChanged()), this,
-                SLOT(emitDocumentChanged()));
+
+        connect(m_graphicsScene,              &GraphicsScene::changed,          this, &IDocument::emitDocumentChanged);
+        connect(m_graphicsScene->undoStack(), &QUndoStack::canUndoChanged,      this, &IDocument::emitDocumentChanged);
+        connect(m_graphicsScene->undoStack(), &QUndoStack::canRedoChanged,      this, &IDocument::emitDocumentChanged);
+        connect(m_graphicsScene,              &GraphicsScene::selectionChanged, this, &IDocument::emitDocumentChanged);
     }
 
     //! \brief Destructor.
@@ -748,7 +476,7 @@ namespace Caneda
     void SchematicDocument::distributeHorizontal()
     {
         if (!m_graphicsScene->distributeElements(Qt::Horizontal)) {
-            QMessageBox::information(0, tr("Info"),
+            QMessageBox::information(nullptr, tr("Info"),
                     tr("At least two elements must be selected!"));
         }
     }
@@ -756,7 +484,7 @@ namespace Caneda
     void SchematicDocument::distributeVertical()
     {
         if (!m_graphicsScene->distributeElements(Qt::Vertical)) {
-            QMessageBox::information(0, tr("Info"),
+            QMessageBox::information(nullptr, tr("Info"),
                     tr("At least two elements must be selected!"));
         }
     }
@@ -785,9 +513,12 @@ namespace Caneda
         /*! \todo In the future (after Qt5.6 is released), instead of this
          * first check, simply connect the simulation process with the slot
          * simulationError, in a way similar to the following:
-         * connect(simulationProcess, SIGNAL(errorOccurred(QProcess::ProcessError)), this, SLOT(simulationError(QProcess::ProcessError)));
+         *
+         * connect(simulationProcess, &QProcess::errorOccurred, this, &SchematicDocument::simulationError);
+         *
          * This will check against any simulator, instead of the current
          * check that only verifies the ngspice installation.
+         *
          * \sa simulationError()
          */
         if(!simulationError()) {
@@ -813,6 +544,10 @@ namespace Caneda
         QString simulationCommand = settings->currentValue("sim/simulationCommand").toString();
         simulationCommand.replace("%filename", baseName);  // Replace all ocurrencies of %filename by the actual filename
 
+        QString command = simulationCommand.split(" ").at(0); // Get simulation command
+        QStringList args = simulationCommand.split(" "); // Get arguments list
+        args.removeAt(0); // Remove simulation command from arguments list
+
         QProcess *simulationProcess = new QProcess(this);
         simulationProcess->setWorkingDirectory(path);
         simulationProcess->setProcessChannelMode(QProcess::MergedChannels);  // Output std:error and std:output together into the same file
@@ -829,10 +564,10 @@ namespace Caneda
         simulationProcess->setProcessEnvironment(env);
 
         // Start the simulation
-        simulationProcess->start(simulationCommand);
+        simulationProcess->start(command, args);
 
         // The simulation results are opened in the simulationReady slot, to avoid blocking the interface while simulating
-        connect(simulationProcess, SIGNAL(finished(int, QProcess::ExitStatus)), this, SLOT(simulationReady(int)));
+        connect(simulationProcess, qOverload<int, QProcess::ExitStatus>(&QProcess::finished), this, &SchematicDocument::simulationReady);
     }
 
     void SchematicDocument::print(QPrinter *printer, bool fitInView)
@@ -1029,9 +764,11 @@ namespace Caneda
         // If using ngspice (the default spice backend) check if its installed.
         if(simulationCommand.startsWith("ngspice")) {
 
-            simulationCommand = QString("ngspice -v");
+            QString command = QString("ngspice");
+            QStringList args = QStringList() << "-v";
             QProcess *simulationProcess = new QProcess(this);
-            simulationProcess->start(simulationCommand);
+
+            simulationProcess->start(command, args);
             simulationProcess->waitForFinished();
 
             if(simulationProcess->error() == QProcess::FailedToStart) {
@@ -1045,7 +782,7 @@ namespace Caneda
                 dialog->setIcon(Caneda::icon("dialog-error"));
 
                 QAction *action = new QAction(Caneda::icon("help-contents"), tr("More info..."), this);
-                connect(action, SIGNAL(triggered()), SLOT(showSimulationHelp()));
+                connect(action, &QAction::triggered, this, &SchematicDocument::showSimulationHelp);
 
                 dialog->addAction(action);
                 dialog->show();
@@ -1067,7 +804,7 @@ namespace Caneda
     void SchematicDocument::alignElements(Qt::Alignment alignment)
     {
         if (!m_graphicsScene->alignElements(alignment)) {
-            QMessageBox::information(0, tr("Info"),
+            QMessageBox::information(nullptr, tr("Info"),
                     tr("At least two elements must be selected!"));
         }
     }
@@ -1133,7 +870,7 @@ namespace Caneda
             dialog->setIcon(Caneda::icon("dialog-error"));
 
             QAction *action = new QAction(Caneda::icon("help-contents"), tr("More info..."), this);
-            connect(action, SIGNAL(triggered()), SLOT(showSimulationHelp()));
+            connect(action, &QAction::triggered, this, &SchematicDocument::showSimulationHelp);
 
             dialog->addAction(action);
             dialog->show();
@@ -1168,7 +905,7 @@ namespace Caneda
             dialog->setIcon(Caneda::icon("dialog-error"));
 
             QAction *action = new QAction(Caneda::icon("help-contents"), tr("More info..."), this);
-            connect(action, SIGNAL(triggered()), SLOT(showSimulationHelp()));
+            connect(action, &QAction::triggered, this, &SchematicDocument::showSimulationHelp);
 
             dialog->addAction(action);
             dialog->show();
@@ -1296,7 +1033,6 @@ namespace Caneda
         }
     }
 
-
     /*************************************************************************
      *                           SymbolDocument                              *
      *************************************************************************/
@@ -1304,14 +1040,11 @@ namespace Caneda
     SymbolDocument::SymbolDocument(QObject *parent) : IDocument(parent)
     {
         m_graphicsScene = new GraphicsScene(this);
-        connect(m_graphicsScene, SIGNAL(changed()), this,
-                SLOT(emitDocumentChanged()));
-        connect(m_graphicsScene->undoStack(), SIGNAL(canUndoChanged(bool)),
-                this, SLOT(emitDocumentChanged()));
-        connect(m_graphicsScene->undoStack(), SIGNAL(canRedoChanged(bool)),
-                this, SLOT(emitDocumentChanged()));
-        connect(m_graphicsScene, SIGNAL(selectionChanged()), this,
-                SLOT(emitDocumentChanged()));
+
+        connect(m_graphicsScene,              &GraphicsScene::changed,          this, &IDocument::emitDocumentChanged);
+        connect(m_graphicsScene->undoStack(), &QUndoStack::canUndoChanged,      this, &IDocument::emitDocumentChanged);
+        connect(m_graphicsScene->undoStack(), &QUndoStack::canRedoChanged,      this, &IDocument::emitDocumentChanged);
+        connect(m_graphicsScene,              &GraphicsScene::selectionChanged, this, &IDocument::emitDocumentChanged);
     }
 
     //! \brief Destructor.
@@ -1428,7 +1161,7 @@ namespace Caneda
     void SymbolDocument::distributeHorizontal()
     {
         if (!m_graphicsScene->distributeElements(Qt::Horizontal)) {
-            QMessageBox::information(0, tr("Info"),
+            QMessageBox::information(nullptr, tr("Info"),
                     tr("At least two elements must be selected!"));
         }
     }
@@ -1436,7 +1169,7 @@ namespace Caneda
     void SymbolDocument::distributeVertical()
     {
         if (!m_graphicsScene->distributeElements(Qt::Vertical)) {
-            QMessageBox::information(0, tr("Info"),
+            QMessageBox::information(nullptr, tr("Info"),
                     tr("At least two elements must be selected!"));
         }
     }
@@ -1558,11 +1291,10 @@ namespace Caneda
     void SymbolDocument::alignElements(Qt::Alignment alignment)
     {
         if (!m_graphicsScene->alignElements(alignment)) {
-            QMessageBox::information(0, tr("Info"),
+            QMessageBox::information(nullptr, tr("Info"),
                     tr("At least two elements must be selected!"));
         }
     }
-
 
     /*************************************************************************
      *                            TextDocument                               *
@@ -1573,14 +1305,9 @@ namespace Caneda
         m_textDocument = new QTextDocument;
         m_textDocument->setModified(false);
 
-        connect(m_textDocument, SIGNAL(undoAvailable(bool)),
-                this, SLOT(emitDocumentChanged()));
-        connect(m_textDocument, SIGNAL(redoAvailable(bool)),
-                this, SLOT(emitDocumentChanged()));
-        connect(m_textDocument, SIGNAL(modificationChanged(bool)),
-                this, SLOT(emitDocumentChanged()));
-        connect(m_textDocument, SIGNAL(contentsChanged()),
-                this, SLOT(onContentsChanged()));
+        connect(m_textDocument, &QTextDocument::undoAvailable,       this, &IDocument::emitDocumentChanged);
+        connect(m_textDocument, &QTextDocument::redoAvailable,       this, &IDocument::emitDocumentChanged);
+        connect(m_textDocument, &QTextDocument::modificationChanged, this, &IDocument::emitDocumentChanged);
     }
 
     //! \brief Destructor.
@@ -1688,14 +1415,17 @@ namespace Caneda
         simulationProcess->setProcessChannelMode(QProcess::MergedChannels);  // Output std:error and std:output together into the same file
         simulationProcess->setStandardOutputFile(path + "/" + baseName + ".log", QIODevice::WriteOnly);  // Create a log file
 
-        connect(simulationProcess, SIGNAL(finished(int, QProcess::ExitStatus)), this, SLOT(simulationLog(int)));
-
+        connect(simulationProcess, qOverload<int, QProcess::ExitStatus>(&QProcess::finished), this, &TextDocument::simulationLog);
 
         if (suffix == "net" || suffix == "cir" || suffix == "spc" || suffix == "sp") {
             // It is a netlist file, we should invoke a spice simulator in batch mode
             Settings *settings = Settings::instance();
             QString simulationCommand = settings->currentValue("sim/simulationCommand").toString();
             simulationCommand.replace("%filename", baseName);  // Replace all ocurrencies of %filename by the actual filename
+
+            QString command = simulationCommand.split(" ").at(0); // Get simulation command
+            QStringList args = simulationCommand.split(" "); // Get arguments list
+            args.removeAt(0); // Remove simulation command from arguments list
 
             // Set the environment variable to get a binary or an ascii raw file.
             QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
@@ -1708,7 +1438,7 @@ namespace Caneda
             simulationProcess->setProcessEnvironment(env);
 
             // Start the simulation
-            simulationProcess->start(simulationCommand);
+            simulationProcess->start(command, args);
         }
         else if (suffix == "vhd" || suffix == "vhdl") {
             // It is a vhdl file, we should invoke ghdl simulator
@@ -1720,26 +1450,26 @@ namespace Caneda
              *  compile.
              */
 
-            simulationProcess->start(QString("ghdl -a ") + fileName());  // Analize the files
+            simulationProcess->start(QString("ghdl"), QStringList() << "-a" << fileName());  // Analize the files
             simulationProcess->waitForFinished();
-            simulationProcess->start(QString("ghdl -e ") + baseName);  // Create the simulation
+            simulationProcess->start(QString("ghdl"), QStringList() << "-e" << baseName);  // Create the simulation
             simulationProcess->waitForFinished();
-            simulationProcess->start(QString("./") + baseName + " --wave=waveforms.ghw");  // Run the simulation
+            simulationProcess->start(QString("./") + baseName, QStringList() << "--wave=waveforms.ghw");  // Run the simulation
         }
         else if (suffix == "v") {
             // Is is a verilog file, we should invoke iverilog
-            simulationProcess->start(QString("iverilog ") + fileName());  // Analize the files
+            simulationProcess->start(QString("iverilog"), QStringList() << fileName());  // Analize the files
             simulationProcess->waitForFinished();
-            simulationProcess->start(QString("./a.out"));  // Run the simulation
+            simulationProcess->start(QString("./a.out"), QStringList());  // Run the simulation
         }
 
         // The simulation results are opened in the simulationReady slot, to achieve non-modal simulations
-        connect(simulationProcess, SIGNAL(finished(int, QProcess::ExitStatus)), this, SLOT(simulationReady(int)));
+        connect(simulationProcess, qOverload<int, QProcess::ExitStatus>(&QProcess::finished), this, &TextDocument::simulationReady);
     }
 
     void TextDocument::print(QPrinter *printer, bool fitInView)
     {
-        Q_UNUSED(fitInView);
+        Q_UNUSED(fitInView)
 
         m_textDocument->print(printer);
     }
@@ -1843,7 +1573,7 @@ namespace Caneda
             return te;
         }
 
-        return 0;
+        return nullptr;
     }
 
     void TextDocument::onContentsChanged()
@@ -1882,7 +1612,8 @@ namespace Caneda
         simulationProcess->setWorkingDirectory(path);
         simulationProcess->setProcessChannelMode(QProcess::MergedChannels);  // Output std:error and std:output together into the same file
         simulationProcess->setStandardOutputFile(path + "/" + baseName + ".log", QIODevice::Append);  // Create a log file
-        connect(simulationProcess, SIGNAL(finished(int, QProcess::ExitStatus)), this, SLOT(simulationLog(int)));
+
+        connect(simulationProcess, qOverload<int, QProcess::ExitStatus>(&QProcess::finished), this, &TextDocument::simulationLog);
 
         // Open the resulting waveforms
         if (suffix == "net" || suffix == "cir" || suffix == "spc" || suffix == "sp") {
@@ -1890,10 +1621,10 @@ namespace Caneda
             manager->openFile(QDir::toNativeSeparators(path + "/" + baseName + ".raw"));
         }
         else if (suffix == "vhd" || suffix == "vhdl") {
-            simulationProcess->start(QString("gtkwave waveforms.ghw"));  // Open the waveforms
+            simulationProcess->start(QString("gtkwave"), QStringList() << "waveforms.ghw");  // Open the waveforms
         }
         else if (suffix == "v") {
-            simulationProcess->start(QString("gtkwave ") + baseName + ".vcd");  // Open the waveforms
+            simulationProcess->start(QString("gtkwave"), QStringList() << baseName + ".vcd");  // Open the waveforms
         }
     }
 

@@ -44,21 +44,21 @@ namespace Caneda
                        HeadStyle style = FilledArrow,
                        qreal headWidth = 12,
                        qreal headHeight = 20,
-                       QGraphicsItem *parent = 0);
+                       QGraphicsItem *parent = nullptr);
 
         //! \copydoc GraphicsItem::Type
         enum { Type = Painting::ArrowType };
         //! \copydoc GraphicsItem::type()
-        int type() const { return Type; }
+        int type() const override { return Type; }
 
-        QPainterPath shapeForRect(const QRectF &rect) const;
+        QPainterPath shapeForRect(const QRectF &rect) const override;
 
-        void paint(QPainter *, const QStyleOptionGraphicsItem*, QWidget *);
+        void paint(QPainter *, const QStyleOptionGraphicsItem*, QWidget *) override;
 
-        Arrow* copy() const;
+        Arrow* copy() const override;
 
-        void saveData(Caneda::XmlWriter *writer) const;
-        void loadData(Caneda::XmlReader *reader);
+        void saveData(Caneda::XmlWriter *writer) const override;
+        void loadData(Caneda::XmlReader *reader) override;
 
         HeadStyle headStyle() const { return m_headStyle; }
         void setHeadStyle(HeadStyle style);
@@ -75,10 +75,10 @@ namespace Caneda
         QLineF line() const { return lineFromRect(paintingRect()); }
         void setLine(const QLineF &line);
 
-        void launchPropertiesDialog();
+        void launchPropertiesDialog() override;
 
     protected:
-        void geometryChange();
+        void geometryChange() override;
 
     private:
         void calcHeadPoints();

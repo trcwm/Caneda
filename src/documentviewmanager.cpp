@@ -34,6 +34,7 @@
 #include <QFileInfo>
 #include <QMessageBox>
 #include <QPointer>
+#include <QtMath>
 
 namespace Caneda
 {
@@ -42,7 +43,7 @@ namespace Caneda
         IDocument *document;
         QList<IView*> views;
 
-        DocumentData() { document = 0; }
+        DocumentData() { document = nullptr; }
     };
 
     //! \brief Constructor.
@@ -61,7 +62,7 @@ namespace Caneda
     //! \copydoc MainWindow::instance()
     DocumentViewManager* DocumentViewManager::instance()
     {
-        static DocumentViewManager* instance = 0;
+        static DocumentViewManager* instance = nullptr;
         if (!instance) {
             instance = new DocumentViewManager();
         }
@@ -73,14 +74,13 @@ namespace Caneda
         IView *newView = document->createView();
         if (!newView) {
             qWarning() << Q_FUNC_INFO << "View creation failed";
-            return 0;
+            return nullptr;
         }
 
         DocumentData *data = documentDataForDocument(document);
         data->views.insert(0, newView);
 
-        connect(newView, SIGNAL(focussedIn(IView*)), this,
-                SLOT(onViewFocussedIn(IView*)));
+        connect(newView, &IView::focussedIn, this, &DocumentViewManager::onViewFocussedIn);
 
         emit changed();
 
@@ -98,7 +98,7 @@ namespace Caneda
     {
         DocumentData *data = documentDataForDocument(document);
 
-        IView *view = 0;
+        IView *view = nullptr;
 
         // If the document was just opened, a view must be created
         if (data->views.isEmpty()) {
@@ -150,7 +150,7 @@ namespace Caneda
         // file contents.
         if(data) {
             // Grab the first view of the document
-            IView *view = 0;
+            IView *view = nullptr;
             if (!data->views.isEmpty()) {
                 view = viewsForDocument(data->document).first();
             }
@@ -187,7 +187,7 @@ namespace Caneda
             highlightViewForDocument(data->document);
         }
 
-        return data != 0;
+        return data != nullptr;
     }
 
     //! \brief Prompt the user to save the modified documents.
@@ -229,7 +229,7 @@ namespace Caneda
         foreach (IDocument *document, documents) {
             DocumentData *data = documentDataForDocument(document);
 
-            Q_ASSERT(data != 0);
+            Q_ASSERT(data != nullptr);
 
             bool closedAllViews = true;
             foreach (IView *view, data->views) {
@@ -249,7 +249,7 @@ namespace Caneda
             m_documentDataList.removeAll(data);
 
             delete data->document;
-            data->document = 0;
+            data->document = nullptr;
 
             delete data;
             ++closedDocumentsCount;
@@ -319,7 +319,6 @@ namespace Caneda
 
         emit changed();
 
-
         // Now if closeDocumentIfLastView is true and there are no more views
         // for the document, then just close the document too.
         if (closeDocumentIfLastView && data->views.isEmpty()) {
@@ -359,19 +358,18 @@ namespace Caneda
         if (view) {
             return view->document();
         }
-        return 0;
+        return nullptr;
     }
 
     IView* DocumentViewManager::currentView() const
     {
         Tab *tab = tabWidget()->currentTab();
         if (!tab) {
-            return 0;
+            return nullptr;
         }
 
         return tab->activeView();
     }
-
 
     QList<IDocument*> DocumentViewManager::documents() const
     {
@@ -404,7 +402,7 @@ namespace Caneda
             return data->document;
         }
 
-        return 0;
+        return nullptr;
     }
 
     QList<IView*> DocumentViewManager::viewsForDocument(const IDocument *document) const
@@ -417,7 +415,7 @@ namespace Caneda
             }
         }
 
-        qDebug() << Q_FUNC_INFO << "Document " << (void*)document
+        qDebug() << Q_FUNC_INFO << "Document " << document->fileName()
             << " is not in manager's document data list";
 
         return QList<IView*>();
@@ -557,7 +555,7 @@ namespace Caneda
     DocumentData* DocumentViewManager::documentDataForFileName(const QString &fileName) const
     {
         if (fileName.isEmpty()) {
-            return 0;
+            return nullptr;
         }
 
         QList<DocumentData*>::const_iterator it = m_documentDataList.constBegin(),
@@ -569,7 +567,7 @@ namespace Caneda
             }
         }
 
-        return 0;
+        return nullptr;
     }
 
     DocumentData* DocumentViewManager::documentDataForDocument(IDocument *document) const
@@ -583,14 +581,13 @@ namespace Caneda
             }
         }
 
-        return 0;
+        return nullptr;
     }
 
     void DocumentViewManager::setupContexts()
     {
         m_contexts << SchematicContext::instance();
         m_contexts << SymbolContext::instance();
-        m_contexts << LayoutContext::instance();
         m_contexts << SimulationContext::instance();
         m_contexts << TextContext::instance();
     }

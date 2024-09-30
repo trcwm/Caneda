@@ -28,14 +28,11 @@
 #include "icontext.h"
 #include "idocument.h"
 #include "global.h"
-#include "statehandler.h"
 #include "textedit.h"
 
 #include <QAction>
-#include <QApplication>
 #include <QComboBox>
 #include <QFileInfo>
-#include <QFontInfo>
 #include <QHBoxLayout>
 #include <QToolBar>
 #include <QToolButton>
@@ -77,15 +74,14 @@ namespace Caneda
         QObject(document),
         m_document(document)
     {
-        Q_ASSERT(document != 0);
+        Q_ASSERT(document != nullptr);
         m_toolBar = new QToolBar();
 
         DocumentViewManager *manager = DocumentViewManager::instance();
-        connect(manager, SIGNAL(changed()), this, SLOT(onDocumentViewManagerChanged()));
+        connect(manager, &DocumentViewManager::changed, this, &IView::onDocumentViewManagerChanged);
 
         m_documentSelector = new QComboBox(m_toolBar);
-        connect(m_documentSelector, SIGNAL(currentIndexChanged(int)), this,
-                SLOT(onDocumentSelectorIndexChanged(int)));
+        connect(m_documentSelector, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &IView::onDocumentSelectorIndexChanged);
 
 
         QToolButton *splitHorizontalButton = new QToolButton(m_toolBar);
@@ -95,9 +91,9 @@ namespace Caneda
         QToolButton *closeViewButton = new QToolButton(m_toolBar);
         closeViewButton->setIcon(Caneda::icon("view-left-close"));
 
-        connect(splitHorizontalButton, SIGNAL(clicked()), this, SLOT(slotSplitHorizontal()));
-        connect(splitVerticalButton, SIGNAL(clicked()), this, SLOT(slotSplitVertical()));
-        connect(closeViewButton, SIGNAL(clicked()), this, SLOT(slotCloseView()));
+        connect(splitHorizontalButton, &QToolButton::clicked, this, &IView::slotSplitHorizontal);
+        connect(splitVerticalButton,   &QToolButton::clicked, this, &IView::slotSplitVertical);
+        connect(closeViewButton,       &QToolButton::clicked, this, &IView::slotCloseView);
 
         m_toolBar->addWidget(m_documentSelector);
         m_toolBar->addSeparator();
@@ -179,80 +175,6 @@ namespace Caneda
         manager->closeView(this);
     }
 
-
-    /*************************************************************************
-     *                             LayoutView                                *
-     *************************************************************************/
-    //! \brief Constructor.
-    LayoutView::LayoutView(LayoutDocument *document) : IView(document)
-    {
-        m_graphicsView = new GraphicsView(document->graphicsScene());
-        connect(m_graphicsView, SIGNAL(focussedIn(GraphicsView*)), this,
-                SLOT(onWidgetFocussedIn()));
-        connect(m_graphicsView, SIGNAL(focussedOut(GraphicsView*)), this,
-                SLOT(onWidgetFocussedOut()));
-        connect(m_graphicsView, SIGNAL(cursorPositionChanged(const QString &)),
-                this, SIGNAL(statusBarMessage(const QString &)));
-    }
-
-    //! \brief Destructor.
-    LayoutView::~LayoutView()
-    {
-        delete m_graphicsView;
-    }
-
-    QWidget* LayoutView::toWidget() const
-    {
-        return m_graphicsView;
-    }
-
-    IContext* LayoutView::context() const
-    {
-        return LayoutContext::instance();
-    }
-
-    void LayoutView::zoomIn()
-    {
-        m_graphicsView->zoomIn();
-    }
-
-    void LayoutView::zoomOut()
-    {
-        m_graphicsView->zoomOut();
-    }
-
-    void LayoutView::zoomFitInBest()
-    {
-        m_graphicsView->zoomFitInBest();
-    }
-
-    void LayoutView::zoomOriginal()
-    {
-        m_graphicsView->zoomOriginal();
-    }
-
-    IView* LayoutView::duplicate()
-    {
-        return document()->createView();
-    }
-
-    void LayoutView::updateSettingsChanges()
-    {
-        m_graphicsView->invalidateScene();
-        m_graphicsView->resetCachedContent();
-    }
-
-    void LayoutView::onWidgetFocussedIn()
-    {
-        emit focussedIn(static_cast<IView*>(this));
-    }
-
-    void LayoutView::onWidgetFocussedOut()
-    {
-        emit focussedOut(static_cast<IView*>(this));
-    }
-
-
     /*************************************************************************
      *                           SchematicView                               *
      *************************************************************************/
@@ -260,12 +182,10 @@ namespace Caneda
     SchematicView::SchematicView(SchematicDocument *document) : IView(document)
     {
         m_graphicsView = new GraphicsView(document->graphicsScene());
-        connect(m_graphicsView, SIGNAL(focussedIn(GraphicsView*)), this,
-                SLOT(onWidgetFocussedIn()));
-        connect(m_graphicsView, SIGNAL(focussedOut(GraphicsView*)), this,
-                SLOT(onWidgetFocussedOut()));
-        connect(m_graphicsView, SIGNAL(cursorPositionChanged(const QString &)),
-                this, SIGNAL(statusBarMessage(const QString &)));
+
+        connect(m_graphicsView, &GraphicsView::focussedIn,            this, &SchematicView::onWidgetFocussedIn);
+        connect(m_graphicsView, &GraphicsView::focussedOut,           this, &SchematicView::onWidgetFocussedOut);
+        connect(m_graphicsView, &GraphicsView::cursorPositionChanged, this, &SchematicView::statusBarMessage);
     }
 
     //! \brief Destructor.
@@ -333,22 +253,22 @@ namespace Caneda
     SimulationView::SimulationView(SimulationDocument *document) :
         IView(document)
     {
-        m_chartView = new ChartView(document->chartScene(), 0);
+        m_chartView = new ChartView(document->chartScene(), nullptr);
         m_chartView->populate();
 
         //! \todo Reimplement this
-//        connect(m_chartView, SIGNAL(focussedIn(ChartView*)), this,
-//                SLOT(onWidgetFocussedIn()));
-//        connect(m_chartView, SIGNAL(focussedOut(ChartView*)), this,
-//                SLOT(onWidgetFocussedOut()));
-        connect(m_chartView, SIGNAL(cursorPositionChanged(const QString &)),
-                this, SIGNAL(statusBarMessage(const QString &)));
+        //connect(m_chartView, &ChartView::focussedIn,            this, &SimulationView::onWidgetFocussedIn);
+        //connect(m_chartView, &ChartView::focussedOut,           this, &SimulationView::onWidgetFocussedOut);
+        connect(m_chartView, &ChartView::cursorPositionChanged, this, &SimulationView::statusBarMessage);
     }
 
     //! \brief Destructor.
     SimulationView::~SimulationView()
     {
-        delete m_chartView;
+        // If there are no more views for the document, delete the data (release the memory)
+        if (this->document()->views().isEmpty()) {
+            delete m_chartView;
+        }
     }
 
     QWidget* SimulationView::toWidget() const
@@ -402,7 +322,6 @@ namespace Caneda
         emit focussedOut(static_cast<IView*>(this));
     }
 
-
     /*************************************************************************
      *                             SymbolView                                *
      *************************************************************************/
@@ -410,12 +329,10 @@ namespace Caneda
     SymbolView::SymbolView(SymbolDocument *document) : IView(document)
     {
         m_graphicsView = new GraphicsView(document->graphicsScene());
-        connect(m_graphicsView, SIGNAL(focussedIn(GraphicsView*)), this,
-                SLOT(onWidgetFocussedIn()));
-        connect(m_graphicsView, SIGNAL(focussedOut(GraphicsView*)), this,
-                SLOT(onWidgetFocussedOut()));
-        connect(m_graphicsView, SIGNAL(cursorPositionChanged(const QString &)),
-                this, SIGNAL(statusBarMessage(const QString &)));
+
+        connect(m_graphicsView, &GraphicsView::focussedIn,            this, &SymbolView::onWidgetFocussedIn);
+        connect(m_graphicsView, &GraphicsView::focussedOut,           this, &SymbolView::onWidgetFocussedOut);
+        connect(m_graphicsView, &GraphicsView::cursorPositionChanged, this, &SymbolView::statusBarMessage);
     }
 
     //! \brief Destructor.
@@ -475,23 +392,16 @@ namespace Caneda
         emit focussedOut(static_cast<IView*>(this));
     }
 
-
     /*************************************************************************
      *                              TextView                                 *
      *************************************************************************/
     //! \brief Constructor.
-    TextView::TextView(TextDocument *document) :
-        IView(document),
-        m_originalZoom(QFontInfo(QApplication::font()).pointSizeF()),
-        m_zoomRange(6.0, 30.0)
+    TextView::TextView(TextDocument *document) : IView(document)
     {
-        m_currentZoom = m_originalZoom;
         m_textEdit = new TextEdit(document->textDocument());
 
-        connect(m_textEdit, SIGNAL(focussed()), this,
-                SLOT(onFocussed()));
-        connect(m_textEdit, SIGNAL(cursorPositionChanged(const QString &)),
-                this, SIGNAL(statusBarMessage(const QString &)));
+        connect(m_textEdit, &TextEdit::focussed,              this, &TextView::onFocussed);
+        connect(m_textEdit, &TextEdit::cursorPositionChanged, this, &TextView::statusBarMessage);
     }
 
     //! \brief Destructor.
@@ -512,22 +422,12 @@ namespace Caneda
 
     void TextView::zoomIn()
     {
-        setZoomLevel(m_currentZoom + 1);
+        m_textEdit->zoomIn();
     }
 
     void TextView::zoomOut()
     {
-        setZoomLevel(m_currentZoom - 1);
-    }
-
-    void TextView::zoomFitInBest()
-    {
-        setZoomLevel(4);
-    }
-
-    void TextView::zoomOriginal()
-    {
-        setZoomLevel(m_originalZoom);
+        m_textEdit->zoomOut();
     }
 
     IView* TextView::duplicate()
@@ -542,21 +442,6 @@ namespace Caneda
     void TextView::onFocussed()
     {
         emit focussedIn(static_cast<IView*>(this));
-    }
-
-    void TextView::setZoomLevel(qreal zoomLevel)
-    {
-        if (!m_zoomRange.contains(zoomLevel)) {
-            return;
-        }
-
-        if (qFuzzyCompare(zoomLevel, m_currentZoom)) {
-            return;
-        }
-
-        m_currentZoom = zoomLevel;
-
-        m_textEdit->setPointSize(m_currentZoom);
     }
 
 } // namespace Caneda

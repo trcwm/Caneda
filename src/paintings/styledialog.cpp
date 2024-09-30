@@ -25,7 +25,6 @@
 
 #include "arrow.h"
 #include "ellipsearc.h"
-#include "layer.h"
 
 #include <QBrush>
 #include <QColorDialog>
@@ -345,45 +344,29 @@ namespace Caneda
             ui.fillGroupBox->hide();
         }
         
-        if(painting->type() == Painting::LayerType) {
-            Layer *layer = canedaitem_cast<Layer*>(painting);
-            ui.layerComboBox->setCurrentIndex(layer->layerName());
-            ui.layerLabelLineEdit->setText(layer->netLabel());
-            ui.layerLabelLineEdit->setClearButtonEnabled(true);
-            ui.layerWidthSpinBox->setValue(qRound(layer->rect().width()));
-            ui.layerHeightSpinBox->setValue(qRound(layer->rect().height()));
-
-            ui.lineGroupBox->hide();
-            ui.fillGroupBox->hide();
-            ui.previewGroupBox->hide();
-        }
-        else {
-            ui.layerGroupBox->hide();
-        }
-
         ui.lineColorButton->setIcon(lineColorPixmap);
         ui.fillColorButton->setIcon(fillColorPixmap);
 
-        connect(ui.startAngleSpinBox, SIGNAL(valueChanged(int)), SLOT(updatePreview()));
-        connect(ui.spanAngleSpinBox, SIGNAL(valueChanged(int)), SLOT(updatePreview()));
+        connect(ui.startAngleSpinBox,  QOverload<int>::of(&QSpinBox::valueChanged), this, &StyleDialog::updatePreview);
+        connect(ui.spanAngleSpinBox,   QOverload<int>::of(&QSpinBox::valueChanged), this, &StyleDialog::updatePreview);
 
-        connect(ui.arrowStyleComboBox, SIGNAL(activated(int)), SLOT(updatePreview()));
-        connect(ui.arrowWidthSpinBox, SIGNAL(valueChanged(int)), SLOT(updatePreview()));
-        connect(ui.arrowHeightSpinBox, SIGNAL(valueChanged(int)), SLOT(updatePreview()));
+        connect(ui.arrowStyleComboBox, QOverload<int>::of(&QComboBox::activated),   this, &StyleDialog::updatePreview);
+        connect(ui.arrowWidthSpinBox,  QOverload<int>::of(&QSpinBox::valueChanged), this, &StyleDialog::updatePreview);
+        connect(ui.arrowHeightSpinBox, QOverload<int>::of(&QSpinBox::valueChanged), this, &StyleDialog::updatePreview);
 
-        connect(ui.lineWidthSpinBox, SIGNAL(valueChanged(int)), SLOT(updatePreview()));
-        connect(ui.lineColorButton, SIGNAL(clicked()), SLOT(launchColorDialog()));
-        connect(ui.lineStyleComboBox, SIGNAL(activated(int)), SLOT(updatePreview()));
+        connect(ui.lineWidthSpinBox,   QOverload<int>::of(&QSpinBox::valueChanged), this, &StyleDialog::updatePreview);
+        connect(ui.lineColorButton,    &QToolButton::clicked,                       this, &StyleDialog::launchColorDialog);
+        connect(ui.lineStyleComboBox,  QOverload<int>::of(&QComboBox::activated),   this, &StyleDialog::updatePreview);
 
-        connect(ui.fillColorButton, SIGNAL(clicked()), SLOT(launchColorDialog()));
-        connect(ui.fillStyleComboBox, SIGNAL(activated(int)), SLOT(updatePreview()));
+        connect(ui.fillColorButton,    &QToolButton::clicked,                       this, &StyleDialog::launchColorDialog);
+        connect(ui.fillStyleComboBox,  QOverload<int>::of(&QComboBox::activated),   this, &StyleDialog::updatePreview);
 
-        connect(this, SIGNAL(accepted()), SLOT(applySettings()));
+        connect(this, &StyleDialog::accepted, this, &StyleDialog::applySettings);
 
         previewWidget = new PreviewWidget(painting->type());
         ui.previewLayout->addWidget(previewWidget);
 
-        connect(ui.backgroundCheckBox, SIGNAL(toggled(bool)), previewWidget, SLOT(toggleBackground(bool)));
+        connect(ui.backgroundCheckBox, &QCheckBox::toggled, previewWidget, &PreviewWidget::toggleBackground);
 
         updatePreview();
     }
@@ -456,16 +439,6 @@ namespace Caneda
             EllipseArc *arc = static_cast<EllipseArc*>(painting);
             arc->setStartAngle(previewWidget->startAngle());
             arc->setSpanAngle(previewWidget->spanAngle());
-        }
-        else if(painting->type() == Painting::LayerType) {
-            Layer *layer = static_cast<Layer*>(painting);
-            layer->setLayerName((Layer::LayerName)ui.layerComboBox->currentIndex());
-            layer->setNetLabel(ui.layerLabelLineEdit->text());
-
-            QRectF newRect = layer->rect();
-            newRect.setWidth(ui.layerWidthSpinBox->value());
-            newRect.setHeight(ui.layerHeightSpinBox->value());
-            layer->setPaintingRect(newRect);
         }
 
         GraphicsScene *scene = qobject_cast<GraphicsScene*>(painting->scene());

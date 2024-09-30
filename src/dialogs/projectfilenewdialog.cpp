@@ -37,7 +37,7 @@ namespace Caneda
         ui.rbExistingComponent->setIcon(Caneda::icon("document-open"));
         ui.rbImportFromProject->setIcon(Caneda::icon("project-new"));
 
-        connect(ui.rbNewComponent, SIGNAL(toggled(bool)), ui.editName, SLOT(setEnabled(bool)));
+        connect(ui.rbNewComponent, &QRadioButton::toggled, ui.editName, &QLineEdit::setEnabled);
 
         m_userchoice = Caneda::NewComponent;
     }

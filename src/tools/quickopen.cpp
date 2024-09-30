@@ -51,16 +51,14 @@ namespace Caneda
         // Create the toolbar
         QToolBar *toolbar = new QToolBar(this);
 
-        QToolButton *buttonUp = new QToolButton(this);
+        buttonUp = new QToolButton(this);
         buttonUp->setIcon(Caneda::icon("go-up"));
-        buttonUp->setShortcut(Qt::Key_Backspace);
         buttonUp->setStatusTip(tr("Go up one folder"));
         buttonUp->setToolTip(tr("Go up one folder"));
         buttonUp->setWhatsThis(tr("Go up one folder"));
 
         buttonBack = new QToolButton(this);
         buttonBack->setIcon(Caneda::icon("go-previous"));
-        buttonBack->setShortcut(Qt::ALT + Qt::Key_Left);
         buttonBack->setStatusTip(tr("Go previous folder"));
         buttonBack->setToolTip(tr("Go previous folder"));
         buttonBack->setWhatsThis(tr("Go previous folder"));
@@ -68,15 +66,13 @@ namespace Caneda
 
         buttonForward = new QToolButton(this);
         buttonForward->setIcon(Caneda::icon("go-next"));
-        buttonForward->setShortcut(Qt::ALT + Qt::Key_Right);
         buttonForward->setStatusTip(tr("Go next folder"));
         buttonForward->setToolTip(tr("Go next folder"));
         buttonForward->setWhatsThis(tr("Go next folder"));
         buttonForward->setEnabled(false);
 
-        QToolButton *buttonHome = new QToolButton(this);
+        buttonHome = new QToolButton(this);
         buttonHome->setIcon(Caneda::icon("go-home"));
-        buttonHome->setShortcut(Qt::CTRL + Qt::Key_Home);
         buttonHome->setStatusTip(tr("Go to the home folder"));
         buttonHome->setToolTip(tr("Go to the home folder"));
         buttonHome->setWhatsThis(tr("Go to the home folder"));
@@ -95,14 +91,12 @@ namespace Caneda
         filtersSeparator->setSeparator(true);
         filterSchematics = new QAction(Caneda::icon("application-x-caneda-schematic"), tr("Show schematics"), filterGroup);
         filterSymbols = new QAction(Caneda::icon("application-x-caneda-symbol"), tr("Show symbols"), filterGroup);
-        filterLayouts = new QAction(Caneda::icon("application-x-caneda-layout"), tr("Show layouts"), filterGroup);
         filterSimulations = new QAction(Caneda::icon("application-x-spice-simulation-raw"), tr("Show simulations"), filterGroup);
         filterText = new QAction(Caneda::icon("text-plain"), tr("Show text files"), filterGroup);
 
         filterNone->setCheckable(true);
         filterSchematics->setCheckable(true);
         filterSymbols->setCheckable(true);
-        filterLayouts->setCheckable(true);
         filterSimulations->setCheckable(true);
         filterText->setCheckable(true);
 
@@ -145,26 +139,26 @@ namespace Caneda
 
         // Create a list view, set properties and proxy model
         m_listView = new QListView(this);
+        m_listView->installEventFilter(this);
         m_listView->setModel(m_proxyModel);
         m_listView->setRootIndex(m_proxyModel->mapFromSource(m_model->index(QDir::homePath())));
         layout->addWidget(m_listView);
 
         // Signals and slots connections
-        connect(buttonUp, SIGNAL(clicked()), this, SLOT(slotUpFolder()));
-        connect(buttonBack, SIGNAL(clicked()), this, SLOT(slotBackFolder()));
-        connect(buttonForward, SIGNAL(clicked()), this, SLOT(slotForwardFolder()));
-        connect(buttonHome, SIGNAL(clicked()), this, SLOT(slotHomeFolder()));
+        connect(buttonUp,      &QToolButton::clicked, this, &QuickOpen::slotUpFolder);
+        connect(buttonBack,    &QToolButton::clicked, this, &QuickOpen::slotBackFolder);
+        connect(buttonForward, &QToolButton::clicked, this, &QuickOpen::slotForwardFolder);
+        connect(buttonHome,    &QToolButton::clicked, this, &QuickOpen::slotHomeFolder);
 
-        connect(filterNone, SIGNAL(triggered(bool)), this, SLOT(filterFileTypes()));
-        connect(filterSchematics, SIGNAL(triggered(bool)), this, SLOT(filterFileTypes()));
-        connect(filterSymbols, SIGNAL(triggered(bool)), this, SLOT(filterFileTypes()));
-        connect(filterLayouts, SIGNAL(triggered(bool)), this, SLOT(filterFileTypes()));
-        connect(filterSimulations, SIGNAL(triggered(bool)), this, SLOT(filterFileTypes()));
-        connect(filterText, SIGNAL(triggered(bool)), this, SLOT(filterFileTypes()));
+        connect(filterNone,        &QAction::triggered, this, &QuickOpen::filterFileTypes);
+        connect(filterSchematics,  &QAction::triggered, this, &QuickOpen::filterFileTypes);
+        connect(filterSymbols,     &QAction::triggered, this, &QuickOpen::filterFileTypes);
+        connect(filterSimulations, &QAction::triggered, this, &QuickOpen::filterFileTypes);
+        connect(filterText,        &QAction::triggered, this, &QuickOpen::filterFileTypes);
 
-        connect(m_filterEdit, SIGNAL(textChanged(const QString &)), this, SLOT(filterTextChanged()));
-        connect(m_filterEdit, SIGNAL(returnPressed()), this, SLOT(itemSelected()));
-        connect(m_listView, SIGNAL(activated(QModelIndex)), this, SLOT(itemSelected()));
+        connect(m_filterEdit, &QLineEdit::textChanged,   this, &QuickOpen::filterTextChanged);
+        connect(m_filterEdit, &QLineEdit::returnPressed, this, &QuickOpen::open);
+        connect(m_listView,   &QListView::activated,     this, &QuickOpen::open);
 
         // Filter the selected filetype and start with the focus on the filter
         filterGroup->actions().at(index)->trigger();
@@ -238,17 +232,43 @@ namespace Caneda
     //! \brief Filter event to select the listView on down arrow key event
     bool QuickOpen::eventFilter(QObject *object, QEvent *event)
     {
-        if(object == m_filterEdit) {
-            if(event->type() == QEvent::KeyPress) {
-                QKeyEvent *keyEvent = static_cast<QKeyEvent*>(event);
-                if(keyEvent->key() == Qt::Key_Down) {
+        if(event->type() == QEvent::KeyPress) {
+            QKeyEvent *keyEvent = static_cast<QKeyEvent*>(event);
 
+            if(keyEvent->modifiers() == Qt::AltModifier) {
+                if(keyEvent->key() == Qt::Key_Up) {
+                    buttonUp->animateClick();  // Call this instead of slot directly to get visual feedback
+                    return true;
+                }
+                if(keyEvent->key() == Qt::Key_Left) {
+                    buttonBack->animateClick();  // Call this instead of slot directly to get visual feedback
+                    return true;
+                }
+                if(keyEvent->key() == Qt::Key_Right) {
+                    buttonForward->animateClick();  // Call this instead of slot directly to get visual feedback
+                    return true;
+                }
+                if(keyEvent->key() == Qt::Key_Home) {
+                    buttonHome->animateClick();  // Call this instead of slot directly to get visual feedback
+                    return true;
+                }
+            }
+
+            if(keyEvent->modifiers() == Qt::ControlModifier) {
+                if(keyEvent->key() == Qt::Key_F) {
+                    m_filterEdit->setFocus();
+                    return true;
+                }
+            }
+
+            if(object == m_filterEdit) {
+                if(keyEvent->key() == Qt::Key_Down) {
                     // Set the row next to the currently selected one
-                    if(m_listView->currentIndex() == m_listView->rootIndex().child(0,0)) {
-                        m_listView->setCurrentIndex(m_listView->rootIndex().child(1,0));
+                    if(m_listView->currentIndex() == m_listView->model()->index(0,0, m_listView->rootIndex())) {
+                        m_listView->setCurrentIndex(m_listView->model()->index(1,0, m_listView->rootIndex()));
                     }
                     else {
-                        m_listView->setCurrentIndex(m_listView->rootIndex().child(0,0));
+                        m_listView->setCurrentIndex(m_listView->model()->index(0,0, m_listView->rootIndex()));
                     }
 
                     // Set the focus in the treeview
@@ -258,7 +278,6 @@ namespace Caneda
                 }
             }
 
-            return false;
         }
 
         return QMenu::eventFilter(object, event);
@@ -278,7 +297,7 @@ namespace Caneda
         m_proxyModel->setFilterRegExp(regExp);
 
         // Select the first item in the result
-        m_listView->setCurrentIndex(m_listView->rootIndex().child(0,0));
+        m_listView->setCurrentIndex(m_listView->model()->index(0,0, m_listView->rootIndex()));
     }
 
     //! \brief Filters the view to show only selected file type.
@@ -314,13 +333,6 @@ namespace Caneda
                 filters << "*." + suffix;
             }
         }
-        else if(action == filterLayouts) {
-            m_model->setFilter(QDir::AllDirs | QDir::NoDotAndDotDot | QDir::Files);
-            IContext *context = LayoutContext::instance();
-            foreach(const QString &suffix, context->supportedSuffixes()) {
-                filters << "*." + suffix;
-            }
-        }
         else if(action == filterSimulations) {
             m_model->setFilter(QDir::AllDirs | QDir::NoDotAndDotDot | QDir::Files);
             IContext *context = SimulationContext::instance();
@@ -341,7 +353,7 @@ namespace Caneda
     }
 
     //! \brief Accept the dialog and open the selected item.
-    void QuickOpen::itemSelected()
+    void QuickOpen::open()
     {
         if(m_listView->currentIndex().isValid()) {
 

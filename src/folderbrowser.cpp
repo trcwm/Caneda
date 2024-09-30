@@ -46,7 +46,7 @@ namespace Caneda
 
         QToolButton *buttonUp = new QToolButton(this);
         buttonUp->setIcon(Caneda::icon("go-up"));
-        buttonUp->setShortcut(Qt::Key_Backspace);
+        buttonUp->setShortcut(Qt::ALT + Qt::Key_Up);
         buttonUp->setStatusTip(tr("Go up one folder"));
         buttonUp->setToolTip(tr("Go up one folder"));
         buttonUp->setWhatsThis(tr("Go up one folder"));
@@ -69,7 +69,7 @@ namespace Caneda
 
         QToolButton *buttonHome = new QToolButton(this);
         buttonHome->setIcon(Caneda::icon("go-home"));
-        buttonHome->setShortcut(Qt::CTRL + Qt::Key_Home);
+        buttonHome->setShortcut(Qt::ALT + Qt::Key_Home);
         buttonHome->setStatusTip(tr("Go to the home folder"));
         buttonHome->setToolTip(tr("Go to the home folder"));
         buttonHome->setWhatsThis(tr("Go to the home folder"));
@@ -86,12 +86,12 @@ namespace Caneda
         buttonDeleteFile->setToolTip(tr("Delete file/folder"));
         buttonDeleteFile->setWhatsThis(tr("Delete file/folder"));
 
-        connect(buttonUp, SIGNAL(clicked()), this, SLOT(slotUpFolder()));
-        connect(buttonBack, SIGNAL(clicked()), this, SLOT(slotBackFolder()));
-        connect(buttonForward, SIGNAL(clicked()), this, SLOT(slotForwardFolder()));
-        connect(buttonHome, SIGNAL(clicked()), this, SLOT(slotHomeFolder()));
-        connect(buttonNewFolder, SIGNAL(clicked()), this, SLOT(slotNewFolder()));
-        connect(buttonDeleteFile, SIGNAL(clicked()), this, SLOT(slotDeleteFile()));
+        connect(buttonUp,         &QToolButton::clicked, this, &FolderBrowser::slotUpFolder);
+        connect(buttonBack,       &QToolButton::clicked, this, &FolderBrowser::slotBackFolder);
+        connect(buttonForward,    &QToolButton::clicked, this, &FolderBrowser::slotForwardFolder);
+        connect(buttonHome,       &QToolButton::clicked, this, &FolderBrowser::slotHomeFolder);
+        connect(buttonNewFolder,  &QToolButton::clicked, this, &FolderBrowser::slotNewFolder);
+        connect(buttonDeleteFile, &QToolButton::clicked, this, &FolderBrowser::slotDeleteFile);
 
         toolbar->addWidget(buttonUp);
         toolbar->addWidget(buttonBack);
@@ -104,17 +104,14 @@ namespace Caneda
         // Create a new filesystem model
         m_model = new QFileSystemModel(this);
         m_model->setIconProvider(new IconProvider());
-        m_model->setRootPath(QDir::homePath());
+        m_model->setRootPath(QDir::rootPath());
 
         // Create a list view and set its properties
         m_listView = new QListView(this);
         m_listView->setModel(m_model);
-        m_listView->setRootIndex(m_model->index(QDir::homePath()));
         layout->addWidget(m_listView);
 
-        // Signals and slots connections
-        connect(m_listView, SIGNAL(activated(QModelIndex)),
-                this, SLOT(slotOnDoubleClicked(QModelIndex)));
+        connect(m_listView, &QListView::activated, this, &FolderBrowser::slotOnDoubleClicked);
 
         setWindowTitle(tr("Folder Browser"));
     }

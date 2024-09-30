@@ -32,14 +32,14 @@ namespace Caneda
         explicit EllipseArc(QRectF rect = QRectF(),
                             int startAngle = 20,
                             int spanAngle = 180,
-                            QGraphicsItem *parent = 0);
+                            QGraphicsItem *parent = nullptr);
 
         //! \copydoc GraphicsItem::Type
         enum { Type = Painting::EllipseArcType };
         //! \copydoc GraphicsItem::type()
-        int type() const { return Type; }
+        int type() const override { return Type; }
 
-        QPainterPath shapeForRect(const QRectF &rect) const;
+        QPainterPath shapeForRect(const QRectF &rect) const override;
 
         //! \brief Returns arc's startAngle of this item.
         int startAngle() const { return m_startAngle; }
@@ -49,18 +49,18 @@ namespace Caneda
         int spanAngle() const { return m_spanAngle; }
         void setSpanAngle(int angle);
 
-        void paint(QPainter *, const QStyleOptionGraphicsItem*, QWidget *);
+        void paint(QPainter *, const QStyleOptionGraphicsItem*, QWidget *) override;
 
         //! \brief Returns ellipse represented by this elliptic arc.
         QRectF ellipse() const { return paintingRect(); }
         void setEllipse(const QRectF& ellipse) { setPaintingRect(ellipse); }
 
-        EllipseArc* copy() const;
+        EllipseArc* copy() const override;
 
-        void saveData(Caneda::XmlWriter *writer) const;
-        void loadData(Caneda::XmlReader *reader);
+        void saveData(Caneda::XmlWriter *writer) const override;
+        void loadData(Caneda::XmlReader *reader) override;
 
-        void launchPropertiesDialog();
+        void launchPropertiesDialog() override;
 
     private:
         int m_startAngle;

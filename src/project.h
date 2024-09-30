@@ -55,7 +55,7 @@ namespace Caneda
         Q_OBJECT
 
     public:
-        explicit Project(QWidget *parent = 0);
+        explicit Project(QWidget *parent = nullptr);
 
         //! Returns project name.
         QString libraryName() const { return m_libraryName; }

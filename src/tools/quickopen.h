@@ -55,7 +55,7 @@ namespace Caneda
         Q_OBJECT
 
     public:
-        explicit QuickOpen(QWidget *parent = 0);
+        explicit QuickOpen(QWidget *parent = nullptr);
 
         void setCurrentFolder(const QString& path);
 
@@ -68,11 +68,11 @@ namespace Caneda
         void slotForwardFolder();
         void slotHomeFolder();
 
-        bool eventFilter(QObject *object, QEvent *event);
+        bool eventFilter(QObject *object, QEvent *event) override;
         void filterTextChanged();
         void filterFileTypes();
 
-        void itemSelected();
+        void open();
 
     private:
         QFileSystemModel *m_model;
@@ -86,8 +86,8 @@ namespace Caneda
 
         QActionGroup *filterGroup;
         QAction *filterNone, *filterSchematics, *filterSimulations,
-        *filterSymbols, *filterLayouts, *filterText;
-        QToolButton *buttonBack, *buttonForward;
+        *filterSymbols, *filterText;
+        QToolButton *buttonUp, *buttonBack, *buttonForward, *buttonHome;
     };
 
 } // namespace Caneda

@@ -32,25 +32,25 @@
     </description>
 
     <symbol>
-        <painting name="line" line="0,0,8,0" pos="-50,-5" transform="1,0,0,1,0,0"/>
-        <painting name="line" line="0,0,10,0" pos="40,-5" transform="1,0,0,1,0,0"/>
-        <painting name="line" line="0,0,8,0" pos="-50,5" transform="1,0,0,1,0,0"/>
-        <painting name="line" line="0,0,10,0" pos="40,5" transform="1,0,0,1,0,0"/>
+        <painting name="line" line="0,0,8,0" pos="-50,0" transform="1,0,0,1,0,0"/>
+        <painting name="line" line="0,0,10,0" pos="40,0" transform="1,0,0,1,0,0"/>
+        <painting name="line" line="0,0,8,0" pos="-50,10" transform="1,0,0,1,0,0"/>
+        <painting name="line" line="0,0,10,0" pos="40,10" transform="1,0,0,1,0,0"/>
 
-        <painting name="line" line="0,0,78,0" pos="-38,12" transform="1,0,0,1,0,0"/>
-        <painting name="line" line="0,0,78,0" pos="-38,-12" transform="1,0,0,1,0,0"/>
+        <painting name="line" line="0,0,78,0" pos="-38,17" transform="1,0,0,1,0,0"/>
+        <painting name="line" line="0,0,78,0" pos="-38,-7" transform="1,0,0,1,0,0"/>
 
-        <painting name="ellipse" ellipse="0,0,7,24" pos="36.5,-12" transform="1,0,0,1,0,0"/>
-        <painting name="ellipseArc" ellipse="0,0,7,24" pos="-42,-12" transform="1,0,0,1,0,0">
+        <painting name="ellipse" ellipse="0,0,7,24" pos="36.5,-7" transform="1,0,0,1,0,0"/>
+        <painting name="ellipseArc" ellipse="0,0,7,24" pos="-42,-7" transform="1,0,0,1,0,0">
             <properties startAngle="90" spanAngle="180"/>
         </painting>
     </symbol>
 
     <ports>
-        <port name="in+" pos="-50,-5"/>
-        <port name="in-" pos="50,5"/>
-        <port name="out+" pos="50,-5"/>
-        <port name="out-" pos="-50,5"/>
+        <port name="in+" pos="-50,0"/>
+        <port name="in-" pos="50,10"/>
+        <port name="out+" pos="50,0"/>
+        <port name="out-" pos="-50,10"/>
     </ports>
 
     <properties>
@@ -92,7 +92,7 @@
     </properties>
 
     <models>
-        <model type="spice" syntax="T%label %port{in+} %port{in-} %port{out+} %port{out-} 0 0 Z0=%property{Z0} F=%property{freq} NL=%property{nl}
+        <model type="spice" syntax="T%label %port{in+} %port{in-} %port{out+} %port{out-} Z0=%property{Z0} F=%property{freq} NL=%property{nl}
                                     IC=%property{ic_v1},%property{ic_i1},%property{ic_v2},%property{ic_i2}"/>
     </models>
 </component>

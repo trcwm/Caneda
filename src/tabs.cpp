@@ -46,8 +46,8 @@ namespace Caneda
     //! \brief Constructor.
     ViewContainer::ViewContainer(IView *view, QWidget *parent) :
         QWidget(parent),
-        m_view(0),
-        m_toolBar(0)
+        m_view(nullptr),
+        m_toolBar(nullptr)
     {
         QVBoxLayout *layout = new QVBoxLayout;
         setLayout(layout);
@@ -63,7 +63,7 @@ namespace Caneda
         // Don't let QWidget destructor destroy toolbar as the view might still exist.
         if (m_toolBar) {
             layout()->removeWidget(m_toolBar);
-            m_toolBar->setParent(0);
+            m_toolBar->setParent(nullptr);
         }
     }
 
@@ -79,11 +79,11 @@ namespace Caneda
         if (m_view) {
             QWidget *widget = m_view->toWidget();
             layout->removeWidget(widget);
-            widget->setParent(0);
+            widget->setParent(nullptr);
 
-            disconnect(m_view, SIGNAL(focussedIn(IView*)), this,
-                    SLOT(onViewFocusChange(IView*)));
-            setToolBar(0);
+            disconnect(m_view, &IView::focussedIn, this, &ViewContainer::onViewFocusChange);
+
+            setToolBar(nullptr);
         }
 
         m_view = view;
@@ -93,8 +93,7 @@ namespace Caneda
             widget->setParent(this);
             layout->addWidget(widget);
 
-            connect(m_view, SIGNAL(focussedIn(IView*)), this,
-                    SLOT(onViewFocusChange(IView*)));
+            connect(m_view, &IView::focussedIn, this, &ViewContainer::onViewFocusChange);
 
             setToolBar(m_view->toolBar());
         }
@@ -104,7 +103,7 @@ namespace Caneda
     {
         QVBoxLayout *lay = qobject_cast<QVBoxLayout*>(layout());
         if (m_toolBar) {
-            m_toolBar->setParent(0);
+            m_toolBar->setParent(nullptr);
             lay->removeWidget(m_toolBar);
         }
 
@@ -118,7 +117,8 @@ namespace Caneda
 
     void ViewContainer::onViewFocusChange(IView *view)
     {
-        Q_UNUSED(view);
+        Q_UNUSED(view)
+
         //! \todo Uncomment this line after fixing ViewContainer::paintEvent
         //update();
     }
@@ -127,7 +127,8 @@ namespace Caneda
     {
         QWidget::paintEvent(event);
         bool hasFocus = m_view && m_view->toWidget()->hasFocus();
-        Q_UNUSED(hasFocus);
+
+        Q_UNUSED(hasFocus)
         //! \todo Draw some focus helper.
     }
 
@@ -153,7 +154,7 @@ namespace Caneda
 
     IView* Tab::activeView() const
     {
-        return m_views.isEmpty() ? 0 : m_views.first();
+        return m_views.isEmpty() ? nullptr : m_views.first();
     }
 
     QList<IView*> Tab::views() const
@@ -204,7 +205,7 @@ namespace Caneda
             parentSplitter->addWidget(new ViewContainer(newView));
         } else {
             int index = parentSplitter->indexOf(parentContainer);
-            parentContainer->setParent(0);
+            parentContainer->setParent(nullptr);
 
             QSplitter *newSplitter = new QSplitter(splitOrientation);
             newSplitter->setContentsMargins(0, 0, 0, 0);
@@ -220,8 +221,7 @@ namespace Caneda
     void Tab::closeView(IView *view)
     {
         if (!m_views.contains(view)) {
-            qDebug() << Q_FUNC_INFO << "View " << (void*)view << "doesn't exist"
-                << "in this tab";
+            qDebug() << Q_FUNC_INFO << "View doesn't exist in this tab";
             return;
         }
 
@@ -229,8 +229,8 @@ namespace Caneda
         ViewContainer *parentContainer = qobject_cast<ViewContainer*>(asWidget->parentWidget());
         QSplitter *parentSplitter = qobject_cast<QSplitter*>(parentContainer->parentWidget());
 
-        parentContainer->setParent(0);
-        parentContainer->setView(0);
+        parentContainer->setParent(nullptr);
+        parentContainer->setView(nullptr);
         parentContainer->deleteLater();
         m_views.removeAll(view);
         // Remember, we do not delete the view itself here. It is handled in
@@ -249,7 +249,7 @@ namespace Caneda
                 break;
             }
 
-            parentSplitter->setParent(0);
+            parentSplitter->setParent(nullptr);
             parentSplitter->deleteLater();
 
             parentSplitter = qobject_cast<QSplitter*>(ancestor);
@@ -267,8 +267,7 @@ namespace Caneda
     void Tab::replaceView(IView *oldView, IView *newView)
     {
         if (!m_views.contains(oldView)) {
-            qDebug() << Q_FUNC_INFO << "View " << (void*)oldView << "doesn't exist"
-                << "in this tab";
+            qDebug() << Q_FUNC_INFO << "View doesn't exist in this tab";
             return;
         }
 
@@ -297,6 +296,8 @@ namespace Caneda
 
     void Tab::onDocumentChanged(IDocument *document)
     {
+        Q_UNUSED(document)
+
         emit tabInfoChanged(this);
     }
 
@@ -344,19 +345,15 @@ namespace Caneda
     void Tab::addView(IView *view)
     {
         if (m_views.contains(view)) {
-            qDebug() << Q_FUNC_INFO << "View " << (void*)view
-                << " is already added.";
+            qDebug() << Q_FUNC_INFO << "View is already added.";
             return;
         }
 
         m_views.insert(0, view);
 
-        connect(view, SIGNAL(focussedIn(IView*)), this,
-                SLOT(onViewFocussedIn(IView*)));
-        connect(view->document(), SIGNAL(documentChanged(IDocument*)),
-                this, SLOT(onDocumentChanged(IDocument*)));
-        connect(view, SIGNAL(statusBarMessage(const QString &)), this,
-                SLOT(onStatusBarMessage(const QString &)));
+        connect(view, &IView::focussedIn, this, &Tab::onViewFocussedIn);
+        connect(view->document(), &IDocument::documentChanged, this, &Tab::onDocumentChanged);
+        connect(view, &IView::statusBarMessage, this, &Tab::onStatusBarMessage);
 
         emit tabInfoChanged(this);
     }
@@ -387,10 +384,9 @@ namespace Caneda
     TabWidget::TabWidget(QWidget *parent) : QTabWidget(parent)
     {
         setTabBar(new QTabBar(this));
-        connect(this, SIGNAL(currentChanged(int)), this,
-                SLOT(updateTabContext()));
-        connect(this, SIGNAL(tabCloseRequested(int)), this,
-                SLOT(onTabCloseRequested(int)));
+
+        connect(this, &TabWidget::currentChanged,    this, &TabWidget::updateTabContext);
+        connect(this, &TabWidget::tabCloseRequested, this, &TabWidget::onTabCloseRequested);
     }
 
     QList<Tab*> TabWidget::tabs() const
@@ -414,9 +410,9 @@ namespace Caneda
     void TabWidget::insertTab(int index, Tab *tab)
     {
         QTabWidget::insertTab(index, tab, tab->tabIcon(), tab->tabText());
-        connect(tab, SIGNAL(tabInfoChanged(Tab*)), this, SLOT(updateTabContext()));
-        connect(tab, SIGNAL(statusBarMessage(Tab*, const QString&)), this,
-                SLOT(onStatusBarMessage(Tab*, const QString&)));
+
+        connect(tab, &Tab::tabInfoChanged,   this, &TabWidget::updateTabContext);
+        connect(tab, &Tab::statusBarMessage, this, &TabWidget::onStatusBarMessage);
 
         IView *view = tab->activeView();
         if (!view) {
@@ -466,7 +462,7 @@ namespace Caneda
         if (!asWidget) return;
 
         QWidget *parentWidget = asWidget->parentWidget();
-        Tab *parentTab = 0;
+        Tab *parentTab = nullptr;
 
         while (parentWidget) {
             parentTab = qobject_cast<Tab*>(parentWidget);
@@ -487,7 +483,7 @@ namespace Caneda
         if (!asWidget) return;
 
         QWidget *parentWidget = asWidget->parentWidget();
-        Tab *parentTab = 0;
+        Tab *parentTab = nullptr;
 
         while (parentWidget) {
             parentTab = qobject_cast<Tab*>(parentWidget);
@@ -511,7 +507,7 @@ namespace Caneda
     {
         QWidget *widget = view->toWidget();
 
-        Tab *tab = 0;
+        Tab *tab = nullptr;
         while (1) {
             if (!widget) {
                 break;

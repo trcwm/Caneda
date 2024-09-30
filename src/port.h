@@ -63,8 +63,8 @@ namespace Caneda
     class Port : public QGraphicsItem
     {
     public:
-        explicit Port(GraphicsItem *parent = 0);
-        ~Port();
+        explicit Port(GraphicsItem *parent = nullptr);
+        ~Port() override;
 
         //! Returns the port's name.
         QString name() const { return m_name; }
@@ -85,8 +85,8 @@ namespace Caneda
         Port* findCoincidingPort() const;
 
         //! Return bounding box
-        QRectF boundingRect() const { return portEllipse; }
-        void paint(QPainter *painter, const QStyleOptionGraphicsItem* option, QWidget*);
+        QRectF boundingRect() const override { return portEllipse; }
+        void paint(QPainter *painter, const QStyleOptionGraphicsItem* option, QWidget*) override;
 
     private:
         QString m_name;

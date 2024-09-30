@@ -44,13 +44,13 @@ namespace Caneda
     public:
         explicit GraphicTextDialog(GraphicText *text,
                                    bool enableUndoCommand,
-                                   QWidget *parent = 0);
+                                   QWidget *parent = nullptr);
 
         QString plainText() const;
         QString richText() const;
 
     public Q_SLOTS:
-        void accept();
+        void accept() override;
 
     private Q_SLOTS:
         void textBold();

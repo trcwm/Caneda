@@ -31,10 +31,10 @@ namespace Caneda
         Q_OBJECT
 
     public:
-        explicit FileNewDialog(QWidget *parent = 0);
+        explicit FileNewDialog(QWidget *parent = nullptr);
 
     public Q_SLOTS:
-        virtual void done(int r);
+        virtual void done(int r) override;
 
     private:
         Ui::FileNewDialog ui;

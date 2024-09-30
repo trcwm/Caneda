@@ -89,8 +89,8 @@ namespace Caneda
 
     bool checkVersion(const QString& Line)
     {
-        QStringList sl = Caneda::version().split('.', QString::SkipEmptyParts);
-        QStringList ll = Line.split('.',QString::SkipEmptyParts);
+        QStringList sl = Caneda::version().split('.', Qt::SkipEmptyParts);
+        QStringList ll = Line.split('.',Qt::SkipEmptyParts);
         if (ll.count() != 3 || sl.count() != 3)
             return false;
         int sv = (sl.at(0)).toInt() * 10000 + (sl.at(1)).toInt() * 100 +
@@ -111,7 +111,7 @@ namespace Caneda
         unsigned short Unicode;
     };
 
-    struct tSpecialChar SpecialChars[] = {
+    static struct tSpecialChar SpecialChars[] = {
         {"alpha", 0x03B1}, {"beta", 0x03B2}, {"gamma", 0x03B3},
         {"delta", 0x03B4}, {"epsilon", 0x03B5}, {"zeta", 0x03B6},
         {"eta", 0x03B7}, {"theta", 0x03B8}, {"iota", 0x03B9},

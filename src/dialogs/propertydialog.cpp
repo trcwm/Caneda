@@ -217,8 +217,9 @@ namespace Caneda
      */
     bool PropertyModel::insertRows(int position, int rows, const QModelIndex &index)
     {
+        Q_UNUSED(index)
+
         // Insert new property
-        Q_UNUSED(index);
         beginInsertRows(QModelIndex(), position, position+rows-1);
 
         for (int row=0; row < rows; row++) {
@@ -251,7 +252,8 @@ namespace Caneda
      */
     bool PropertyModel::removeRows(int position, int rows, const QModelIndex &index)
     {
-        Q_UNUSED(index);
+        Q_UNUSED(index)
+
         beginRemoveRows(QModelIndex(), position, position+rows-1);
 
         for (int row=0; row < rows; ++row) {
@@ -316,10 +318,9 @@ namespace Caneda
         ui.tableView->setEditTriggers(QAbstractItemView::AnyKeyPressed | QAbstractItemView::DoubleClicked);
         ui.tableView->resizeColumnsToContents();
 
-        connect(ui.m_filterEdit, SIGNAL(textChanged(const QString &)),
-                this, SLOT(filterTextChanged()));
-        connect(ui.m_addButton, SIGNAL(clicked()), SLOT(addProperty()));
-        connect(ui.m_removeButton, SIGNAL(clicked()), SLOT(removeProperty()));
+        connect(ui.m_filterEdit,   &QLineEdit::textChanged, this, &PropertyDialog::filterTextChanged);
+        connect(ui.m_addButton,    &QToolButton::clicked,   this, &PropertyDialog::addProperty);
+        connect(ui.m_removeButton, &QToolButton::clicked,   this, &PropertyDialog::removeProperty);
     }
 
     /*!

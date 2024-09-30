@@ -34,6 +34,7 @@
 #include <QVBoxLayout>
 
 #include <qwt_plot_curve.h>
+#include <qwt_text.h>
 
 namespace Caneda
 {
@@ -223,15 +224,14 @@ namespace Caneda
         layoutTop->addLayout(layoutHorizontal);
 
         // Signals and slots connections
-        connect(m_filterEdit, SIGNAL(textChanged(const QString &)),
-                this, SLOT(filterTextChanged()));
+        connect(m_filterEdit, &QLineEdit::textChanged, this, &SidebarChartsBrowser::filterTextChanged);
 
-        connect(buttonAll, SIGNAL(clicked()), this, SLOT(selectAll()));
-        connect(buttonNone, SIGNAL(clicked()), this, SLOT(selectNone()));
-        connect(buttonVoltages, SIGNAL(clicked()), this, SLOT(selectVoltages()));
-        connect(buttonCurrents, SIGNAL(clicked()), this, SLOT(selectCurrents()));
+        connect(buttonAll,      &QPushButton::clicked, this, &SidebarChartsBrowser::selectAll);
+        connect(buttonNone,     &QPushButton::clicked, this, &SidebarChartsBrowser::selectNone);
+        connect(buttonVoltages, &QPushButton::clicked, this, &SidebarChartsBrowser::selectVoltages);
+        connect(buttonCurrents, &QPushButton::clicked, this, &SidebarChartsBrowser::selectCurrents);
 
-        connect(m_tableView, SIGNAL(clicked(QModelIndex)), this, SLOT(updateChartView()));
+        connect(m_tableView,    &QTableView::clicked,  this, &SidebarChartsBrowser::updateChartView);
 
         setWindowTitle(tr("Displayed Waveforms"));
     }
@@ -378,6 +378,7 @@ namespace Caneda
             list.at(i)->setVisible(m_model->m_chartSeriesMap[list.at(i)->title().text()]);
         }
 
+        view->resetAxis();
         view->replot();
     }
 

@@ -36,8 +36,8 @@ namespace Caneda
         Q_OBJECT
 
     public:
-        explicit ViewContainer(IView *view, QWidget *parent = 0);
-        ~ViewContainer();
+        explicit ViewContainer(IView *view, QWidget *parent = nullptr);
+        ~ViewContainer() override;
 
         IView* view() const;
         void setView(IView *view);
@@ -46,7 +46,7 @@ namespace Caneda
         void onViewFocusChange(IView *view);
 
     protected:
-        void paintEvent(QPaintEvent *event);
+        void paintEvent(QPaintEvent *event) override;
 
     private:
         void setToolBar(QToolBar *toolBar);
@@ -60,7 +60,7 @@ namespace Caneda
         Q_OBJECT
 
     public:
-        explicit Tab(IView *view, QWidget *parent = 0);
+        explicit Tab(IView *view, QWidget *parent = nullptr);
 
         IView* activeView() const;
         QList<IView*> views() const;
@@ -84,7 +84,7 @@ namespace Caneda
         void statusBarMessage(Tab *tab, const QString &message);
 
     protected:
-        void closeEvent(QCloseEvent *event);
+        void closeEvent(QCloseEvent *event) override;
 
     private:
         void addView(IView *view);
@@ -99,7 +99,7 @@ namespace Caneda
         Q_OBJECT
 
     public:
-        explicit TabWidget(QWidget *parent = 0);
+        explicit TabWidget(QWidget *parent = nullptr);
 
         QList<Tab*> tabs() const;
         Tab* tabForView(IView *view) const;

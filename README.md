@@ -89,7 +89,8 @@ Installation Directory
 
 By default, `make install` will install the package's files in
 `/usr/local/bin`, `/usr/local/man`, etc.  You can specify an installation
-prefix other than `/usr/local` by giving _cmake_ the option `--prefix=PATH`.
+prefix other than `/usr/local` by giving _cmake_ the option
+`-DCMAKE_INSTALL_PREFIX=PATH`.
 
 You can specify separate installation prefixes for architecture-specific files
 and architecture-independent files.  If you give _cmake_ the option

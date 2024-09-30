@@ -91,7 +91,7 @@ namespace Caneda
         QModelIndex index0 = sourceModel()->index(sourceRow, 0, sourceParent);
         QFileSystemModel *fileModel = static_cast<QFileSystemModel*>(sourceModel());
 
-        if(fileModel != NULL && fileModel->isDir(index0)) {
+        if(fileModel != nullptr && fileModel->isDir(index0)) {
             return true;
         }
 
@@ -123,36 +123,30 @@ namespace Caneda
         if(info.isDir()) {
             return icon(QFileIconProvider::Folder);
         }
-        else {
-            IContext *context = SchematicContext::instance();
-            if(context->supportedSuffixes().contains(info.suffix())) {
-                return Caneda::icon("application-x-caneda-schematic");
-            }
 
-            context = SymbolContext::instance();
-            if(context->supportedSuffixes().contains(info.suffix())) {
-                return Caneda::icon("application-x-caneda-symbol");
-            }
+        IContext *context;
 
-            context = LayoutContext::instance();
-            if(context->supportedSuffixes().contains(info.suffix())) {
-                return Caneda::icon("application-x-caneda-layout");
-            }
-
-            context = SimulationContext::instance();
-            if(context->supportedSuffixes().contains(info.suffix())) {
-                return Caneda::icon("application-x-spice-simulation-raw");
-            }
-
-            context = TextContext::instance();
-            if(context->supportedSuffixes().contains(info.suffix())) {
-                return Caneda::icon("text-plain");
-            }
-
-            return icon(QFileIconProvider::File);
+        context = SchematicContext::instance();
+        if(context->supportedSuffixes().contains(info.suffix())) {
+            return Caneda::icon("application-x-caneda-schematic");
         }
 
-        return QIcon();
+        context = SymbolContext::instance();
+        if(context->supportedSuffixes().contains(info.suffix())) {
+            return Caneda::icon("application-x-caneda-symbol");
+        }
+
+        context = SimulationContext::instance();
+        if(context->supportedSuffixes().contains(info.suffix())) {
+            return Caneda::icon("application-x-spice-simulation-raw");
+        }
+
+        context = TextContext::instance();
+        if(context->supportedSuffixes().contains(info.suffix())) {
+            return Caneda::icon("text-plain");
+        }
+
+        return icon(QFileIconProvider::File);
     }
 
 } // namespace Caneda

@@ -67,7 +67,7 @@ namespace Caneda
         Q_OBJECT
 
     public:
-        explicit GraphicsScene(QObject *parent = 0);
+        explicit GraphicsScene(QObject *parent = nullptr);
 
         // Edit actions
         void cutItems(QList<GraphicsItem*> &items);
@@ -123,18 +123,18 @@ namespace Caneda
         void mouseActionChanged(Caneda::MouseAction);
 
     protected:
-        void drawBackground(QPainter *p, const QRectF& r);
+        void drawBackground(QPainter *p, const QRectF& r) override;
 
         // Custom event handlers
-        bool event(QEvent *event);
+        bool event(QEvent *event) override;
 
-        void mousePressEvent(QGraphicsSceneMouseEvent *event);
-        void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
-        void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
-        void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event);
+        void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
+        void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
+        void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
+        void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
 
-        void wheelEvent(QGraphicsSceneWheelEvent *event);
-        void contextMenuEvent(QGraphicsSceneContextMenuEvent *event);
+        void wheelEvent(QGraphicsSceneWheelEvent *event) override;
+        void contextMenuEvent(QGraphicsSceneContextMenuEvent *event) override;
 
     private:
         // Custom event handlers
@@ -172,7 +172,7 @@ namespace Caneda
         void disconnectDisconnectibles();
         void resetState();
 
-        bool eventFilter(QObject *object, QEvent *event);
+        bool eventFilter(QObject *object, QEvent *event) override;
         void blockShortcuts(bool block);
 
         // Helper variables or state holders

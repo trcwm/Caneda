@@ -63,19 +63,19 @@ namespace Caneda
         Q_OBJECT
 
     public:
-        explicit PropertyModel(PropertyGroup *propGroup, QObject *parent = 0);
+        explicit PropertyModel(PropertyGroup *propGroup, QObject *parent = nullptr);
 
-        int rowCount(const QModelIndex& = QModelIndex() ) const { return propMap.size(); }
-        int columnCount(const QModelIndex& = QModelIndex() ) const { return 4; }
+        int rowCount(const QModelIndex& = QModelIndex() ) const override { return propMap.size(); }
+        int columnCount(const QModelIndex& = QModelIndex() ) const override { return 4; }
 
-        QVariant data(const QModelIndex&, int role) const;
-        QVariant headerData(int section, Qt::Orientation o, int role) const;
+        QVariant data(const QModelIndex&, int role) const override;
+        QVariant headerData(int section, Qt::Orientation o, int role) const override;
 
-        Qt::ItemFlags flags(const QModelIndex &index) const;
-        bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
+        Qt::ItemFlags flags(const QModelIndex &index) const override;
+        bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
 
-        bool insertRows(int position, int rows, const QModelIndex &index = QModelIndex());
-        bool removeRows(int position, int rows, const QModelIndex &index = QModelIndex());
+        bool insertRows(int position, int rows, const QModelIndex &index = QModelIndex()) override;
+        bool removeRows(int position, int rows, const QModelIndex &index = QModelIndex()) override;
 
     private:
         friend class PropertyDialog;
@@ -107,10 +107,10 @@ namespace Caneda
         Q_OBJECT
 
     public:
-        explicit PropertyDialog(PropertyGroup *propGroup, QWidget *parent = 0);
+        explicit PropertyDialog(PropertyGroup *propGroup, QWidget *parent = nullptr);
 
     public Q_SLOTS:
-        void accept();
+        void accept() override;
 
     private Q_SLOTS:
         void filterTextChanged();

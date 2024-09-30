@@ -60,7 +60,7 @@ namespace Caneda
     class GraphicsItem : public QGraphicsItem
     {
     public:
-        explicit GraphicsItem(QGraphicsItem *parent = 0);
+        explicit GraphicsItem(QGraphicsItem *parent = nullptr);
 
         /*!
          * \brief GraphicsItem identification types.
@@ -124,7 +124,7 @@ namespace Caneda
          *
          * \sa Type, GraphicsItemTypes, canedaitem_cast()
          */
-        int type() const { return Type; }
+        int type() const override { return Type; }
 
         //! Returns a list of ports of the item.
         QList<Port*> ports() const { return m_ports; }
@@ -133,9 +133,9 @@ namespace Caneda
         void mirror(Qt::Axis axis, QPointF pivotPoint);
 
         //! Return bounding box.
-        QRectF boundingRect() const { return m_boundingRect; }
+        QRectF boundingRect() const override { return m_boundingRect; }
         //! Return the shape of the item.
-        QPainterPath shape() const { return m_shape; }
+        QPainterPath shape() const override { return m_shape; }
 
         //! \brief Save item's data to a Caneda::XmlWriter.
         virtual void saveData(Caneda::XmlWriter *) const = 0;
@@ -152,8 +152,8 @@ namespace Caneda
         virtual void launchPropertiesDialog() = 0;
 
     protected:
-        void contextMenuEvent(QGraphicsSceneContextMenuEvent *event);
-        void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event);
+        void contextMenuEvent(QGraphicsSceneContextMenuEvent *event) override;
+        void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
 
         void setShapeAndBoundRect(const QPainterPath& path,
                 const QRectF& boundingRect,

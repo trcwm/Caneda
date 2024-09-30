@@ -21,7 +21,6 @@
 
 #include "global.h"
 #include "idocument.h"
-#include "settings.h"
 
 #include <QCompleter>
 #include <QFileDialog>
@@ -35,7 +34,7 @@ namespace Caneda
     //! \brief Constructor.
     PrintDialog::PrintDialog(IDocument *document, QWidget *parent) :
         QDialog(parent),
-        m_printer(0),
+        m_printer(nullptr),
         m_document(document)
     {
         ui.setupUi(this);
@@ -50,12 +49,12 @@ namespace Caneda
             ui.fitInPageButton->hide();
         }
 
-        connect(ui.printerChoice, SIGNAL(toggled(bool)), this, SLOT(onChoiceToggled()));
-        connect(ui.pdfChoice, SIGNAL(toggled(bool)), this, SLOT(onChoiceToggled()));
-        connect(ui.browseButton, SIGNAL(clicked()), this, SLOT(onBrowseButtonClicked()));
+        connect(ui.printerChoice, &QRadioButton::toggled, this, &PrintDialog::onChoiceToggled);
+        connect(ui.pdfChoice,     &QRadioButton::toggled, this, &PrintDialog::onChoiceToggled);
+        connect(ui.browseButton,  &QToolButton::clicked,  this, &PrintDialog::onBrowseButtonClicked);
 
         m_printer = new QPrinter;
-        m_printer->setOrientation(QPrinter::Landscape);
+        m_printer->setPageOrientation(QPageLayout::Landscape);
 
         const QString fileName = m_document->fileName();
         if (!fileName.isEmpty()) {

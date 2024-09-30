@@ -39,7 +39,7 @@ namespace Caneda
         Q_OBJECT
 
     public:
-        explicit PreviewWidget(int paintingType, QWidget *widget = 0);
+        explicit PreviewWidget(int paintingType, QWidget *widget = nullptr);
 
         QPen pen() const { return m_pen; }
         void setPen(QPen pen);
@@ -65,17 +65,17 @@ namespace Caneda
         int spanAngle() const { return m_spanAngle; }
         void setSpanAngle(int angle);
 
-        void paintEvent(QPaintEvent *event);
+        void paintEvent(QPaintEvent *event) override;
 
         void calcHeadPoints();
 
-        int heightForWidth(int w) const { return w; }
+        int heightForWidth(int w) const override { return w; }
 
         public slots:
             void toggleBackground(bool state);
 
     protected:
-        void resizeEvent(QResizeEvent *event);
+        void resizeEvent(QResizeEvent *event) override;
 
     private:
         QRect adjustedRect() const;
@@ -110,7 +110,7 @@ namespace Caneda
         Q_OBJECT
 
     public:
-        explicit StyleDialog(Painting *painting, QWidget *parent = 0);
+        explicit StyleDialog(Painting *painting, QWidget *parent = nullptr);
 
     public Q_SLOTS:
         void setupStyleWidgets();

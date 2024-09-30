@@ -51,8 +51,7 @@ namespace Caneda
         setMouseTracking(true);
         setAttribute(Qt::WA_NoSystemBackground);
 
-        connect(scene, SIGNAL(mouseActionChanged(Caneda::MouseAction)),
-                this, SLOT(onMouseActionChanged(Caneda::MouseAction)));
+        connect(scene, &GraphicsScene::mouseActionChanged, this, &GraphicsView::onMouseActionChanged);
 
         // Update current drag mode
         onMouseActionChanged(Caneda::Normal);

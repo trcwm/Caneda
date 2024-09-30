@@ -44,10 +44,10 @@ namespace Caneda
         Q_OBJECT
 
     public:
-        explicit ChartsDialog(ChartView *parent = 0);
+        explicit ChartsDialog(ChartView *parent = nullptr);
 
     public Q_SLOTS:
-        void accept();
+        void accept() override;
 
     private:
         Ui::ChartsDialog ui;

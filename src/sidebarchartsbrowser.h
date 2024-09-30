@@ -65,16 +65,16 @@ namespace Caneda
         Q_OBJECT
 
     public:
-        explicit SidebarChartsModel(ChartSeriesMap chartSeriesMap, QObject *parent = 0);
+        explicit SidebarChartsModel(ChartSeriesMap chartSeriesMap, QObject *parent = nullptr);
 
-        int rowCount(const QModelIndex& = QModelIndex() ) const { return m_chartSeriesMap.size(); }
-        int columnCount(const QModelIndex& = QModelIndex() ) const { return 2; }
+        int rowCount(const QModelIndex& = QModelIndex() ) const override { return m_chartSeriesMap.size(); }
+        int columnCount(const QModelIndex& = QModelIndex() ) const override { return 2; }
 
-        QVariant data(const QModelIndex&, int role) const;
-        QVariant headerData(int section, Qt::Orientation o, int role) const;
+        QVariant data(const QModelIndex&, int role) const override;
+        QVariant headerData(int section, Qt::Orientation o, int role) const override;
 
-        Qt::ItemFlags flags(const QModelIndex &index) const;
-        bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
+        Qt::ItemFlags flags(const QModelIndex &index) const override;
+        bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
 
     private:
         friend class SidebarChartsBrowser;
@@ -102,7 +102,7 @@ namespace Caneda
         Q_OBJECT
 
     public:
-        explicit SidebarChartsBrowser(ChartView *parent = 0);
+        explicit SidebarChartsBrowser(ChartView *parent = nullptr);
 
         void updateChartSeriesMap();
 

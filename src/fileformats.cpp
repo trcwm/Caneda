@@ -39,6 +39,7 @@
 #include <QMessageBox>
 #include <QRegularExpression>
 #include <QString>
+#include <QtMath>
 
 namespace Caneda
 {
@@ -75,7 +76,7 @@ namespace Caneda
 
         QFile file(fileName());
         if(!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
-            QMessageBox::critical(0, QObject::tr("Error"),
+            QMessageBox::critical(nullptr, QObject::tr("Error"),
                     QObject::tr("Cannot save document!"));
             return false;
         }
@@ -105,7 +106,7 @@ namespace Caneda
 
         QFile file(fileName());
         if(!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-            QMessageBox::critical(0, QObject::tr("Error"),
+            QMessageBox::critical(nullptr, QObject::tr("Error"),
                     QObject::tr("Cannot load document ")+fileName());
             return false;
         }
@@ -307,7 +308,7 @@ namespace Caneda
         }
 
         if(reader->hasError()) {
-            QMessageBox::critical(0, QObject::tr("Xml parse error"), reader->errorString());
+            QMessageBox::critical(nullptr, QObject::tr("Xml parse error"), reader->errorString());
             delete reader;
             return false;
         }
@@ -462,7 +463,7 @@ namespace Caneda
 
     GraphicsScene* FormatXmlSchematic::graphicsScene() const
     {
-        return m_schematicDocument ? m_schematicDocument->graphicsScene() : 0;
+        return m_schematicDocument ? m_schematicDocument->graphicsScene() : nullptr;
     }
 
     QString FormatXmlSchematic::fileName() const
@@ -486,7 +487,7 @@ namespace Caneda
             m_fileName = QString();
         }
 
-        m_component = 0;
+        m_component = nullptr;
     }
 
     //! \brief Constructor.
@@ -501,7 +502,7 @@ namespace Caneda
             m_fileName = QString();
         }
 
-        m_symbolDocument = 0;
+        m_symbolDocument = nullptr;
     }
 
     /*!
@@ -527,7 +528,7 @@ namespace Caneda
 
         QFile file(fileName());
         if(!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
-            QMessageBox::critical(0, QObject::tr("Error"),
+            QMessageBox::critical(nullptr, QObject::tr("Error"),
                     QObject::tr("Cannot save document!"));
             return false;
         }
@@ -552,7 +553,7 @@ namespace Caneda
     {
         QFile file(fileName());
         if(!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-            QMessageBox::critical(0, QObject::tr("Error"),
+            QMessageBox::critical(nullptr, QObject::tr("Error"),
                     QObject::tr("Cannot open file %1").arg(fileName()));
             return false;
         }
@@ -566,7 +567,7 @@ namespace Caneda
 
     GraphicsScene* FormatXmlSymbol::graphicsScene() const
     {
-        return m_symbolDocument ? m_symbolDocument->graphicsScene() : 0;
+        return m_symbolDocument ? m_symbolDocument->graphicsScene() : nullptr;
     }
 
     ComponentData* FormatXmlSymbol::component() const
@@ -882,7 +883,7 @@ namespace Caneda
 
         if(reader->hasError()) {
             qWarning() << "\nWarning: Failed to read data from\n" << fileName();
-            QMessageBox::critical(0, QObject::tr("Xml parse error"), reader->errorString());
+            QMessageBox::critical(nullptr, QObject::tr("Xml parse error"), reader->errorString());
             delete reader;
             return false;
         }
@@ -1061,242 +1062,6 @@ namespace Caneda
 
     }
 
-
-    /*************************************************************************
-     *                           FormatXmlLayout                             *
-     *************************************************************************/
-    //! \brief Constructor.
-    FormatXmlLayout::FormatXmlLayout(LayoutDocument *document):
-        QObject(document),
-        m_layoutDocument(document)
-    {
-    }
-
-    /*!
-     * \brief Saves current scene data to an xml file.
-     *
-     * This method checks the file to be written is accessible and that the
-     * user has the correct permissions to write it, and then calls the
-     * saveText() method to generate the xml data to save.
-     *
-     * \sa saveText(), load()
-     */
-    bool FormatXmlLayout::save() const
-    {
-        if(!graphicsScene()) {
-            return false;
-        }
-
-        QString text = saveText();
-
-        if(text.isEmpty()) {
-            qDebug() << "Looks buggy! Null data to save! Was this expected?";
-        }
-
-        QFile file(fileName());
-        if(!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
-            QMessageBox::critical(0, QObject::tr("Error"),
-                    QObject::tr("Cannot save document!"));
-            return false;
-        }
-
-        QTextStream stream(&file);
-        stream << text;
-        file.close();
-
-        return true;
-    }
-
-    /*!
-     * \brief Loads current scene data to an xml file.
-     *
-     * This method checks the file to be read is accessible and that the
-     * user has the correct permissions to read it, and then calls the
-     * loadFromText() method to read the xml data into the scene.
-     *
-     * \sa loadFromText(), save()
-     */
-    bool FormatXmlLayout::load() const
-    {
-        GraphicsScene *scene = graphicsScene();
-        if(!scene) {
-            return false;
-        }
-
-        QFile file(fileName());
-        if(!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-            QMessageBox::critical(0, QObject::tr("Error"),
-                    QObject::tr("Cannot load document ")+fileName());
-            return false;
-        }
-
-        QTextStream stream(&file);
-        bool result = loadFromText(stream.readAll());
-        file.close();
-
-        return result;
-    }
-
-    /*!
-     * \brief Saves an xml file description into a QString, obtaining the data
-     * from a scene and associated objects (componts, paintings, etc).
-     *
-     * This method is used to generate an xml file into a QString to be saved
-     * by the save() method. Not only scene sections are created (components,
-     * paintings, etc) but also file header information, for example document
-     * version and name. Each section is created, in its turn, by calling an
-     * appropiated method an thus improving source code readability by
-     * splitting the different actions.
-     *
-     * \return QString containing xml data to be saved.
-     *
-     * \sa save()
-     */
-    QString FormatXmlLayout::saveText() const
-    {
-        QString retVal;
-        Caneda::XmlWriter *writer = new Caneda::XmlWriter(&retVal);
-        writer->setAutoFormatting(true);
-
-        // Fist we start the document and write current version
-        writer->writeStartDocument();
-        writer->writeDTD(QString("<!DOCTYPE caneda>"));
-        writer->writeStartElement("caneda");
-        writer->writeAttribute("version", Caneda::version());
-
-        // Now we copy all the elements and properties in the schematic
-        savePaintings(writer);
-
-        // Finally we finish the document
-        writer->writeEndDocument(); //</caneda>
-
-        delete writer;
-        return retVal;
-    }
-
-    /*!
-     * \brief Saves the scene paintings to an XmlWriter.
-     *
-     * This method saves all scene paintings to an XmlWriter. To do so, it
-     * takes each Painting from the scene, and saves the data using the
-     * GraphicsItem::saveData() method.
-     *
-     * \param writer XmlWriter responsible for writing the xml data.
-     *
-     * \sa GraphicsItem::saveData()
-     */
-    void FormatXmlLayout::savePaintings(Caneda::XmlWriter *writer) const
-    {
-        QList<QGraphicsItem*> items = graphicsScene()->items();
-        QList<Painting*> paintings = filterItems<Painting>(items);
-
-        if(!paintings.isEmpty()) {
-            writer->writeStartElement("paintings");
-            foreach(Painting *p, paintings) {
-                p->saveData(writer);
-            }
-            writer->writeEndElement(); //</paintings>
-        }
-    }
-
-    /*!
-     * \brief Reads an xml file and constructs a scene and associated
-     * objects (componts, paintings, etc) from the data read.
-     *
-     * \param text String containing xml data to be read.
-     */
-    bool FormatXmlLayout::loadFromText(const QString& text) const
-    {
-        Caneda::XmlReader *reader = new Caneda::XmlReader(text.toUtf8());
-
-        while(!reader->atEnd()) {
-            reader->readNext();
-
-            if(reader->isStartElement()) {
-                if(reader->name() == "caneda" &&
-                        Caneda::checkVersion(reader->attributes().value("version").toString())) {
-
-                    while(!reader->atEnd()) {
-                        reader->readNext();
-                        if(reader->isEndElement()) {
-                            Q_ASSERT(reader->name() == "caneda");
-                            break;
-                        }
-
-                        if(reader->isStartElement()) {
-                            if(reader->name() == "paintings") {
-                                loadPaintings(reader);
-                            }
-                            else {
-                                reader->readUnknownElement();
-                            }
-                        }
-                    }
-                }
-                else {
-                    reader->raiseError(QObject::tr("Not a caneda file or probably malformatted file"));
-                }
-            }
-        }
-
-        if(reader->hasError()) {
-            QMessageBox::critical(0, QObject::tr("Xml parse error"), reader->errorString());
-            delete reader;
-            return false;
-        }
-
-        delete reader;
-        return true;
-    }
-
-    /*!
-     * \brief Reads the paintings section of an xml file.
-     *
-     * \param reader XmlReader responsible for reading xml data.
-     */
-    void FormatXmlLayout::loadPaintings(Caneda::XmlReader *reader) const
-    {
-        GraphicsScene *scene = graphicsScene();
-        if(!reader->isStartElement() || reader->name() != "paintings") {
-            reader->raiseError(QObject::tr("Malformatted file"));
-        }
-
-        while(!reader->atEnd()) {
-            reader->readNext();
-
-            if(reader->isEndElement()) {
-                Q_ASSERT(reader->name() == "paintings");
-                break;
-            }
-
-            if(reader->isStartElement()) {
-                if(reader->name() == "painting") {
-                    QString name = reader->attributes().value("name").toString();
-                    Painting *painting = Painting::fromName(name);
-                    painting->loadData(reader);
-                    scene->addItem(painting);
-                }
-                else {
-                    qWarning() << "Error: Found unknown painting type" <<
-                        reader->name().toString();
-                    reader->readUnknownElement();
-                    reader->raiseError(QObject::tr("Malformatted file"));
-                }
-            }
-        }
-    }
-
-    GraphicsScene* FormatXmlLayout::graphicsScene() const
-    {
-        return m_layoutDocument ? m_layoutDocument->graphicsScene() : 0;
-    }
-
-    QString FormatXmlLayout::fileName() const
-    {
-        return m_layoutDocument ? m_layoutDocument->fileName() : QString();
-    }
-
-
     /*************************************************************************
      *                             FormatSpice                               *
      *************************************************************************/
@@ -1316,7 +1081,7 @@ namespace Caneda
 
         QFile file(fileName());
         if(!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
-            QMessageBox::critical(0, QObject::tr("Error"),
+            QMessageBox::critical(nullptr, QObject::tr("Error"),
                     QObject::tr("Cannot save document!"));
             return false;
         }
@@ -1335,7 +1100,7 @@ namespace Caneda
 
     GraphicsScene *FormatSpice::graphicsScene() const
     {
-        return m_schematicDocument ? m_schematicDocument->graphicsScene() : 0;
+        return m_schematicDocument ? m_schematicDocument->graphicsScene() : nullptr;
     }
 
     QString FormatSpice::fileName() const
@@ -1374,6 +1139,7 @@ namespace Caneda
         QStringList subcircuitsList;
         QStringList directivesList;
         QStringList schematicsList;
+        QStringList nodesList;
 
         // Start the document and write the header
         QString retVal;
@@ -1384,7 +1150,13 @@ namespace Caneda
         // iterating over all schematic components.
         // *Note*: the parsing order is important to allow, for example
         // cascadable commands and if control statements correct extraction.
-        foreach(Component *c, components) {
+        for(auto &c : components) {
+
+            // If the component hasn't been correctly loaded, skip it
+            if(c->name().isEmpty()){
+                qWarning() << "Warning: Found unknown element during netlist generation, skipping...";
+                continue;
+            }
 
             // Get the spice model (multiple models may be available)
             QString model = c->model("spice");
@@ -1529,6 +1301,23 @@ namespace Caneda
                 }
             }
 
+            // Collect nodes from measurement devices ammeter, voltmerer, etc.
+            //! \todo Mark the measuring device in library in a some way
+            //! to avoid recognition by name
+            QStringList probes;
+            probes<<"Voltmeter"<<"Voltmeter Differential";
+            if (probes.contains(c->name())) {
+                QString voltageProbe = c->properties()->propertyValue("label");
+                nodesList.append(voltageProbe);
+            }
+
+            probes.clear();
+            probes<<"Ammeter";
+            if (probes.contains(c->name())) {
+                QString currentProbe = "i(V" + c->properties()->propertyValue("label") + ")";
+                nodesList.append(currentProbe);
+            }
+
             // ************************************************************
             // Now parse the generateNetlist command, which creates a
             // temporal list of schematics needed for recursive netlists
@@ -1571,6 +1360,24 @@ namespace Caneda
                 retVal.append(".subckt " + subcircuitsList.at(i) + "\n"
                               + ".ends" + "\n");
             }
+        }
+
+        // Save only named nodes
+        for(const auto &nn: netlist) {
+            QRegExp rx("\\d+");
+            if (!nodesList.contains(nn.second) &&
+                !rx.exactMatch(nn.second)) {
+                nodesList.append(nn.second);
+            }
+        }
+
+        // Form .save directive
+        if (!nodesList.isEmpty()) {
+            QString save_str = "\n.save ";
+            save_str += nodesList.join(" ");
+            retVal.append(QString("%1\n").arg(save_str));
+        } else {
+            retVal.append("\n.save all\n");
         }
 
         // Append the spice directives in directivesList
@@ -1725,7 +1532,7 @@ namespace Caneda
         QString filename = m_simulationDocument->fileName();
         QFile file(filename);
         if(!file.open(QIODevice::ReadOnly)) {
-            QMessageBox::critical(0, QObject::tr("Error"),
+            QMessageBox::critical(nullptr, QObject::tr("Error"),
                     QObject::tr("Cannot load document ") + filename);
             return false;
         }
@@ -1782,10 +1589,12 @@ namespace Caneda
             }
             else if( keyword == "variables") {
 
+                plotCurves.clear();
+                plotCurvesPhase.clear();
                 for(int i = 0; i < nvars; i++) {
                     line = file->readLine();
 
-                    tok = line.split("\t", QString::SkipEmptyParts);
+                    tok = line.split("\t", Qt::SkipEmptyParts);
                     if(tok.size() >= 3){
                         // Number property not used: number = tok.at(0)
 
@@ -1892,7 +1701,11 @@ namespace Caneda
                     tok = line.split(",");  // Split real and imaginary part
 
                     real = tok.first().toDouble();  // Get the real part
-                    imaginary = tok.last().toDouble();  // Get the imaginary part
+                    if (j == 0) { // the first variable is frequency; it has no imag. part
+                        imaginary = 0.0;
+                    } else {
+                        imaginary = tok.last().toDouble();  // Get the imaginary part
+                    }
 
                     magnitude = qSqrt(real*real + imaginary*imaginary);  // Calculate the magnitude part
                     phase = qAtan(imaginary/real) * 180/M_PI;  // Calculate the phase part
@@ -2002,6 +1815,7 @@ namespace Caneda
                 for(int j = 0; j < nvars; j++){
                     out >> real;  // Get the real part
                     out >> imaginary;  // Get the imaginary part
+                    if (j==0) imaginary = 0.0; // frequency
 
                     magnitude = qSqrt(real*real + imaginary*imaginary);  // Calculate the magnitude part
                     phase = qAtan(imaginary/real) * 180/M_PI;  // Calculate the phase part
@@ -2035,11 +1849,12 @@ namespace Caneda
         // Delete the temporal data arrays
         qDeleteAll(dataSamples);
         qDeleteAll(dataSamplesPhase);
+        file->seek(device->pos());
     }
 
     ChartScene* FormatRawSimulation::chartScene() const
     {
-        return m_simulationDocument ? m_simulationDocument->chartScene() : 0;
+        return m_simulationDocument ? m_simulationDocument->chartScene() : nullptr;
     }
 
 } // namespace Caneda

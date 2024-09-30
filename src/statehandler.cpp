@@ -40,13 +40,13 @@ namespace Caneda
     StateHandler::StateHandler(QObject *parent) : QObject(parent)
     {
         mouseAction = Caneda::Normal;
-        paintingDrawItem = 0;
+        paintingDrawItem = nullptr;
     }
 
     //! \copydoc MainWindow::instance()
     StateHandler* StateHandler::instance()
     {
-        static StateHandler *instance = 0;
+        static StateHandler *instance = nullptr;
         if (!instance) {
             instance = new StateHandler();
         }
@@ -112,24 +112,24 @@ namespace Caneda
 
         // Get the function associated to the selected action.
         typedef void (GraphicsScene::*pActionFunc) (QList<GraphicsItem*>&);
-        pActionFunc func = 0;
+        pActionFunc actionFunction = nullptr;
 
         if (actionName == "editDelete") {
-            func = &GraphicsScene::deleteItems;
+            actionFunction = &GraphicsScene::deleteItems;
         }
         else if (actionName == "editRotate") {
-            func = &GraphicsScene::rotateItems;
+            actionFunction = &GraphicsScene::rotateItems;
         }
         else if (actionName == "editMirrorX") {
-            func = &GraphicsScene::mirrorXItems;
+            actionFunction = &GraphicsScene::mirrorXItems;
         }
         else if (actionName == "editMirrorY") {
-            func = &GraphicsScene::mirrorYItems;
+            actionFunction = &GraphicsScene::mirrorYItems;
         }
 
         // Get selected items.
-        GraphicsView *view = 0;
-        GraphicsScene *scene = 0;
+        GraphicsView *view = nullptr;
+        GraphicsScene *scene = nullptr;
         QList<QGraphicsItem*> selectedItems;
 
         DocumentViewManager *manager = DocumentViewManager::instance();
@@ -147,11 +147,12 @@ namespace Caneda
 
         // If there is any selected item, apply the action to the selected
         // items, and deselect the action.
-        if(!selectedItems.isEmpty() && func != 0) {
-            QList<GraphicsItem*> funcable = filterItems<GraphicsItem>(selectedItems);
+        if(scene && !selectedItems.isEmpty() && actionFunction != nullptr) {
+            QList<GraphicsItem*> items = filterItems<GraphicsItem>(selectedItems);
 
-            if(!funcable.isEmpty()) {
-                (scene->*func)(funcable);
+            if(!items.isEmpty()) {
+                (scene->*actionFunction)(items);
+
                 // Turn off this action
                 performToggleAction(action->objectName(), false);
                 return;
@@ -200,8 +201,8 @@ namespace Caneda
         clearInsertibles();
 
         // Get a component or painting based on the name and category.
-        GraphicsItem *qItem = 0;
-        if(category == "Paint Tools" || category == "Layout Tools") {
+        GraphicsItem *qItem = nullptr;
+        if(category == "Paint Tools") {
             qItem = Painting::fromName(item);
         }
         else if(category == QObject::tr("Miscellaneous")) {
@@ -218,7 +219,7 @@ namespace Caneda
         }
 
         // If the item was not found in the fixed libraries, search for the
-        // item in the dinamic loaded libraries ("Components" category).
+        // item in the dynamic loaded libraries ("Components" category).
         if(!qItem) {
             ComponentDataPtr data = LibraryManager::instance()->componentData(item, category);
             if(data.constData()) {
@@ -230,7 +231,7 @@ namespace Caneda
 
         // Check if the item was successfully found and created
         if(qItem) {
-            if(category == "Paint Tools" || category == "Layout Tools") {
+            if(category == "Paint Tools") {
                 paintingDrawItem = static_cast<Painting*>(qItem);
                 paintingDrawItem->setPaintingRect(QRectF(0, 0, 0, 0));
                 performToggleAction("paintingDraw", true);
@@ -281,7 +282,7 @@ namespace Caneda
             }
 
             if(reader.isStartElement()) {
-                GraphicsItem *readItem = 0;
+                GraphicsItem *readItem = nullptr;
                 if(reader.name() == "component") {
                     readItem = new Component();
                     readItem->loadData(&reader);

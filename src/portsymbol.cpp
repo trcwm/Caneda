@@ -93,7 +93,7 @@ namespace Caneda
             m_label->setVisible(false);
         }
         else {
-            m_symbol.addRoundRect(-10, -10, 20, 20, 25, 25);
+            m_symbol.addRoundedRect(-10, -10, 20, 20, 25, 25, Qt::RelativeSize);
 
             m_label->setVisible(true);
         }
@@ -117,6 +117,8 @@ namespace Caneda
     //! \brief Draw port symbol
     void PortSymbol::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
     {
+        Q_UNUSED(widget)
+
         // Save pen
         QPen savedPen = painter->pen();
 

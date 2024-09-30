@@ -74,12 +74,9 @@ namespace Caneda
 
         layout->addWidget(m_treeView);
 
-        connect(m_filterEdit, SIGNAL(textChanged(const QString &)),
-                this, SLOT(filterTextChanged()));
-
-        connect(m_fileModel, SIGNAL(modelReset()), m_treeView, SLOT(expandAll()));
-        connect(m_treeView, SIGNAL(activated(const QModelIndex&)), this,
-                SLOT(slotOnDoubleClicked(const QModelIndex&)));
+        connect(m_filterEdit, &QLineEdit::textChanged, this, &SidebarTextBrowser::filterTextChanged);
+        connect(m_fileModel,  &QFileSystemModel::modelReset, m_treeView, &QTreeView::expandAll);
+        connect(m_treeView,   &QTreeView::activated,   this, &SidebarTextBrowser::slotOnDoubleClicked);
 
         setWindowTitle(tr("Text Templates"));
     }
@@ -87,7 +84,7 @@ namespace Caneda
     //! \brief Destructor.
     SidebarTextBrowser::~SidebarTextBrowser()
     {
-        m_treeView->setModel(0);
+        m_treeView->setModel(nullptr);
     }
 
     void SidebarTextBrowser::filterTextChanged()

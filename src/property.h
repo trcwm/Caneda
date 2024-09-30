@@ -123,7 +123,7 @@ namespace Caneda
     class PropertyGroup : public QGraphicsSimpleTextItem
     {
     public:
-        explicit PropertyGroup(QGraphicsItem *parent = 0);
+        explicit PropertyGroup(QGraphicsItem *parent = nullptr);
 
         void addProperty(const QString& key, const Property& prop);
         //! Returns selected property from property map.
@@ -140,7 +140,7 @@ namespace Caneda
 
         void updatePropertyDisplay();
         void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
-                QWidget *widget = 0 );
+                   QWidget *widget = nullptr) override;
 
         void writeProperties(Caneda::XmlWriter *writer);
         void readProperties(Caneda::XmlReader *reader);
@@ -148,8 +148,8 @@ namespace Caneda
         void launchPropertiesDialog();
 
     protected:
-        void mousePressEvent(QGraphicsSceneMouseEvent *event);
-        void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event);
+        void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
+        void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
 
     private:
         //! QMap holding actual properties.

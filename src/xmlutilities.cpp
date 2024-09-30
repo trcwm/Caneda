@@ -126,7 +126,7 @@ namespace Caneda
         Q_ASSERT(isStartElement());
         QString errorString = QObject::tr("Invalid line attribute");
         QStringList lineCoordsStr = attributes().value(tag).toString().
-            split(",",QString::SkipEmptyParts);
+            split(",",Qt::SkipEmptyParts);
 
         if(lineCoordsStr.size() != 4) {
             raiseError(errorString);
@@ -151,7 +151,7 @@ namespace Caneda
         Q_ASSERT(isStartElement());
         QString errorString = QObject::tr("Invalid rect attribute");
         QStringList rectCoordsStr = attributes().value(tag).toString().
-            split(",",QString::SkipEmptyParts);
+            split(",",Qt::SkipEmptyParts);
 
         if(rectCoordsStr.size() != 4) {
             raiseError(errorString);
@@ -311,7 +311,7 @@ namespace Caneda
         QFont font;
         font.setFamily(attribs.value("family").toString());
 
-        bool ok1, ok2, ok3;
+        bool ok1 = false, ok2 = false, ok3 = false;
 
         int pointSize(attribs.value("pointSize").toString().toInt(&ok1));
         if(pointSize == -1) {

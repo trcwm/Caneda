@@ -44,13 +44,13 @@ namespace Caneda
     class PortSymbol : public GraphicsItem
     {
     public:
-        explicit PortSymbol(QGraphicsItem *parent = 0);
-        ~PortSymbol();
+        explicit PortSymbol(QGraphicsItem *parent = nullptr);
+        ~PortSymbol() override;
 
         //! \copydoc GraphicsItem::Type
         enum { Type = GraphicsItem::PortSymbolType };
         //! \copydoc GraphicsItem::type()
-        int type() const { return Type; }
+        int type() const override { return Type; }
 
         //! Return's the symbol's port
         Port* port() const { return m_ports[0]; }
@@ -61,14 +61,14 @@ namespace Caneda
 
         void updateGeometry();
 
-        void paint(QPainter*, const QStyleOptionGraphicsItem*, QWidget*);
+        void paint(QPainter*, const QStyleOptionGraphicsItem*, QWidget*) override;
 
-        PortSymbol* copy() const;
+        PortSymbol* copy() const override;
 
-        void saveData(Caneda::XmlWriter *writer) const;
-        void loadData(Caneda::XmlReader *reader);
+        void saveData(Caneda::XmlWriter *writer) const override;
+        void loadData(Caneda::XmlReader *reader) override;
 
-        void launchPropertiesDialog();
+        void launchPropertiesDialog() override;
 
     private:
         QGraphicsSimpleTextItem *m_label;

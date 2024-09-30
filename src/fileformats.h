@@ -32,7 +32,6 @@ namespace Caneda
     class GraphicsScene;
     class ChartSeries;
     class ChartScene;
-    class LayoutDocument;
     class SchematicDocument;
     class SimulationDocument;
     class SymbolDocument;
@@ -57,7 +56,7 @@ namespace Caneda
         Q_OBJECT
 
     public:
-        explicit FormatXmlSchematic(SchematicDocument *document = 0);
+        explicit FormatXmlSchematic(SchematicDocument *document = nullptr);
 
         bool save() const;
         bool load() const;
@@ -97,8 +96,8 @@ namespace Caneda
         Q_OBJECT
 
     public:
-        explicit FormatXmlSymbol(SymbolDocument *document = 0);
-        explicit FormatXmlSymbol(ComponentData *component, QObject *parent = 0);
+        explicit FormatXmlSymbol(SymbolDocument *document = nullptr);
+        explicit FormatXmlSymbol(ComponentData *component, QObject *parent = nullptr);
 
         bool save() const;
         bool load() const;
@@ -126,40 +125,6 @@ namespace Caneda
     };
 
     /*!
-     * \brief This class handles all the access to the layout documents file
-     * format.
-     *
-     * This class is in charge of saving and loading all layout related
-     * documents. This is the only class that knows about layout document
-     * formats, and has the access functions to return a LayoutDocument,
-     * with all of its components.
-     *
-     * \sa \ref DocumentFormats
-     */
-    class FormatXmlLayout : public QObject
-    {
-        Q_OBJECT
-
-    public:
-        explicit FormatXmlLayout(LayoutDocument *document = 0);
-
-        bool save() const;
-        bool load() const;
-
-    private:
-        QString saveText() const;
-        void savePaintings(Caneda::XmlWriter *writer) const;
-
-        bool loadFromText(const QString &text) const;
-        void loadPaintings(Caneda::XmlReader *reader) const;
-
-        GraphicsScene* graphicsScene() const;
-        QString fileName() const;
-
-        LayoutDocument *m_layoutDocument;
-    };
-
-    /*!
      * \brief This class handles all the access to the raw spice simulation
      * documents file format.
      *
@@ -179,7 +144,7 @@ namespace Caneda
         Q_OBJECT
 
     public:
-        explicit FormatSpice(SchematicDocument *document = 0);
+        explicit FormatSpice(SchematicDocument *document = nullptr);
 
         bool save();
 
@@ -214,7 +179,7 @@ namespace Caneda
         Q_OBJECT
 
     public:
-        explicit FormatRawSimulation(SimulationDocument *document = 0);
+        explicit FormatRawSimulation(SimulationDocument *document = nullptr);
 
         bool load();
 

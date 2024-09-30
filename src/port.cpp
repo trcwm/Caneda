@@ -58,7 +58,7 @@ namespace Caneda
         if(item) {
             return item;
         }
-        return 0;
+        return nullptr;
     }
 
     /*!
@@ -188,7 +188,7 @@ namespace Caneda
     Port* Port::findCoincidingPort() const
     {
         if(!scene()) {
-            return 0;
+            return nullptr;
         }
 
         QList<QGraphicsItem*> collisions =
@@ -209,7 +209,7 @@ namespace Caneda
             }
         }
 
-        return 0;
+        return nullptr;
     }
 
     /*!
@@ -221,6 +221,8 @@ namespace Caneda
      */
     void Port::paint(QPainter *painter, const QStyleOptionGraphicsItem* option, QWidget*)
     {
+        Q_UNUSED(option)
+
         // Save pen
         QPen savedPen = painter->pen();
 

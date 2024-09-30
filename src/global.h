@@ -62,20 +62,20 @@ namespace Caneda
         return value >= 0 ? +1 : -1;
     }
 
-    //! \brief Short function for qsort sort by abscissa
+    //! \brief Short function to sort by abscissa
     static inline bool pointCmpFunction_X(const QGraphicsItem *lhs, const QGraphicsItem  *rhs)
     {
         return lhs->pos().x() < rhs->pos().x();
     }
 
-    //!Short function for qsort sort by abscissa
+    //! \brief Short function for sort by abscissa
     static inline bool pointCmpFunction_Y(const QGraphicsItem *lhs, const QGraphicsItem  *rhs)
     {
         return lhs->pos().y() < rhs->pos().y();
     }
 
     //! \brief Default grid spacing
-    static const uint DefaultGridSpace = 10;
+    static const int DefaultGridSpace = 10;
     QPointF smartNearingGridPoint(const QPointF &pos);
 
     QString latexToUnicode(const QString& input);

@@ -78,7 +78,7 @@ namespace Caneda
         Q_OBJECT
 
     public:
-        explicit ChartView(ChartScene *scene, QWidget *parent = 0);
+        explicit ChartView(ChartScene *scene, QWidget *parent = nullptr);
 
         virtual void zoomIn();
         virtual void zoomOut();
@@ -86,6 +86,7 @@ namespace Caneda
         virtual void zoomOriginal();
 
         void populate();
+        void resetAxis();
         void setLogAxis(QwtPlot::Axis axis, bool logarithmic);
         bool isLogAxis(QwtPlot::Axis axis);
 
@@ -102,8 +103,8 @@ namespace Caneda
         void cursorPositionChanged(const QString& newPos);
 
     protected:
-        void mouseMoveEvent(QMouseEvent *event);
-        void mouseDoubleClickEvent(QMouseEvent * event);
+        void mouseMoveEvent(QMouseEvent *event) override;
+        void mouseDoubleClickEvent(QMouseEvent * event) override;
 
     private:
         ChartScene *m_chartScene;

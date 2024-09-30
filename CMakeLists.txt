@@ -2,8 +2,8 @@
 # Caneda project
 PROJECT( Caneda )
 
-SET( PACKAGE_VERSION "0.3.1" )
-SET( PACKAGE_STRING "caneda 0.3.1" )
+SET( PACKAGE_VERSION "0.4.0" )
+SET( PACKAGE_STRING "caneda 0.4.0" )
 
 # ==================================================================================
 # Minimum libraries required
@@ -42,6 +42,8 @@ SET( CMAKE_INCLUDE_CURRENT_DIR ON )
 SET( CMAKE_BUILD_TYPE Debug )
 
 CONFIGURE_FILE( ${Caneda_SOURCE_DIR}/config.h.cmake ${Caneda_BINARY_DIR}/config.h )
+
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wno-unused-parameter")
 
 # ==================================================================================
 # Include sources directories

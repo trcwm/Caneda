@@ -21,9 +21,6 @@
 #include "graphicsitem.h"
 
 #include "actionmanager.h"
-#include "port.h"
-#include "settings.h"
-#include "xmlutilities.h"
 
 #include <QGraphicsSceneEvent>
 #include <QMenu>

@@ -40,7 +40,7 @@ namespace Caneda
 
     public:
         explicit ProjectFileOpenDialog(QString libraryFileName = QString(),
-                                       QWidget *parent = 0);
+                                       QWidget *parent = nullptr);
 
         QString fileName() const { return m_fileName; }
 
