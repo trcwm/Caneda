@@ -1152,6 +1152,12 @@ namespace Caneda
         // cascadable commands and if control statements correct extraction.
         for(auto &c : components) {
 
+            // If the component hasn't been correctly loaded, skip it
+            if(c->name().isEmpty()){
+                qWarning() << "Warning: Found unknown element during netlist generation, skipping...";
+                continue;
+            }
+
             // Get the spice model (multiple models may be available)
             QString model = c->model("spice");
 
